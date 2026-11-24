@@ -625,34 +625,6 @@ const R = [
   },
 },
 {
-  id: "curry1", type: "main", serv: 4, src: SRC + "warzywne-curry-z-dynia-kalafiorem-i-ciecierzyca", img: "img/curry1.webp",
-  name: N("Warzywne curry z dynią, kalafiorem i ciecierzycą", "Gemüsecurry mit Kürbis, Blumenkohl und Kichererbsen", "Vegetable curry with pumpkin, cauliflower and chickpeas"),
-  time: N("ok. 45 min", "ca. 45 Min.", "about 45 min"),
-  tokens: ["tomato", "pumpkin", "cauliflower", "coconut", "ginger", "rice"],
-  ing: [["pumpkin", 300, "g", N("upiecz od razu więcej – mus do dania {butter}", "gleich mehr backen – Püree für Gericht {butter}", "roast extra now – purée for meal {butter}")], ["onion", 1, "pcs"], ["oil", 1, "tbsp"], ["garlic", 2, "clove"], ["ginger", 2, "cm"], ["curry", 2, "tsp"], ["turmeric", 2, "tsp"], ["paprika", 1, "tsp"], ["passata", 250, "ml"],
-    ["cauliflower", 300, "g", N("½ kalafiora – reszta do dania {curry2}", "½ Blumenkohl – Rest für Gericht {curry2}", "½ cauliflower – the rest goes into meal {curry2}")], ["chickpeas", 300, "g"], ["coconut", 250, "ml"], ["#serve"], ["rice", 200, "g"], ["coriander", null], ["salt", null], ["pepper", null]],
-  steps: {
-    pl: ["Dynię obrać ze skóry i pestek, miąższ pokroić w kostkę. Cebulę pokroić w cienkie półplasterki.",
-      "W większym garnku rozgrzać olej i zeszklić cebulę. Dodać starty czosnek i imbir, smażyć 1 minutę, mieszając.",
-      "Dodać wszystkie przyprawy, wymieszać i chwilę podsmażyć.",
-      "Wlać 250 ml wody i passatę, dodać dynię. Zagotować, doprawić solą i pieprzem, gotować 20 minut bez przykrycia.",
-      "Dodać kalafior (w kostce lub małych różyczkach), mleko kokosowe i ciecierzycę z częścią zalewy. Wymieszać i gotować ok. 10 minut.",
-      "Podawać z ryżem i świeżą kolendrą."],
-    de: ["Kürbis schälen, entkernen und würfeln. Zwiebel in dünne Halbringe schneiden.",
-      "Öl in einem größeren Topf erhitzen und die Zwiebel glasig dünsten. Geriebenen Knoblauch und Ingwer 1 Minute unter Rühren mitbraten.",
-      "Alle Gewürze zugeben, verrühren und kurz anrösten.",
-      "250 ml Wasser und Passata angießen, Kürbis zugeben. Aufkochen, salzen, pfeffern und 20 Minuten offen köcheln.",
-      "Blumenkohl (gewürfelt oder in kleinen Röschen), Kokosmilch und Kichererbsen mit etwas Flüssigkeit zugeben. Ca. 10 Minuten kochen.",
-      "Mit Reis und frischem Koriander servieren."],
-    en: ["Peel and deseed the pumpkin and dice the flesh. Slice the onion into thin half-moons.",
-      "Heat the oil in a large pot and soften the onion. Add the grated garlic and ginger and fry for 1 minute, stirring.",
-      "Add all the spices, stir and toast briefly.",
-      "Add 250 ml water, the passata and the pumpkin. Bring to the boil, season and simmer uncovered for 20 minutes.",
-      "Add the cauliflower (diced or small florets), coconut milk and chickpeas with some of their liquid. Cook for about 10 minutes.",
-      "Serve with rice and fresh coriander."],
-  },
-},
-{
   id: "curry2", type: "main", serv: 4, src: SRC + "curry-warzywne-z-batatami-kalafiorem-i-orzechami-nerkowca", img: "img/curry2.webp",
   name: N("Curry z batatami, kalafiorem i nerkowcami", "Curry mit Süßkartoffeln, Blumenkohl und Cashews", "Sweet potato, cauliflower and cashew curry"),
   time: N("ok. 55 min", "ca. 55 Min.", "about 55 min"),
@@ -714,9 +686,9 @@ const R = [
       "Kachumber salad: mix diced cucumber, halved cherry tomatoes, finely chopped red onion and chilli. Salt, drizzle with juice and olive oil, season with pepper and garam masala and scatter with coriander."],
   },
   tips: {
-    pl: ["Dynię do musu upiecz razem z dynią do curry (danie {curry1}) – jedna dynia na oba dania."],
-    de: ["Den Kürbis für das Püree zusammen mit dem Kürbis fürs Curry (Gericht {curry1}) backen – ein Kürbis für beide."],
-    en: ["Roast the pumpkin for the purée together with the pumpkin for the curry (meal {curry1}) – one pumpkin covers both."],
+    pl: ["Mus z dyni możesz przygotować dzień wcześniej: upiecz dynię w 200°C do miękkości i zmiksuj."],
+    de: ["Das Kürbispüree kann man am Vortag machen: Kürbis bei 200 °C weich backen und pürieren."],
+    en: ["You can make the pumpkin purée the day before: roast the pumpkin at 200°C until soft and blend."],
   },
 },
 {
@@ -903,24 +875,6 @@ const R = [
   },
 },
 {
-  id: "gnocchi", type: "main", serv: 2, site: "rz", src: "https://www.rozkoszny.pl/pieczone-gnocchi-z-pomidorkami-mozzarella-i-bazylia/", img: "img/gnocchi.jpg",
-  name: N("Pieczone gnocchi z pomidorkami, mozzarellą i bazylią", "Ofen-Gnocchi mit Cherrytomaten, Mozzarella und Basilikum", "Baked gnocchi with cherry tomatoes, mozzarella and basil"),
-  time: N("ok. 40 min (głównie pieczenie)", "ca. 40 Min. (meist Backzeit)", "about 40 min (mostly baking)"),
-  tokens: ["cherry", "basil", "parmesan"],
-  ing: [["cherry", 500, "g", N("najlepiej słodkie", "möglichst süße", "the sweeter the better")], ["garlic", 3, "clove"], ["olive_oil", 60, "ml"], ["salt", 0.5, "tsp"], ["gnocchi", 400, "g"], ["parmesan", 45, "g"], ["mozzarella", 1, "ball"], ["basil", 1, "handful"], ["pepper", null]],
-  steps: {
-    pl: ["Nagrzać piekarnik do 200°C (góra-dół).",
-      "Pomidorki, obrany czosnek, oliwę i sól wymieszać w dużej brytfance, doprawić pieprzem. Piec 15–20 minut, aż pomidorki zmiękną.",
-      "Dodać gnocchi i obtoczyć je w sokach z brytfanki. Piec kolejne 15–20 minut, aż się przypieką na chrupko. Dodać parmezan, porwaną mozzarellę i bazylię, wymieszać i podawać."],
-    de: ["Backofen auf 200 °C (Ober-/Unterhitze) vorheizen.",
-      "Cherrytomaten, geschälten Knoblauch, Olivenöl und Salz in einer großen Form mischen und pfeffern. 15–20 Minuten backen, bis die Tomaten weich sind.",
-      "Gnocchi zugeben und in den Säften wenden. Weitere 15–20 Minuten knusprig backen. Parmesan, zerzupfte Mozzarella und Basilikum unterheben und servieren."],
-    en: ["Heat the oven to 200°C (conventional).",
-      "Toss the cherry tomatoes, peeled garlic, olive oil and salt in a large roasting tin and season with pepper. Roast for 15–20 minutes until the tomatoes soften.",
-      "Add the gnocchi and coat them in the juices. Roast for another 15–20 minutes until crisp. Stir through the Parmesan, torn mozzarella and basil and serve."],
-  },
-},
-{
   id: "gochujang", type: "main", serv: 2, site: "rz", src: "https://www.rozkoszny.pl/express-kremowa-fasola-gochujang/", img: "img/gochujang.jpg",
   name: N("Ekspresowa kremowa fasola gochujang", "Schnelle cremige Gochujang-Bohnen", "Quick creamy gochujang beans"),
   time: N("ok. 15 min", "ca. 15 Min.", "about 15 min"),
@@ -942,39 +896,6 @@ const R = [
     pl: ["Z własnej, ugotowanej fasoli: 400 g fasoli i ½ szklanki (120 ml) wody z gotowania."],
     de: ["Mit selbst gekochten Bohnen: 400 g Bohnen und ½ Tasse (120 ml) Kochwasser."],
     en: ["With home-cooked beans: 400 g beans plus ½ cup (120 ml) of their cooking water."],
-  },
-},
-{
-  id: "szaszlyki", type: "main", serv: 2, site: "rz", src: "https://www.rozkoszny.pl/szaszlyki-z-halloumi-i-cukinia/", img: "img/szaszlyki.jpg",
-  name: N("Szaszłyki z halloumi i cukinią", "Halloumi-Zucchini-Spieße", "Halloumi and courgette skewers"),
-  time: N("ok. 40 min (w tym 15 min marynowania)", "ca. 40 Min. (inkl. 15 Min. Marinieren)", "about 40 min (incl. 15 min marinating)"),
-  tokens: ["harissa", "zucchini", "lime"],
-  ing: [["#marinade"], ["halloumi", 220, "g"], ["greek_yogurt", 4, "tbsp"], ["harissa", 1, "tbsp"], ["honey", 1, "tsp"], ["zucchini", 300, "g", N("1 średnia", "1 mittelgroße", "1 medium")], ["olive_oil", 1, "tbsp"], ["salt", null], ["pepper", null],
-    ["#salad"], ["radish", 4, "pcs"], ["cucumber", 0.5, "pcs"], ["dill", 3, "tbsp"], ["lime", 1, "pcs"]],
-  steps: {
-    pl: ["Halloumi pokroić w kostkę 2–3 cm. W misce wymieszać jogurt, harissę i miód, dodać ser, delikatnie wymieszać i odstawić na min. 15 minut.",
-      "Cukinię pokroić w grube plastry (ok. 2 cm), skropić oliwą, posolić i popieprzyć.",
-      "Drewniane patyczki namoczyć 15 minut w wodzie (metalowych nie trzeba). Nadziewać na przemian halloumi i cukinię.",
-      "Grillować 6–8 minut, obracając, aż ser się zarumieni, a cukinia zmięknie – albo piec ok. 15 minut w 220°C (góra-dół).",
-      "Sałatka: rzodkiewki i ogórka pokroić w cienkie plasterki, wymieszać z koperkiem, skropić sokiem z limonki i odrobiną oliwy, doprawić.",
-      "Marynatę, która została w misce, posolić – to gotowy sos. Podawać z ryżem lub pitą, sosem i sałatką."],
-    de: ["Halloumi in 2–3 cm große Würfel schneiden. Joghurt, Harissa und Honig verrühren, den Käse vorsichtig untermischen und mind. 15 Minuten marinieren.",
-      "Zucchini in dicke Scheiben (ca. 2 cm) schneiden, mit Olivenöl beträufeln, salzen und pfeffern.",
-      "Holzspieße 15 Minuten wässern (Metallspieße nicht nötig). Halloumi und Zucchini abwechselnd aufspießen.",
-      "6–8 Minuten unter Wenden grillen, bis der Käse gebräunt und die Zucchini weich ist – oder ca. 15 Minuten bei 220 °C (Ober-/Unterhitze) backen.",
-      "Salat: Radieschen und Gurke in dünne Scheiben schneiden, mit Dill mischen, mit Limettensaft und etwas Olivenöl beträufeln, würzen.",
-      "Die übrige Marinade salzen – das ist die Sauce. Mit Reis oder Pita, Sauce und Salat servieren."],
-    en: ["Cut the halloumi into 2–3 cm cubes. Mix the yoghurt, harissa and honey in a bowl, gently stir in the cheese and leave for at least 15 minutes.",
-      "Cut the courgette into thick (about 2 cm) slices, drizzle with olive oil and season.",
-      "Soak wooden skewers in water for 15 minutes (no need for metal ones). Thread on the halloumi and courgette alternately.",
-      "Grill for 6–8 minutes, turning, until the cheese is golden and the courgette soft – or roast at 220°C (conventional) for about 15 minutes.",
-      "Salad: thinly slice the radishes and cucumber, toss with the dill, dress with lime juice and a little olive oil and season.",
-      "Season the leftover marinade with salt – that's your sauce. Serve with rice or pitta, the sauce and the salad."],
-  },
-  tips: {
-    pl: ["Zamiast halloumi może być feta albo tofu (wtedy dobrze posolić)."],
-    de: ["Statt Halloumi gehen auch Feta oder Tofu (dann gut salzen)."],
-    en: ["Feta or tofu work instead of halloumi (season tofu well)."],
   },
 },
 {
@@ -1077,7 +998,7 @@ const R = [
   },
 },
 ];
-const ORDER = ["pesto", "papryka", "gnocchi", "gochujang", "zupa", "fasolka", "harissa", "szaszlyki", "kasza", "sznycel", "curry1", "curry2", "butter", "grzyby", "miso", "zielony", "bowl", "tajska", "pierozki", "surowka", "racuchy"];
+const ORDER = ["pesto", "papryka", "gochujang", "zupa", "fasolka", "harissa", "kasza", "sznycel", "curry2", "butter", "grzyby", "miso", "zielony", "bowl", "tajska", "pierozki", "surowka", "racuchy"];
 R.sort((a, b) => ORDER.indexOf(a.id) - ORDER.indexOf(b.id));
 R.forEach((r, i) => r.no = i + 1);
 /* slicer tags: b = base, p = protein */
@@ -1087,16 +1008,13 @@ const TAGS = {
   fasolka: { b: ["beans"], p: ["veg"] },
   harissa: { b: ["beans"], p: ["veg"] },
   kasza: { b: ["kasza"], p: ["veg"] },
-  curry1: { b: ["rice", "beans"], p: ["veg"] },
   curry2: { b: ["rice"], p: ["veg"] },
   butter: { b: ["rice"], p: ["chicken"] },
   grzyby: { b: [], p: ["chicken"] },
   tajska: { b: ["pasta"], p: ["chicken", "veg"] },
   bowl: { b: ["pasta", "rice"], p: ["veg"] },
   papryka: { b: ["pasta"], p: ["veg"] },
-  gnocchi: { b: ["pasta"], p: ["veg"] },
   gochujang: { b: ["beans"], p: ["veg"] },
-  szaszlyki: { b: [], p: ["veg"] },
   sznycel: { b: [], p: ["veg"] },
   miso: { b: ["pasta"], p: ["veg"] },
   zielony: { b: ["pasta"], p: ["veg"] },
@@ -1219,7 +1137,7 @@ function servLabel(r, p) {
 }
 
 function renderMatrix() {
-  const tok = Object.keys(TOKENS);
+  const tok = Object.keys(TOKENS).filter(k => R.some(r => r.tokens.includes(k)));
   let h = "<thead><tr><th></th>";
   for (const r of R) h += `<th class="${MAINS.includes(r) ? "" : "extra"}" title="${esc(r.name[lang])}">${r.no}</th>`;
   h += "</tr></thead><tbody>";
