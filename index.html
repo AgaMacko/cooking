@@ -216,7 +216,7 @@ const N = (pl, de, en) => ({ pl, de, en });
 /* ---------- UI strings ---------- */
 const UI = {
   pl: {
-    eyebrow: "Plan gotowania · 12 przepisów",
+    eyebrow: "Plan gotowania · 13 przepisów",
     credit: "Przepisy i zdjęcia pochodzą ze stron:", foot: "Przepisy i zdjęcia:", footNote: "Ta strona to prywatny plan posiłków; tłumaczenia przepisów są nieoficjalne.", photo: "Zdjęcie",
     title: "Łańcuch obiadów",
     sub: "Dania ułożone tak, żeby każde kolejne zużywało składniki poprzedniego: danie 1 ma x i y, danie 2 y i z, danie 3 z i x… Zaznacz, co chcesz ugotować, a lista zakupów policzy się sama.",
@@ -238,7 +238,7 @@ const UI = {
     cats: { produce: "Warzywa i owoce", herbs: "Świeże zioła", meat: "Mięso", dairy: "Nabiał i jajka", dry: "Makarony, kasze, orzechy", cans: "Puszki, słoiki, sosy", spice: "Przyprawy", pantry: "Spiżarnia (zwykle w domu)" },
   },
   de: {
-    eyebrow: "Kochplan · 12 Rezepte",
+    eyebrow: "Kochplan · 13 Rezepte",
     credit: "Rezepte und Fotos stammen von:", foot: "Rezepte und Fotos:", footNote: "Diese Seite ist ein privater Essensplan; die Übersetzungen der Rezepte sind inoffiziell.", photo: "Foto",
     title: "Gerichte-Kette",
     sub: "Die Gerichte sind so angeordnet, dass jedes die Zutaten des vorherigen aufbraucht: Gericht 1 hat x und y, Gericht 2 y und z, Gericht 3 z und x … Wähle aus, was du kochen willst – die Einkaufsliste rechnet sich selbst.",
@@ -260,7 +260,7 @@ const UI = {
     cats: { produce: "Obst & Gemüse", herbs: "Frische Kräuter", meat: "Fleisch", dairy: "Milchprodukte & Eier", dry: "Nudeln, Getreide, Nüsse", cans: "Konserven, Gläser, Saucen", spice: "Gewürze", pantry: "Vorrat (meist zu Hause)" },
   },
   en: {
-    eyebrow: "Cooking plan · 12 recipes",
+    eyebrow: "Cooking plan · 13 recipes",
     credit: "Recipes and photos come from:", foot: "Recipes and photos:", footNote: "This page is a private meal plan; the recipe translations are unofficial.", photo: "Photo",
     title: "Meal Chain",
     sub: "The dishes are ordered so each one uses up ingredients from the one before: meal 1 has x and y, meal 2 y and z, meal 3 z and x… Tick what you want to cook and the shopping list adds itself up.",
@@ -388,6 +388,8 @@ const I = {
   sugar: ["cukier", "Zucker", "sugar", "pantry"],
   vanilla_sugar: ["cukier wanilinowy", "Vanillinzucker", "vanilla sugar", "pantry"],
   icing: ["cukier puder", "Puderzucker", "icing sugar", "pantry"],
+  butter_beans: ["fasola Jaś / maślana (puszka 400 g)", "Butterbohnen (Dose 400 g)", "butter beans (400 g tin)", "cans"],
+  harissa: ["pasta harissa", "Harissa-Paste", "harissa paste", "cans"],
   sesame_oil: ["olej sezamowy", "Sesamöl", "sesame oil", "pantry"],
   stirfry: ["mieszanka warzyw do stir-fry (opak. 320 g)", "Wok-Gemüsemischung (320-g-Packung)", "mixed stir-fry veg (320 g pack)", "produce"],
   soy: ["sos sojowy (o obniżonej zawartości soli)", "Sojasauce (salzreduziert)", "low-salt soy sauce", "cans"],
@@ -419,6 +421,7 @@ const TOKENS = {
   chicken: N("kurczak", "Hähnchen", "chicken"),
   cream: N("śmietanka 30%", "Sahne", "cream"),
   carrot: N("marchewka", "Karotte", "carrot"),
+  parsley: N("natka pietruszki", "Petersilie", "parsley"),
   noodles: N("makaron azjatycki", "asiatische Nudeln", "noodles"),
   lime: N("limonka", "Limette", "lime"),
   apple: N("jabłko", "Apfel", "apple"),
@@ -461,7 +464,7 @@ const R = [
   time: N("ok. 35 min", "ca. 35 Min.", "about 35 min"),
   tokens: ["basil", "parmesan", "beans", "tomato", "zucchini", "carrot"],
   ing: [["olive_oil", 2, "tbsp"], ["onion", 0.5, "pcs"], ["carrot", 1, "pcs"], ["garlic", 2, "clove"], ["stock", 1000, "ml"], ["white_beans", 1, "can"], ["canned_tom", 1, "can"], ["tomato_paste", 1, "tbsp"], ["oregano", 0.5, "tsp"], ["marjoram", 0.5, "tsp"],
-    ["zucchini", 150, "g", N("ok. ½ cukinii – druga połówka idzie do dania 4", "ca. ½ Zucchini – die andere Hälfte kommt in Gericht 4", "about ½ courgette – the other half goes into meal 4")],
+    ["zucchini", 150, "g", N("ok. ½ cukinii – druga połówka idzie do dania {kasza}", "ca. ½ Zucchini – die andere Hälfte kommt in Gericht {kasza}", "about ½ courgette – the other half goes into meal {kasza}")],
     ["spinach", 1, "handful"], ["basil", null], ["parmesan", null], ["salt", null], ["pepper", null]],
   steps: {
     pl: ["W garnku na oliwie poddusić pokrojoną w kostkę cebulę. Dodać obraną, pokrojoną w kostkę marchewkę i podsmażać ok. 5 minut.",
@@ -518,10 +521,35 @@ const R = [
   },
 },
 {
+  id: "harissa", type: "main", serv: 2, site: "jo", src: "https://www.jamieoliver.com/recipes/beans/harissa-butter-beans", img: "img/harissa.png",
+  name: N("Fasola maślana z harissą", "Butterbohnen mit Harissa", "Harissa butter beans"),
+  time: N("ok. 12 min", "ca. 12 Min.", "about 12 min"),
+  tokens: ["beans", "parsley"],
+  ing: [["garlic", 2, "clove"], ["parsley", 4, "sprig", N("płaska; łodyżki do smażenia, listki do posypania", "glatt; Stiele zum Braten, Blätter zum Bestreuen", "flat-leaf; stalks for frying, leaves to finish")], ["olive_oil", 1, "tbsp"],
+    ["butter_beans", 1, "can", N("razem z zalewą", "mitsamt Flüssigkeit", "juice and all")], ["harissa", 1, "tbsp"],
+    ["lemon_juice", 1.5, "tbsp", N("½ cytryny – sok + ćwiartki do podania", "½ Zitrone – Saft + Spalten zum Servieren", "½ lemon – juice + wedges to serve")], ["salt", null], ["pepper", null]],
+  steps: {
+    pl: ["Czosnek obrać i pokroić w cienkie plasterki razem z łodyżkami pietruszki; listki odłożyć. Czosnek i łodyżki włożyć na patelnię z nieprzywierającą powłoką z 1 łyżką oliwy i smażyć na średnim ogniu, często mieszając, aż lekko się zezłocą.",
+      "Wlać fasolę razem z zalewą, dodać harissę i gotować na małym ogniu, aż powstanie gładki, jedwabisty sos.",
+      "Dodać sok z cytryny, doprawić solą morską i czarnym pieprzem. Posypać drobno posiekanymi listkami pietruszki i podawać z ćwiartkami cytryny do wyciśnięcia."],
+    de: ["Knoblauch schälen und zusammen mit den Petersilienstielen fein schneiden, die Blätter beiseitelegen. Knoblauch und Stiele mit 1 EL Olivenöl in eine beschichtete Pfanne geben und bei mittlerer Hitze unter häufigem Rühren leicht goldbraun braten.",
+      "Die Butterbohnen mitsamt Flüssigkeit zugeben, Harissa einrühren und köcheln lassen, bis eine seidige Sauce entsteht.",
+      "Zitronensaft zugeben, mit Meersalz und schwarzem Pfeffer abschmecken. Die fein gehackten Petersilienblätter darüberstreuen und mit Zitronenspalten zum Auspressen servieren."],
+    en: ["Peel the garlic and finely slice it with the parsley stalks, reserving the leaves. Put the garlic and stalks in a non-stick frying pan on a medium heat with 1 tbsp olive oil, stirring regularly until lightly golden.",
+      "Pour in the butter beans, juice and all, add the harissa and simmer until you have a silky sauce.",
+      "Add the lemon juice and season with sea salt and black pepper. Finely chop the parsley leaves, sprinkle over and serve with lemon wedges for squeezing over."],
+  },
+  serve: {
+    pl: ["Pasuje do halloumi albo makreli."],
+    de: ["Passt gut zu Halloumi oder Makrele."],
+    en: ["Nice with halloumi or mackerel."],
+  },
+},
+{
   id: "kasza", type: "main", serv: 4, src: SRC + "kasza-jaglana-zapiekana-z-warzywami", img: "img/kasza.webp",
   name: N("Kasza jaglana zapiekana z warzywami", "Überbackene Hirse mit Gemüse", "Baked millet with vegetables"),
   time: N("ok. 55 min", "ca. 55 Min.", "about 55 min"),
-  tokens: ["tomato", "zucchini", "bell"],
+  tokens: ["tomato", "zucchini", "bell", "parsley"],
   ing: [["olive_oil", 2, "tbsp"], ["onion", 1, "pcs"], ["garlic", 2, "clove"], ["eggplant", 300, "g"], ["zucchini", 300, "g"], ["bell", 1, "pcs"], ["millet", 100, "g"], ["tomato", 2, "pcs"], ["passata", 200, "ml"], ["stock", 250, "ml"], ["parsley", 2, "tbsp"], ["cheese", 75, "g"],
     ["herbes", 1, "tbsp"], ["paprika", 1, "tsp"], ["paprika_hot", 0.5, "tsp"], ["turmeric", 0.5, "tsp"], ["salt", null], ["pepper", null]],
   steps: {
@@ -552,8 +580,8 @@ const R = [
   name: N("Warzywne curry z dynią, kalafiorem i ciecierzycą", "Gemüsecurry mit Kürbis, Blumenkohl und Kichererbsen", "Vegetable curry with pumpkin, cauliflower and chickpeas"),
   time: N("ok. 45 min", "ca. 45 Min.", "about 45 min"),
   tokens: ["tomato", "pumpkin", "cauliflower", "coconut", "ginger", "rice"],
-  ing: [["pumpkin", 300, "g", N("upiecz od razu więcej – mus do dania 7", "gleich mehr backen – Püree für Gericht 7", "roast extra now – purée for meal 7")], ["onion", 1, "pcs"], ["oil", 1, "tbsp"], ["garlic", 2, "clove"], ["ginger", 2, "cm"], ["curry", 2, "tsp"], ["turmeric", 2, "tsp"], ["paprika", 1, "tsp"], ["passata", 250, "ml"],
-    ["cauliflower", 300, "g", N("½ kalafiora – reszta do dania 6", "½ Blumenkohl – Rest für Gericht 6", "½ cauliflower – the rest goes into meal 6")], ["chickpeas", 300, "g"], ["coconut", 250, "ml"], ["#serve"], ["rice", 200, "g"], ["coriander", null], ["salt", null], ["pepper", null]],
+  ing: [["pumpkin", 300, "g", N("upiecz od razu więcej – mus do dania {butter}", "gleich mehr backen – Püree für Gericht {butter}", "roast extra now – purée for meal {butter}")], ["onion", 1, "pcs"], ["oil", 1, "tbsp"], ["garlic", 2, "clove"], ["ginger", 2, "cm"], ["curry", 2, "tsp"], ["turmeric", 2, "tsp"], ["paprika", 1, "tsp"], ["passata", 250, "ml"],
+    ["cauliflower", 300, "g", N("½ kalafiora – reszta do dania {curry2}", "½ Blumenkohl – Rest für Gericht {curry2}", "½ cauliflower – the rest goes into meal {curry2}")], ["chickpeas", 300, "g"], ["coconut", 250, "ml"], ["#serve"], ["rice", 200, "g"], ["coriander", null], ["salt", null], ["pepper", null]],
   steps: {
     pl: ["Dynię obrać ze skóry i pestek, miąższ pokroić w kostkę. Cebulę pokroić w cienkie półplasterki.",
       "W większym garnku rozgrzać olej i zeszklić cebulę. Dodać starty czosnek i imbir, smażyć 1 minutę, mieszając.",
@@ -637,9 +665,9 @@ const R = [
       "Kachumber salad: mix diced cucumber, halved cherry tomatoes, finely chopped red onion and chilli. Salt, drizzle with juice and olive oil, season with pepper and garam masala and scatter with coriander."],
   },
   tips: {
-    pl: ["Dynię do musu upiecz razem z dynią do curry (danie 5) – jedna dynia na oba dania."],
-    de: ["Den Kürbis für das Püree zusammen mit dem Kürbis fürs Curry (Gericht 5) backen – ein Kürbis für beide."],
-    en: ["Roast the pumpkin for the purée together with the pumpkin for the curry (meal 5) – one pumpkin covers both."],
+    pl: ["Dynię do musu upiecz razem z dynią do curry (danie {curry1}) – jedna dynia na oba dania."],
+    de: ["Den Kürbis für das Püree zusammen mit dem Kürbis fürs Curry (Gericht {curry1}) backen – ein Kürbis für beide."],
+    en: ["Roast the pumpkin for the purée together with the pumpkin for the curry (meal {curry1}) – one pumpkin covers both."],
   },
 },
 {
@@ -669,9 +697,9 @@ const R = [
       "Add the cream and shake the pan to combine. Cook for about 1 minute until the sauce thickens. Finish with dill."],
   },
   serve: {
-    pl: ["Z ziemniakami, kopytkami, makaronem lub kaszą. Pasuje do niego surówka z czerwonej kapusty (danie 11)."],
-    de: ["Mit Kartoffeln, Schupfnudeln, Nudeln oder Getreide. Dazu passt der Rotkohlsalat (Gericht 11)."],
-    en: ["With potatoes, potato dumplings, pasta or grains. The red cabbage slaw (dish 11) goes well with it."],
+    pl: ["Z ziemniakami, kopytkami, makaronem lub kaszą. Pasuje do niego surówka z czerwonej kapusty (danie {surowka})."],
+    de: ["Mit Kartoffeln, Schupfnudeln, Nudeln oder Getreide. Dazu passt der Rotkohlsalat (Gericht {surowka})."],
+    en: ["With potatoes, potato dumplings, pasta or grains. The red cabbage slaw (dish {surowka}) goes well with it."],
   },
 },
 {
@@ -735,7 +763,7 @@ const R = [
   id: "surowka", type: "side", serv: 4, src: SRC + "sur%C3%B3wka-z-czerwonej-kapusty",
   name: N("Surówka z czerwonej kapusty", "Rotkohlsalat", "Red cabbage slaw"),
   time: N("ok. 15 min", "ca. 15 Min.", "about 15 min"),
-  tokens: ["carrot", "apple"],
+  tokens: ["carrot", "apple", "parsley"],
   ing: [["red_cabbage", 500, "g", N("ok. ½ główki", "ca. ½ Kopf", "about ½ head")], ["salt", 0.33, "tsp"], ["pepper", 0.33, "tsp"], ["onion", 0.5, "pcs"], ["carrot", 1, "pcs"], ["apple", 1, "pcs"], ["lemon_juice", 2, "tbsp"], ["olive_oil", 2, "tbsp"], ["sugar", 1, "tsp", N("lub miód", "oder Honig", "or honey")], ["mayo", 2, "tbsp"], ["parsley", 1, "tbsp"]],
   steps: {
     pl: ["Kapustę oczyścić z wierzchnich liści i jak najcieniej poszatkować, bez głąba i łykowatych części (można robotem).",
@@ -752,9 +780,9 @@ const R = [
       "Add the coarsely grated carrot and peeled, grated apple, plus the lemon juice, olive oil, sugar or honey, mayonnaise and parsley. Mix."],
   },
   serve: {
-    pl: ["Do kurczaka w sosie grzybowym (danie 8), schabowego, pieczonych udek lub placków ziemniaczanych."],
-    de: ["Zum Hähnchen in Pilzsauce (Gericht 8), zu Schnitzel, Hähnchenschenkeln oder Kartoffelpuffern."],
-    en: ["With the chicken in mushroom sauce (meal 8), pork cutlets, roast chicken thighs or potato pancakes."],
+    pl: ["Do kurczaka w sosie grzybowym (danie {grzyby}), schabowego, pieczonych udek lub placków ziemniaczanych."],
+    de: ["Zum Hähnchen in Pilzsauce (Gericht {grzyby}), zu Schnitzel, Hähnchenschenkeln oder Kartoffelpuffern."],
+    en: ["With the chicken in mushroom sauce (meal {grzyby}), pork cutlets, roast chicken thighs or potato pancakes."],
   },
 },
 {
@@ -900,6 +928,7 @@ function hintText(id, s) {
 /* ---------- rendering ---------- */
 const $ = s => document.querySelector(s);
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const fill = s => s.replace(/\{(\w+)\}/g, (m, id) => { const r = R.find(x => x.id === id); return r ? r.no : m; });
 const ingName = id => I[id][{ pl: 0, de: 1, en: 2 }[lang]];
 
 function servLabel(r, p) {
@@ -942,10 +971,10 @@ function renderMeal(r, idx, arr) {
   for (const [id, q, u, note] of r.ing) {
     if (id[0] === "#") { ings += `<li class="grp">${esc(t.grp[id.slice(1)])}</li>`; continue; }
     const qty = q == null ? t.toTaste : sumQty([{ q: q * m, u }]).text;
-    ings += `<li><span>${esc(ingName(id))}${note ? `<span class="n">${esc(note[lang])}</span>` : ""}</span><span class="q">${esc(qty)}</span></li>`;
+    ings += `<li><span>${esc(ingName(id))}${note ? `<span class="n">${esc(fill(note[lang]))}</span>` : ""}</span><span class="q">${esc(qty)}</span></li>`;
   }
-  const steps = r.steps[lang].map(x => `<li>${esc(x)}</li>`).join("");
-  const extra = (title, obj) => obj ? `<div class="extra-notes"><h4>${esc(title)}</h4>${obj[lang].map(x => `<div>${esc(x)}</div>`).join("")}</div>` : "";
+  const steps = r.steps[lang].map(x => `<li>${esc(fill(x))}</li>`).join("");
+  const extra = (title, obj) => obj ? `<div class="extra-notes"><h4>${esc(title)}</h4>${obj[lang].map(x => `<div>${esc(fill(x))}</div>`).join("")}</div>` : "";
   const minus = r.unitServ === "pieces" ? 5 : 1;
   return `<article class="meal ${s.on ? "on" : ""} ${isMain ? "" : "extra"}" data-id="${r.id}">
     ${r.img ? `<figure class="photo-wrap"><img class="photo" src="${r.img}" alt="${esc(r.name[lang])}" loading="lazy"><figcaption>${esc(t.photo)}: ${SITES[r.site || "ks"].host}</figcaption></figure>` : ""}
