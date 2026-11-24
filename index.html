@@ -119,6 +119,13 @@ details.recipe[open] summary::before { transform: rotate(90deg); }
 .recipe-body ol li { padding-left: 4px; }
 .recipe-body .extra-notes { display: grid; gap: 4px; margin-top: 12px; font-size: 0.9rem; }
 .src { font-size: 0.85rem; }
+.credit { font-size: 0.85rem; color: var(--muted); }
+.credit a { font-weight: 600; }
+header.top p.credit { color: var(--ink); background: var(--accent-soft); border-radius: 8px; padding: 8px 12px; }
+footer.foot { max-width: 1240px; margin: 32px auto 0; padding-top: 16px; border-top: 1px solid var(--line); }
+.meal .photo-wrap { position: relative; margin: -14px -16px 0; }
+.meal .photo-wrap .photo { margin: 0; width: 100%; }
+.meal .photo-wrap figcaption { position: absolute; right: 8px; bottom: 8px; font-size: 0.72rem; padding: 2px 8px; border-radius: 999px; background: rgb(0 0 0 / 0.55); color: #fff; }
 
 /* shopping list */
 aside.list { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 16px; display: grid; gap: 14px; min-width: 0; }
@@ -151,6 +158,7 @@ textarea#copyfallback { width: 100%; min-height: 160px; font: 0.85rem/1.4 var(--
       <span class="eyebrow" id="t-eyebrow"></span>
       <h1 id="t-title"></h1>
       <p id="t-sub"></p>
+      <p class="credit" id="t-credit"></p>
     </div>
     <div class="lang" role="group" aria-label="Language">
       <button type="button" data-lang="pl">PL</button>
@@ -198,6 +206,7 @@ textarea#copyfallback { width: 100%; min-height: 160px; font: 0.85rem/1.4 var(--
     </aside>
   </div>
 </div>
+<footer class="credit foot" id="t-foot"></footer>
 <a href="#list" class="btn primary jump" id="jump"></a>
 
 <script>
@@ -208,6 +217,7 @@ const N = (pl, de, en) => ({ pl, de, en });
 const UI = {
   pl: {
     eyebrow: "Plan gotowania · 11 przepisów",
+    credit: "Wszystkie przepisy i zdjęcia pochodzą ze strony", foot: "Przepisy i zdjęcia: Kwestia Smaku,", footNote: "Ta strona to prywatny plan posiłków; tłumaczenia na niemiecki i angielski są nieoficjalne.", photo: "Zdjęcie",
     title: "Łańcuch obiadów",
     sub: "Dania ułożone tak, żeby każde kolejne zużywało składniki poprzedniego: danie 1 ma x i y, danie 2 y i z, danie 3 z i x… Zaznacz, co chcesz ugotować, a lista zakupów policzy się sama.",
     matrix: "Jak dania łączą się składnikami",
@@ -229,6 +239,7 @@ const UI = {
   },
   de: {
     eyebrow: "Kochplan · 11 Rezepte",
+    credit: "Alle Rezepte und Fotos stammen von der Website", foot: "Rezepte und Fotos: Kwestia Smaku,", footNote: "Diese Seite ist ein privater Essensplan; die deutschen und englischen Übersetzungen sind inoffiziell.", photo: "Foto",
     title: "Gerichte-Kette",
     sub: "Die Gerichte sind so angeordnet, dass jedes die Zutaten des vorherigen aufbraucht: Gericht 1 hat x und y, Gericht 2 y und z, Gericht 3 z und x … Wähle aus, was du kochen willst – die Einkaufsliste rechnet sich selbst.",
     matrix: "Wie die Gerichte über Zutaten zusammenhängen",
@@ -250,6 +261,7 @@ const UI = {
   },
   en: {
     eyebrow: "Cooking plan · 11 recipes",
+    credit: "All recipes and photos come from", foot: "Recipes and photos: Kwestia Smaku,", footNote: "This page is a private meal plan; the German and English translations are unofficial.", photo: "Photo",
     title: "Meal Chain",
     sub: "The dishes are ordered so each one uses up ingredients from the one before: meal 1 has x and y, meal 2 y and z, meal 3 z and x… Tick what you want to cook and the shopping list adds itself up.",
     matrix: "How the meals share ingredients",
@@ -899,7 +911,7 @@ function renderMeal(r, idx, arr) {
   const extra = (title, obj) => obj ? `<div class="extra-notes"><h4>${esc(title)}</h4>${obj[lang].map(x => `<div>${esc(x)}</div>`).join("")}</div>` : "";
   const minus = r.unitServ === "pieces" ? 5 : 1;
   return `<article class="meal ${s.on ? "on" : ""} ${isMain ? "" : "extra"}" data-id="${r.id}">
-    ${r.img ? `<img class="photo" src="${r.img}" alt="${esc(r.name[lang])}" loading="lazy">` : ""}
+    ${r.img ? `<figure class="photo-wrap"><img class="photo" src="${r.img}" alt="${esc(r.name[lang])}" loading="lazy"><figcaption>${esc(t.photo)}: kwestiasmaku.com</figcaption></figure>` : ""}
     <div class="meal-head">
       <div class="num" aria-hidden="true">${r.no}</div>
       <div style="min-width:0">
@@ -1002,6 +1014,9 @@ function renderStatic() {
   $("#t-eyebrow").textContent = t.eyebrow;
   $("#t-title").textContent = t.title;
   $("#t-sub").textContent = t.sub;
+  const KS = '<a href="https://www.kwestiasmaku.com/" target="_blank" rel="noopener">www.kwestiasmaku.com</a>';
+  $("#t-credit").innerHTML = `${esc(t.credit)} ${KS}.`;
+  $("#t-foot").innerHTML = `${esc(t.foot)} ${KS}. ${esc(t.footNote)}`;
   $("#t-matrix").textContent = t.matrix;
   $("#t-matrix-note").textContent = t.matrixNote;
   $("#t-mains").textContent = t.mains;
