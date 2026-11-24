@@ -1,0 +1,1067 @@
+<title>Łańcuch obiadów</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Inter:wght@400;500;600&display=swap">
+<style>
+/* Layout: kitchen planner — meal chain on the left, live shopping list docked on the right (stacked on phones). Basil green + tomato red. */
+:root {
+  --bg: #f4f6f2;
+  --surface: #ffffff;
+  --sunk: #eaeee7;
+  --ink: #1b221d;
+  --muted: #5a665e;
+  --line: #d9dfd6;
+  --accent: #2e6b3d;
+  --accent-ink: #ffffff;
+  --accent-soft: #dcebdf;
+  --tomato: #b8402c;
+  --font-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --font-body: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #111612; --surface: #192019; --sunk: #222a23; --ink: #e6ece5; --muted: #9ba79e;
+    --line: #2d362f; --accent: #7cc48c; --accent-ink: #0f1a12; --accent-soft: #233a29; --tomato: #ef8a74;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #111612; --surface: #192019; --sunk: #222a23; --ink: #e6ece5; --muted: #9ba79e;
+  --line: #2d362f; --accent: #7cc48c; --accent-ink: #0f1a12; --accent-soft: #233a29; --tomato: #ef8a74;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 15px; line-height: 1.5;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 24px 64px;
+}
+h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; margin: 0; line-height: 1.15; }
+h1 { font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 700; letter-spacing: -0.01em; }
+h2 { font-size: 1.35rem; font-weight: 700; }
+h3 { font-size: 1.15rem; font-weight: 700; }
+button, input { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+a { color: var(--accent); }
+
+.wrap { max-width: 1240px; margin: 0 auto; display: grid; gap: 28px; }
+header.top { display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-end; justify-content: space-between; }
+header.top .intro { max-width: 62ch; display: grid; gap: 8px; min-width: 0; }
+header.top p { margin: 0; color: var(--muted); }
+.lang { display: inline-flex; border: 1px solid var(--line); border-radius: 999px; padding: 3px; background: var(--surface); }
+.lang button { border: 0; background: transparent; padding: 6px 14px; border-radius: 999px; cursor: pointer; font-weight: 600; font-size: 0.85rem; letter-spacing: 0.04em; }
+.lang button[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); }
+
+.cols { display: grid; gap: 28px; grid-template-columns: minmax(0, 1fr); align-items: start; }
+@media (min-width: 1000px) { .cols { grid-template-columns: minmax(0, 1fr) 380px; } }
+
+section.block { display: grid; gap: 14px; min-width: 0; }
+.eyebrow { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); font-weight: 600; }
+.note { color: var(--muted); font-size: 0.9rem; margin: 0; max-width: 70ch; }
+
+/* matrix */
+.matrix-box { overflow-x: auto; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; }
+table.matrix { border-collapse: collapse; font-size: 0.85rem; min-width: 100%; }
+table.matrix th, table.matrix td { padding: 6px 8px; text-align: center; border-bottom: 1px solid var(--line); white-space: nowrap; }
+table.matrix tr:last-child td, table.matrix tr:last-child th { border-bottom: 0; }
+table.matrix thead th { font-weight: 600; color: var(--muted); font-variant-numeric: tabular-nums; position: relative; }
+table.matrix thead th.extra { color: var(--tomato); }
+table.matrix tbody th { text-align: left; font-weight: 500; position: sticky; left: 0; background: var(--surface); }
+table.matrix td .dot { display: inline-block; width: 12px; height: 12px; border-radius: 50%; background: var(--accent); }
+table.matrix td.off .dot { background: transparent; }
+table.matrix td.dim .dot { opacity: 0.35; }
+table.matrix tr.hl th, table.matrix tr.hl td { background: var(--accent-soft); }
+
+/* meals */
+.group-title { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.tools { display: flex; gap: 8px; flex-wrap: wrap; }
+.btn { border: 1px solid var(--line); background: var(--surface); border-radius: 8px; padding: 6px 12px; cursor: pointer; font-size: 0.85rem; font-weight: 500; }
+.btn:hover { border-color: var(--accent); }
+.btn.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+.meals { display: grid; gap: 12px; }
+.meal { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; display: grid; gap: 10px; min-width: 0; }
+.meal.on { border-color: var(--accent); }
+.meal-head { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 12px; align-items: start; }
+.num { font-family: var(--font-display); font-weight: 700; font-size: 1.1rem; width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; background: var(--sunk); font-variant-numeric: tabular-nums; }
+.meal.on .num { background: var(--accent); color: var(--accent-ink); }
+.meal.extra .num { color: var(--tomato); }
+.meal.extra.on .num { background: var(--tomato); color: var(--surface); }
+.meta { color: var(--muted); font-size: 0.85rem; display: flex; gap: 6px 14px; flex-wrap: wrap; margin-top: 2px; }
+.pick { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; justify-content: flex-end; }
+.pick label { display: inline-flex; gap: 6px; align-items: center; cursor: pointer; font-size: 0.85rem; font-weight: 500; }
+.pick input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--accent); }
+.stepper { display: inline-flex; align-items: center; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+.stepper button { border: 0; background: var(--sunk); width: 30px; height: 30px; cursor: pointer; font-weight: 600; }
+.stepper span { min-width: 64px; text-align: center; font-size: 0.85rem; font-variant-numeric: tabular-nums; padding: 0 6px; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { font-size: 0.8rem; padding: 2px 10px; border-radius: 999px; background: var(--sunk); border: 1px solid transparent; cursor: default; }
+.chip.shared { background: var(--accent-soft); }
+.chip.hl { border-color: var(--accent); }
+.links { display: grid; gap: 2px; font-size: 0.85rem; color: var(--muted); }
+.links b { color: var(--ink); font-weight: 600; }
+details.recipe { border-top: 1px solid var(--line); padding-top: 8px; }
+details.recipe summary { cursor: pointer; font-weight: 600; color: var(--accent); list-style: none; display: inline-flex; gap: 6px; align-items: center; }
+details.recipe summary::-webkit-details-marker { display: none; }
+details.recipe summary::before { content: "▸"; transition: transform .15s; }
+details.recipe[open] summary::before { transform: rotate(90deg); }
+.recipe-body { display: grid; gap: 18px; grid-template-columns: minmax(0, 1fr); margin-top: 12px; }
+@media (min-width: 720px) { .recipe-body { grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.3fr); } }
+.recipe-body h4 { margin: 0 0 6px; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
+.recipe-body ul, .recipe-body ol { margin: 0; padding-left: 1.2em; display: grid; gap: 4px; }
+.recipe-body ul { list-style: none; padding-left: 0; }
+.recipe-body ul li { display: flex; gap: 8px; justify-content: space-between; border-bottom: 1px dashed var(--line); padding-bottom: 3px; }
+.recipe-body ul li .q { color: var(--muted); text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.recipe-body ul li.grp { border: 0; font-weight: 600; margin-top: 6px; color: var(--tomato); }
+.recipe-body .n { display: block; font-size: 0.8rem; color: var(--muted); }
+.recipe-body ol li { padding-left: 4px; }
+.recipe-body .extra-notes { display: grid; gap: 4px; margin-top: 12px; font-size: 0.9rem; }
+.src { font-size: 0.85rem; }
+
+/* shopping list */
+aside.list { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 16px; display: grid; gap: 14px; min-width: 0; }
+@media (min-width: 1000px) { aside.list { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 16px); max-height: calc(100vh - 32px); overflow-y: auto; } }
+.summary { font-size: 0.9rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+.cat { display: grid; gap: 4px; }
+.cat h3 { font-size: 0.75rem; font-family: var(--font-body); text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); font-weight: 600; margin-bottom: 2px; }
+.item { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 8px; align-items: start; padding: 5px 0; border-bottom: 1px solid var(--line); cursor: pointer; }
+.item input { width: 17px; height: 17px; margin-top: 2px; accent-color: var(--accent); }
+.item .nm { font-weight: 500; }
+.item .qt { font-variant-numeric: tabular-nums; }
+.item .sub { font-size: 0.78rem; color: var(--muted); }
+.item.done .nm, .item.done .qt { text-decoration: line-through; color: var(--muted); }
+.empty { color: var(--muted); font-size: 0.9rem; padding: 12px; background: var(--sunk); border-radius: 8px; }
+.status { font-size: 0.85rem; color: var(--accent); min-height: 1.3em; }
+textarea#copyfallback { width: 100%; min-height: 160px; font: 0.85rem/1.4 var(--font-body); background: var(--sunk); color: var(--ink); border: 1px solid var(--line); border-radius: 8px; padding: 8px; }
+
+.jump { position: fixed; right: max(16px, env(safe-area-inset-right, 0px)); bottom: calc(16px + env(safe-area-inset-bottom, 0px)); z-index: 5; box-shadow: 0 4px 14px rgb(0 0 0 / 0.18); border-radius: 999px; padding: 10px 16px; }
+@media (min-width: 1000px) { .jump { display: none; } }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; scroll-behavior: auto !important; } }
+@media (max-width: 560px) {
+  .meal-head { grid-template-columns: auto minmax(0, 1fr); }
+  .pick { grid-column: 1 / -1; justify-content: flex-start; }
+}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div class="intro">
+      <span class="eyebrow" id="t-eyebrow"></span>
+      <h1 id="t-title"></h1>
+      <p id="t-sub"></p>
+    </div>
+    <div class="lang" role="group" aria-label="Language">
+      <button type="button" data-lang="pl">PL</button>
+      <button type="button" data-lang="de">DE</button>
+      <button type="button" data-lang="en">EN</button>
+    </div>
+  </header>
+
+  <div class="cols">
+    <main style="display:grid;gap:28px;min-width:0">
+      <section class="block" aria-labelledby="t-matrix">
+        <h2 id="t-matrix"></h2>
+        <p class="note" id="t-matrix-note"></p>
+        <div class="matrix-box"><table class="matrix" id="matrix"></table></div>
+      </section>
+
+      <section class="block">
+        <div class="group-title">
+          <h2 id="t-mains"></h2>
+          <div class="tools">
+            <button type="button" class="btn" id="b-all"></button>
+            <button type="button" class="btn" id="b-none"></button>
+          </div>
+        </div>
+        <div class="meals" id="mains"></div>
+      </section>
+
+      <section class="block">
+        <h2 id="t-extras"></h2>
+        <div class="meals" id="extras"></div>
+      </section>
+    </main>
+
+    <aside class="list" id="list" aria-labelledby="t-list">
+      <div class="group-title">
+        <h2 id="t-list"></h2>
+        <div class="tools">
+          <button type="button" class="btn primary" id="b-copy"></button>
+          <button type="button" class="btn" id="b-reset"></button>
+        </div>
+      </div>
+      <div class="summary" id="summary"></div>
+      <div class="status" id="status" aria-live="polite"></div>
+      <div id="listbody" style="display:grid;gap:16px"></div>
+    </aside>
+  </div>
+</div>
+<a href="#list" class="btn primary jump" id="jump"></a>
+
+<script>
+/* ---------- helpers ---------- */
+const N = (pl, de, en) => ({ pl, de, en });
+
+/* ---------- UI strings ---------- */
+const UI = {
+  pl: {
+    eyebrow: "Plan gotowania · 11 przepisów",
+    title: "Łańcuch obiadów",
+    sub: "Dania ułożone tak, żeby każde kolejne zużywało składniki poprzedniego: danie 1 ma x i y, danie 2 y i z, danie 3 z i x… Zaznacz, co chcesz ugotować, a lista zakupów policzy się sama.",
+    matrix: "Jak dania łączą się składnikami",
+    matrixNote: "Kropka oznacza, że składnik jest w daniu. Bladsze kropki to dodatek i deser. Najedź na składnik przy daniu, żeby podświetlić jego wiersz.",
+    mains: "Dania główne", extras: "Dodatek i deser",
+    all: "Zaznacz wszystkie", none: "Odznacz wszystkie",
+    onList: "Na listę", servings: ["porcja", "porcje", "porcji"], pieces: ["sztuka", "sztuki", "sztuk"],
+    recipe: "Przepis", ingredients: "Składniki", steps: "Przygotowanie", tips: "Wskazówki", serve: "Podanie",
+    source: "Oryginał na kwestiasmaku.com",
+    fromPrev: "Z dania", toNext: "Na danie",
+    list: "Lista zakupów", copy: "Kopiuj", reset: "Wyczyść odhaczone",
+    copied: "Skopiowano listę do schowka.", copyFail: "Nie udało się skopiować automatycznie. Zaznacz tekst poniżej i skopiuj go ręcznie.",
+    empty: "Zaznacz co najmniej jedno danie, żeby zobaczyć listę zakupów.",
+    summary: (d, p) => `Dania: ${d} · razem ${p}`,
+    toTaste: "do smaku", usedIn: "do dań", jump: "Lista zakupów",
+    type: { main: "danie główne", soup: "zupa", side: "dodatek", dessert: "deser / podwieczorek" },
+    grp: { marinade: "Marynata", sauce: "Sos", serve: "Do podania", salad: "Sałatka Kachumber" },
+    cats: { produce: "Warzywa i owoce", herbs: "Świeże zioła", meat: "Mięso", dairy: "Nabiał i jajka", dry: "Makarony, kasze, orzechy", cans: "Puszki, słoiki, sosy", spice: "Przyprawy", pantry: "Spiżarnia (zwykle w domu)" },
+  },
+  de: {
+    eyebrow: "Kochplan · 11 Rezepte",
+    title: "Gerichte-Kette",
+    sub: "Die Gerichte sind so angeordnet, dass jedes die Zutaten des vorherigen aufbraucht: Gericht 1 hat x und y, Gericht 2 y und z, Gericht 3 z und x … Wähle aus, was du kochen willst – die Einkaufsliste rechnet sich selbst.",
+    matrix: "Wie die Gerichte über Zutaten zusammenhängen",
+    matrixNote: "Ein Punkt heißt: Die Zutat steckt im Gericht. Blassere Punkte sind Beilage und Dessert. Fahre über eine Zutat bei einem Gericht, um ihre Zeile hervorzuheben.",
+    mains: "Hauptgerichte", extras: "Beilage und Dessert",
+    all: "Alle auswählen", none: "Alle abwählen",
+    onList: "Auf die Liste", servings: ["Portion", "Portionen"], pieces: ["Stück", "Stück"],
+    recipe: "Rezept", ingredients: "Zutaten", steps: "Zubereitung", tips: "Tipps", serve: "Servieren",
+    source: "Original auf kwestiasmaku.com (Polnisch)",
+    fromPrev: "Aus Gericht", toNext: "Für Gericht",
+    list: "Einkaufsliste", copy: "Kopieren", reset: "Abgehakte zurücksetzen",
+    copied: "Liste in die Zwischenablage kopiert.", copyFail: "Automatisches Kopieren ging nicht. Markiere den Text unten und kopiere ihn von Hand.",
+    empty: "Wähle mindestens ein Gericht aus, um die Einkaufsliste zu sehen.",
+    summary: (d, p) => `Gerichte: ${d} · insgesamt ${p}`,
+    toTaste: "nach Geschmack", usedIn: "für", jump: "Einkaufsliste",
+    type: { main: "Hauptgericht", soup: "Suppe", side: "Beilage", dessert: "Dessert / Nachmittag" },
+    grp: { marinade: "Marinade", sauce: "Sauce", serve: "Zum Servieren", salad: "Kachumber-Salat" },
+    cats: { produce: "Obst & Gemüse", herbs: "Frische Kräuter", meat: "Fleisch", dairy: "Milchprodukte & Eier", dry: "Nudeln, Getreide, Nüsse", cans: "Konserven, Gläser, Saucen", spice: "Gewürze", pantry: "Vorrat (meist zu Hause)" },
+  },
+  en: {
+    eyebrow: "Cooking plan · 11 recipes",
+    title: "Meal Chain",
+    sub: "The dishes are ordered so each one uses up ingredients from the one before: meal 1 has x and y, meal 2 y and z, meal 3 z and x… Tick what you want to cook and the shopping list adds itself up.",
+    matrix: "How the meals share ingredients",
+    matrixNote: "A dot means the ingredient is in that dish. Paler dots are the side and the dessert. Hover an ingredient on a dish to highlight its row.",
+    mains: "Main courses", extras: "Side and dessert",
+    all: "Select all", none: "Clear all",
+    onList: "Add to list", servings: ["serving", "servings"], pieces: ["piece", "pieces"],
+    recipe: "Recipe", ingredients: "Ingredients", steps: "Method", tips: "Tips", serve: "To serve",
+    source: "Original on kwestiasmaku.com (Polish)",
+    fromPrev: "From meal", toNext: "Into meal",
+    list: "Shopping list", copy: "Copy", reset: "Clear ticks",
+    copied: "List copied to the clipboard.", copyFail: "Couldn't copy automatically. Select the text below and copy it by hand.",
+    empty: "Tick at least one dish to see the shopping list.",
+    summary: (d, p) => `Dishes: ${d} · ${p} in total`,
+    toTaste: "to taste", usedIn: "for", jump: "Shopping list",
+    type: { main: "main course", soup: "soup", side: "side dish", dessert: "dessert / snack" },
+    grp: { marinade: "Marinade", sauce: "Sauce", serve: "To serve", salad: "Kachumber salad" },
+    cats: { produce: "Fruit & veg", herbs: "Fresh herbs", meat: "Meat", dairy: "Dairy & eggs", dry: "Pasta, grains & nuts", cans: "Cans, jars & sauces", spice: "Spices", pantry: "Pantry basics (usually at home)" },
+  },
+};
+const CAT_ORDER = ["produce", "herbs", "meat", "dairy", "dry", "cans", "spice", "pantry"];
+
+/* ---------- units ---------- */
+const UNITS = {
+  g: { d: "m", f: 1, pl: ["g"], de: ["g"], en: ["g"] },
+  ml: { d: "v", f: 1, pl: ["ml"], de: ["ml"], en: ["ml"] },
+  tbsp: { d: "v", f: 15, pl: ["łyżka", "łyżki", "łyżek"], de: ["EL", "EL"], en: ["tbsp", "tbsp"] },
+  tsp: { d: "v", f: 5, pl: ["łyżeczka", "łyżeczki", "łyżeczek"], de: ["TL", "TL"], en: ["tsp", "tsp"] },
+  cup: { d: "v", f: 250, pl: ["szklanka", "szklanki", "szklanek"], de: ["Tasse", "Tassen"], en: ["cup", "cups"] },
+  pcs: { pl: ["szt."], de: ["Stk."], en: ["", ""] },
+  clove: { pl: ["ząbek", "ząbki", "ząbków"], de: ["Zehe", "Zehen"], en: ["clove", "cloves"] },
+  can: { pl: ["puszka", "puszki", "puszek"], de: ["Dose", "Dosen"], en: ["can", "cans"] },
+  ball: { pl: ["kulka", "kulki", "kulek"], de: ["Kugel", "Kugeln"], en: ["ball", "balls"] },
+  sachet: { pl: ["saszetka", "saszetki", "saszetek"], de: ["Päckchen", "Päckchen"], en: ["sachet", "sachets"] },
+  pinch: { pl: ["szczypta", "szczypty", "szczypt"], de: ["Prise", "Prisen"], en: ["pinch", "pinches"] },
+  sprig: { pl: ["gałązka", "gałązki", "gałązek"], de: ["Zweig", "Zweige"], en: ["sprig", "sprigs"] },
+  handful: { pl: ["garść", "garście", "garści"], de: ["Handvoll", "Handvoll"], en: ["handful", "handfuls"] },
+  cm: { pl: ["cm"], de: ["cm"], en: ["cm"] },
+};
+
+/* ---------- ingredients: [pl, de, en, category] ---------- */
+const I = {
+  basil: ["bazylia (listki)", "Basilikum (Blätter)", "basil leaves", "herbs"],
+  rocket: ["rukola", "Rucola", "rocket (arugula)", "produce"],
+  garlic: ["czosnek", "Knoblauch", "garlic", "produce"],
+  onion: ["cebula", "Zwiebel", "onion", "produce"],
+  red_onion: ["czerwona cebula", "rote Zwiebel", "red onion", "produce"],
+  carrot: ["marchewka", "Karotte", "carrot", "produce"],
+  zucchini: ["cukinia", "Zucchini", "courgette (zucchini)", "produce"],
+  spinach: ["szpinak", "Spinat", "spinach", "produce"],
+  eggplant: ["bakłażan", "Aubergine", "aubergine (eggplant)", "produce"],
+  bell: ["papryka", "Paprikaschote", "bell pepper", "produce"],
+  tomato: ["pomidory", "Tomaten", "tomatoes", "produce"],
+  cherry: ["pomidorki koktajlowe", "Cherrytomaten", "cherry tomatoes", "produce"],
+  cucumber: ["ogórek szklarniowy", "Salatgurke", "cucumber", "produce"],
+  chili: ["papryczka chili", "Chilischote", "chilli", "produce"],
+  ginger: ["imbir (świeży)", "Ingwer (frisch)", "fresh ginger", "produce"],
+  pumpkin: ["dynia", "Kürbis", "pumpkin", "produce"],
+  cauliflower: ["kalafior", "Blumenkohl", "cauliflower", "produce"],
+  sweet_potato: ["bataty", "Süßkartoffeln", "sweet potatoes", "produce"],
+  mushrooms: ["grzyby (borowiki, podgrzybki)", "Waldpilze (Steinpilze)", "wild mushrooms (porcini)", "produce"],
+  red_cabbage: ["czerwona kapusta", "Rotkohl", "red cabbage", "produce"],
+  apple: ["jabłka", "Äpfel", "apples", "produce"],
+  lemon_juice: ["sok z cytryny (lub limonki)", "Zitronensaft (oder Limette)", "lemon juice (or lime)", "produce"],
+  lime: ["limonka", "Limette", "lime", "produce"],
+  coriander: ["kolendra (świeża)", "Koriander (frisch)", "fresh coriander (cilantro)", "herbs"],
+  parsley: ["natka pietruszki", "Petersilie", "parsley", "herbs"],
+  dill: ["koperek", "Dill", "dill", "herbs"],
+  chives: ["szczypiorek", "Schnittlauch", "chives", "herbs"],
+  rosemary: ["rozmaryn", "Rosmarin", "rosemary", "herbs"],
+  chicken: ["filet z piersi kurczaka", "Hähnchenbrustfilet", "chicken breast", "meat"],
+  parmesan: ["parmezan lub grana padano", "Parmesan oder Grana Padano", "Parmesan or Grana Padano", "dairy"],
+  burrata: ["burrata", "Burrata", "burrata", "dairy"],
+  yogurt: ["jogurt naturalny", "Naturjoghurt", "plain yoghurt", "dairy"],
+  cream: ["śmietanka kremówka 30%", "Sahne (30 %)", "double cream (30%)", "dairy"],
+  butter: ["masło", "Butter", "butter", "dairy"],
+  ghee: ["masło klarowane", "Butterschmalz (Ghee)", "ghee", "dairy"],
+  cheese: ["ser tarty (mozzarella, cheddar, gouda)", "geriebener Käse (Mozzarella, Cheddar, Gouda)", "grated cheese (mozzarella, cheddar, gouda)", "dairy"],
+  milk: ["mleko", "Milch", "milk", "dairy"],
+  kefir: ["kefir", "Kefir", "kefir", "dairy"],
+  egg: ["jajka", "Eier", "eggs", "dairy"],
+  pasta: ["makaron", "Nudeln", "pasta", "dry"],
+  noodles: ["makaron azjatycki (ramen, udon, ryżowy)", "asiatische Nudeln (Ramen, Udon, Reisnudeln)", "noodles (ramen, udon or rice)", "dry"],
+  rice: ["ryż długoziarnisty (np. jaśminowy)", "Langkornreis (z. B. Jasmin)", "long-grain rice (e.g. jasmine)", "dry"],
+  millet: ["kasza jaglana", "Hirse", "millet", "dry"],
+  beans_dry: ["fasola Jaś (sucha)", "weiße Riesenbohnen (getrocknet)", "large dried white beans", "dry"],
+  pine: ["orzeszki pinii", "Pinienkerne", "pine nuts", "dry"],
+  cashews: ["orzechy nerkowca", "Cashewkerne", "cashews", "dry"],
+  sun_dried: ["suszone pomidory", "getrocknete Tomaten", "sun-dried tomatoes", "cans"],
+  canned_tom: ["pomidory krojone (puszka 400 g)", "gehackte Tomaten (Dose 400 g)", "chopped tomatoes (400 g can)", "cans"],
+  passata: ["passata (przecier pomidorowy)", "Passata", "passata", "cans"],
+  tomato_paste: ["koncentrat pomidorowy", "Tomatenmark", "tomato purée (paste)", "cans"],
+  white_beans: ["biała fasola (puszka)", "weiße Bohnen (Dose)", "white beans (can)", "cans"],
+  chickpeas: ["ciecierzyca (puszka)", "Kichererbsen (Dose)", "chickpeas (can)", "cans"],
+  coconut: ["mleko kokosowe", "Kokosmilch", "coconut milk", "cans"],
+  stock: ["bulion (drobiowy lub warzywny)", "Brühe (Hühner- oder Gemüsebrühe)", "stock (chicken or vegetable)", "cans"],
+  red_curry: ["czerwona pasta curry", "rote Currypaste", "red curry paste", "cans"],
+  fish_sauce: ["sos rybny", "Fischsauce", "fish sauce", "cans"],
+  mayo: ["majonez", "Mayonnaise", "mayonnaise", "cans"],
+  wine: ["białe wino (opcjonalnie)", "Weißwein (optional)", "white wine (optional)", "cans"],
+  oregano: ["oregano (suszone)", "Oregano (getrocknet)", "dried oregano", "spice"],
+  thyme: ["tymianek (suszony)", "Thymian (getrocknet)", "dried thyme", "spice"],
+  marjoram: ["majeranek", "Majoran", "marjoram", "spice"],
+  allspice: ["ziele angielskie", "Pimentkörner", "allspice berries", "spice"],
+  bay: ["liść laurowy", "Lorbeerblatt", "bay leaf", "spice"],
+  chili_flakes: ["płatki chili lub ostra papryka", "Chiliflocken", "chilli flakes", "spice"],
+  herbes: ["zioła prowansalskie", "Kräuter der Provence", "herbes de Provence", "spice"],
+  paprika: ["papryka słodka mielona", "edelsüßes Paprikapulver", "sweet paprika", "spice"],
+  paprika_hot: ["papryka ostra mielona", "scharfes Paprikapulver", "hot paprika", "spice"],
+  turmeric: ["kurkuma mielona", "Kurkuma", "ground turmeric", "spice"],
+  cumin: ["kmin rzymski mielony", "Kreuzkümmel, gemahlen", "ground cumin", "spice"],
+  coriander_gr: ["kolendra mielona", "Koriander, gemahlen", "ground coriander", "spice"],
+  cinnamon: ["cynamon", "Zimt", "cinnamon", "spice"],
+  garam: ["garam masala", "Garam Masala", "garam masala", "spice"],
+  curry: ["przyprawa curry", "Currypulver", "curry powder", "spice"],
+  olive_oil: ["oliwa extra vergine", "Olivenöl extra vergine", "extra virgin olive oil", "pantry"],
+  oil: ["olej roślinny (np. rzepakowy)", "Pflanzenöl (z. B. Rapsöl)", "vegetable oil (e.g. rapeseed)", "pantry"],
+  coconut_oil: ["olej kokosowy", "Kokosöl", "coconut oil", "pantry"],
+  salt: ["sól", "Salz", "salt", "pantry"],
+  pepper: ["pieprz", "Pfeffer", "black pepper", "pantry"],
+  flour: ["mąka pszenna", "Weizenmehl", "plain flour", "pantry"],
+  starch: ["mąka ziemniaczana", "Kartoffelstärke", "potato starch", "pantry"],
+  yeast: ["drożdże suszone instant (7 g)", "Trockenhefe (7 g)", "instant dried yeast (7 g)", "pantry"],
+  sugar: ["cukier", "Zucker", "sugar", "pantry"],
+  vanilla_sugar: ["cukier wanilinowy", "Vanillinzucker", "vanilla sugar", "pantry"],
+  icing: ["cukier puder", "Puderzucker", "icing sugar", "pantry"],
+};
+
+/* buy-size hints shown next to the shopping-list total */
+const HINTS = {
+  coconut: { per: 400, unit: "can", label: N("po 400 ml", "à 400 ml", "of 400 ml") },
+  lemon_juice: { per: 45, unit: "pcs", label: N("cytryny", "Zitronen", "lemons") },
+  garlic: { per: 10, unit: "head", label: N("główki", "Knollen", "bulbs") },
+};
+
+/* link ingredients (the x / y / z of the chain) */
+const TOKENS = {
+  basil: N("bazylia", "Basilikum", "basil"),
+  parmesan: N("parmezan", "Parmesan", "Parmesan"),
+  beans: N("biała fasola", "weiße Bohnen", "white beans"),
+  tomato: N("pomidory z puszki / passata", "Dosentomaten / Passata", "canned tomatoes / passata"),
+  zucchini: N("cukinia", "Zucchini", "courgette"),
+  bell: N("papryka", "Paprika", "bell pepper"),
+  pumpkin: N("dynia", "Kürbis", "pumpkin"),
+  cauliflower: N("kalafior", "Blumenkohl", "cauliflower"),
+  coconut: N("mleko kokosowe", "Kokosmilch", "coconut milk"),
+  ginger: N("imbir", "Ingwer", "ginger"),
+  rice: N("ryż", "Reis", "rice"),
+  cashews: N("nerkowce", "Cashews", "cashews"),
+  chicken: N("kurczak", "Hähnchen", "chicken"),
+  cream: N("śmietanka 30%", "Sahne", "cream"),
+  carrot: N("marchewka", "Karotte", "carrot"),
+  apple: N("jabłko", "Apfel", "apple"),
+};
+
+/* ---------- recipes ---------- */
+const SRC = "https://www.kwestiasmaku.com/przepis/";
+const R = [
+{
+  id: "pesto", type: "main", serv: 2, src: SRC + "makaron-z-pesto-i-burrata",
+  name: N("Makaron z pesto i burratą", "Pasta mit Pesto und Burrata", "Pasta with pesto and burrata"),
+  time: N("ok. 20 min", "ca. 20 Min.", "about 20 min"),
+  tokens: ["basil", "parmesan"],
+  ing: [["pasta", 150, "g"], ["pine", 4, "tbsp"], ["parmesan", 20, "g"], ["basil", 1, "cup"], ["olive_oil", 4, "tbsp"], ["garlic", 2, "clove"], ["burrata", 2, "ball"], ["rocket", null], ["salt", null], ["pepper", null]],
+  steps: {
+    pl: ["Zagotować osoloną wodę i ugotować makaron zgodnie z czasem na opakowaniu.",
+      "Orzeszki pinii lekko zrumienić na małej, suchej patelni. Odłożyć 1 łyżkę do podania.",
+      "Pesto: w malakserze lub rozdrabniaczu zmiksować orzeszki, parmezan, bazylię, oliwę i obrany czosnek. Doprawić solą i pieprzem.",
+      "Makaron odcedzić, przełożyć z powrotem do garnka, dodać pesto i wymieszać.",
+      "Nałożyć do głębokich talerzy, na wierzchu położyć burratę, posypać odłożonymi orzeszkami i rukolą. Doprawić solą i pieprzem."],
+    de: ["Gesalzenes Wasser aufkochen und die Nudeln nach Packungsangabe garen.",
+      "Pinienkerne in einer kleinen, trockenen Pfanne leicht rösten. 1 EL zum Servieren beiseitelegen.",
+      "Pesto: Pinienkerne, Parmesan, Basilikum, Olivenöl und geschälten Knoblauch im Zerkleinerer pürieren. Mit Salz und Pfeffer abschmecken.",
+      "Nudeln abgießen, zurück in den Topf geben, das Pesto unterrühren.",
+      "In tiefe Teller geben, Burrata darauflegen, mit den restlichen Pinienkernen und Rucola bestreuen. Mit Salz und Pfeffer würzen."],
+    en: ["Bring salted water to the boil and cook the pasta according to the packet.",
+      "Lightly toast the pine nuts in a small dry pan. Set 1 tbsp aside for serving.",
+      "Pesto: blitz the pine nuts, Parmesan, basil, olive oil and peeled garlic in a food processor. Season with salt and pepper.",
+      "Drain the pasta, return it to the pan and stir in the pesto.",
+      "Serve in deep plates topped with the burrata, the reserved pine nuts and rocket. Season with salt and pepper."],
+  },
+},
+{
+  id: "zupa", type: "soup", serv: 2, src: SRC + "toskanska-zupa-z-fasola-i-cukinia",
+  name: N("Toskańska zupa z fasolą i cukinią", "Toskanische Suppe mit Bohnen und Zucchini", "Tuscan bean and courgette soup"),
+  time: N("ok. 35 min", "ca. 35 Min.", "about 35 min"),
+  tokens: ["basil", "parmesan", "beans", "tomato", "zucchini", "carrot"],
+  ing: [["olive_oil", 2, "tbsp"], ["onion", 0.5, "pcs"], ["carrot", 1, "pcs"], ["garlic", 2, "clove"], ["stock", 1000, "ml"], ["white_beans", 1, "can"], ["canned_tom", 1, "can"], ["tomato_paste", 1, "tbsp"], ["oregano", 0.5, "tsp"], ["marjoram", 0.5, "tsp"],
+    ["zucchini", 150, "g", N("ok. ½ cukinii – druga połówka idzie do dania 4", "ca. ½ Zucchini – die andere Hälfte kommt in Gericht 4", "about ½ courgette – the other half goes into meal 4")],
+    ["spinach", 1, "handful"], ["basil", null], ["parmesan", null], ["salt", null], ["pepper", null]],
+  steps: {
+    pl: ["W garnku na oliwie poddusić pokrojoną w kostkę cebulę. Dodać obraną, pokrojoną w kostkę marchewkę i podsmażać ok. 5 minut.",
+      "Dodać obrany, starty czosnek i chwilę podsmażyć. Wlać gorący bulion i zagotować.",
+      "Dodać fasolę razem z zalewą, krojone pomidory (można zmiksować), koncentrat, oregano i majeranek. Doprawić solą i pieprzem, zagotować i gotować pod przykryciem ok. 10 minut.",
+      "Dodać pokrojoną w kostkę cukinię i gotować kolejne 10 minut. Minutę przed końcem dodać opłukany szpinak.",
+      "Podawać z tartym parmezanem i bazylią."],
+    de: ["Die gewürfelte Zwiebel im Topf in Olivenöl andünsten. Die geschälte, gewürfelte Karotte dazugeben und ca. 5 Minuten anbraten.",
+      "Geriebenen Knoblauch kurz mitbraten. Heiße Brühe angießen und aufkochen.",
+      "Bohnen samt Flüssigkeit, gehackte Tomaten (gern püriert), Tomatenmark, Oregano und Majoran zugeben. Salzen, pfeffern, aufkochen und zugedeckt ca. 10 Minuten köcheln.",
+      "Die gewürfelte Zucchini zugeben und weitere 10 Minuten kochen. Eine Minute vor Schluss den gewaschenen Spinat zugeben.",
+      "Mit geriebenem Parmesan und Basilikum servieren."],
+    en: ["Soften the diced onion in olive oil in a pot. Add the peeled, diced carrot and fry for about 5 minutes.",
+      "Add the grated garlic and fry briefly. Pour in the hot stock and bring to the boil.",
+      "Add the beans with their liquid, the chopped tomatoes (blend them if you like), tomato purée, oregano and marjoram. Season, bring to the boil and simmer covered for about 10 minutes.",
+      "Add the diced courgette and cook for another 10 minutes. Add the rinsed spinach one minute before the end.",
+      "Serve with grated Parmesan and basil."],
+  },
+},
+{
+  id: "fasolka", type: "main", serv: 4, src: SRC + "fasolka-po-toskansku",
+  name: N("Fasolka po toskańsku", "Bohnen nach toskanischer Art", "Tuscan-style beans"),
+  time: N("noc moczenia + ok. 2 h", "über Nacht einweichen + ca. 2 Std.", "soak overnight + about 2 h"),
+  tokens: ["beans", "tomato"],
+  ing: [["beans_dry", 450, "g"], ["garlic", 2, "clove"], ["allspice", 2, "pcs"], ["bay", 1, "pcs"], ["rosemary", 1, "sprig", N("lub 1 łyżeczka suszonego", "oder 1 TL getrocknet", "or 1 tsp dried")], ["olive_oil", 2, "tbsp"], ["onion", 1, "pcs"], ["chili_flakes", 1, "pinch"], ["oregano", 1, "tsp"], ["thyme", 1, "tsp"], ["sun_dried", 10, "pcs"], ["wine", 60, "ml"],
+    ["canned_tom", 1, "can", N("lub 250 ml passaty", "oder 250 ml Passata", "or 250 ml passata")], ["salt", null], ["pepper", null]],
+  steps: {
+    pl: ["Suchą fasolę zalać zimną wodą (ok. 10 cm ponad fasolę) i zostawić na noc. Świeżej fasoli nie trzeba namaczać.",
+      "Odcedzić, wlać 1 litr świeżej wody, doprawić solą i pieprzem. Dodać obrany czosnek, ziele angielskie, liść laurowy i rozmaryn. Gotować pod przykryciem ok. 1,5 godziny, do miękkości.",
+      "W drugim garnku lub na patelni z pokrywą zeszklić na oliwie pokrojoną w kostkę cebulę. Doprawić chili, tymiankiem, oregano, solą i pieprzem.",
+      "Dodać pokrojone suszone pomidory i smażyć ok. 2 minuty. Wlać wino (jeśli używasz) i gotować ok. 2 minuty, aż odparuje.",
+      "Dodać zmiksowane pomidory z puszki lub passatę i gotować 5–10 minut.",
+      "Przelać sos do garnka z fasolką i gotować ok. 5 minut.",
+      "Wyłowić ziele angielskie, liść laurowy i rozmaryn. Odlać 1 szklankę fasolki, zmiksować i wmieszać z powrotem. Zagotować."],
+    de: ["Getrocknete Bohnen mit kaltem Wasser bedecken (ca. 10 cm darüber) und über Nacht einweichen. Frische Bohnen muss man nicht einweichen.",
+      "Abgießen, 1 Liter frisches Wasser zugeben, salzen und pfeffern. Geschälten Knoblauch, Piment, Lorbeerblatt und Rosmarin dazugeben. Zugedeckt ca. 1,5 Stunden weich kochen.",
+      "In einem zweiten Topf die gewürfelte Zwiebel in Olivenöl glasig dünsten. Mit Chili, Thymian, Oregano, Salz und Pfeffer würzen.",
+      "Getrocknete Tomaten klein schneiden und ca. 2 Minuten mitbraten. Wein angießen (optional) und ca. 2 Minuten einkochen lassen.",
+      "Pürierte Dosentomaten oder Passata zugeben und 5–10 Minuten köcheln.",
+      "Die Sauce zu den Bohnen gießen und ca. 5 Minuten kochen.",
+      "Piment, Lorbeer und Rosmarin herausnehmen. 1 Tasse Bohnen abnehmen, pürieren und wieder unterrühren. Aufkochen."],
+    en: ["Cover the dried beans with cold water (about 10 cm above them) and soak overnight. Fresh beans don't need soaking.",
+      "Drain, add 1 litre of fresh water and season. Add the peeled garlic, allspice, bay leaf and rosemary. Simmer covered for about 1½ hours until tender.",
+      "In a second pot, soften the diced onion in olive oil. Season with chilli, thyme, oregano, salt and pepper.",
+      "Add the chopped sun-dried tomatoes and fry for about 2 minutes. Add the wine (if using) and let it bubble away for about 2 minutes.",
+      "Add the blended canned tomatoes or passata and simmer for 5–10 minutes.",
+      "Pour the sauce into the beans and cook for about 5 minutes.",
+      "Remove the allspice, bay leaf and rosemary. Blend 1 cup of the beans and stir it back in. Bring to the boil."],
+  },
+  tips: {
+    pl: ["Zamiast puszki: 1 kg świeżych pomidorów – sparzyć, obrać, usunąć nasiona, pokroić, gotować ok. 20 minut bez przykrycia i zmiksować."],
+    de: ["Statt Dosentomaten: 1 kg frische Tomaten überbrühen, häuten, entkernen, würfeln, ca. 20 Minuten offen kochen und pürieren."],
+    en: ["Instead of a can: 1 kg fresh tomatoes – blanch, peel, deseed, dice, simmer uncovered for about 20 minutes and blend."],
+  },
+},
+{
+  id: "kasza", type: "main", serv: 4, src: SRC + "kasza-jaglana-zapiekana-z-warzywami",
+  name: N("Kasza jaglana zapiekana z warzywami", "Überbackene Hirse mit Gemüse", "Baked millet with vegetables"),
+  time: N("ok. 55 min", "ca. 55 Min.", "about 55 min"),
+  tokens: ["tomato", "zucchini", "bell"],
+  ing: [["olive_oil", 2, "tbsp"], ["onion", 1, "pcs"], ["garlic", 2, "clove"], ["eggplant", 300, "g"], ["zucchini", 300, "g"], ["bell", 1, "pcs"], ["millet", 100, "g"], ["tomato", 2, "pcs"], ["passata", 200, "ml"], ["stock", 250, "ml"], ["parsley", 2, "tbsp"], ["cheese", 75, "g"],
+    ["herbes", 1, "tbsp"], ["paprika", 1, "tsp"], ["paprika_hot", 0.5, "tsp"], ["turmeric", 0.5, "tsp"], ["salt", null], ["pepper", null]],
+  steps: {
+    pl: ["Nagrzać piekarnik do 200°C. W żaroodpornym garnku lub na dużej patelni podsmażyć na oliwie pokrojoną w kostkę cebulę i drobno pokrojony czosnek.",
+      "Dodać bakłażana pokrojonego w ok. 1,5 cm kostkę i podsmażać 2–3 minuty. Dodać pokrojone w kostkę paprykę i cukinię oraz przyprawy. Smażyć ok. 5 minut, od czasu do czasu mieszając.",
+      "Dodać kilkakrotnie wypłukaną w ciepłej wodzie kaszę jaglaną, wlać passatę i bulion, zagotować. W międzyczasie dodać sparzone, obrane i pokrojone pomidory, a na koniec natkę.",
+      "Przykryć pokrywą (lub przełożyć do naczynia żaroodpornego i przykryć folią) i piec ok. 30 minut.",
+      "Zdjąć pokrywę, posypać serem i zapiekać jeszcze 2 minuty."],
+    de: ["Backofen auf 200 °C vorheizen. In einem ofenfesten Topf oder einer großen Pfanne Zwiebel und fein geschnittenen Knoblauch in Olivenöl anbraten.",
+      "Aubergine in ca. 1,5 cm Würfeln zugeben und 2–3 Minuten braten. Gewürfelte Paprika, Zucchini und Gewürze zugeben und ca. 5 Minuten unter gelegentlichem Rühren braten.",
+      "Die mehrmals mit warmem Wasser gewaschene Hirse zugeben, Passata und Brühe angießen und aufkochen. Dabei die überbrühten, gehäuteten und gewürfelten Tomaten und zum Schluss die Petersilie zugeben.",
+      "Zudecken (Deckel oder Alufolie) und ca. 30 Minuten im Ofen garen.",
+      "Deckel abnehmen, mit Käse bestreuen und noch 2 Minuten überbacken."],
+    en: ["Heat the oven to 200°C. In an ovenproof pot or large pan, fry the diced onion and finely chopped garlic in olive oil.",
+      "Add the aubergine in 1.5 cm cubes and fry for 2–3 minutes. Add the diced pepper, courgette and spices and fry for about 5 minutes, stirring now and then.",
+      "Add the millet (rinsed several times in warm water), pour in the passata and stock and bring to the boil. Add the blanched, peeled and diced tomatoes along the way and the parsley at the end.",
+      "Cover with a lid (or foil) and bake for about 30 minutes.",
+      "Uncover, sprinkle with cheese and bake for 2 more minutes."],
+  },
+  tips: {
+    pl: ["Wersja wegańska: bez sera i z bulionem warzywnym.", "Zamiast kaszy jaglanej można użyć ryżu lub kaszy pęczak."],
+    de: ["Vegan: ohne Käse und mit Gemüsebrühe.", "Statt Hirse geht auch Reis oder Graupen."],
+    en: ["Vegan: skip the cheese and use vegetable stock.", "Rice or pearl barley work instead of millet."],
+  },
+},
+{
+  id: "curry1", type: "main", serv: 4, src: SRC + "warzywne-curry-z-dynia-kalafiorem-i-ciecierzyca",
+  name: N("Warzywne curry z dynią, kalafiorem i ciecierzycą", "Gemüsecurry mit Kürbis, Blumenkohl und Kichererbsen", "Vegetable curry with pumpkin, cauliflower and chickpeas"),
+  time: N("ok. 45 min", "ca. 45 Min.", "about 45 min"),
+  tokens: ["tomato", "pumpkin", "cauliflower", "coconut", "ginger", "rice"],
+  ing: [["pumpkin", 300, "g", N("upiecz od razu więcej – mus do dania 7", "gleich mehr backen – Püree für Gericht 7", "roast extra now – purée for meal 7")], ["onion", 1, "pcs"], ["oil", 1, "tbsp"], ["garlic", 2, "clove"], ["ginger", 2, "cm"], ["curry", 2, "tsp"], ["turmeric", 2, "tsp"], ["paprika", 1, "tsp"], ["passata", 250, "ml"],
+    ["cauliflower", 300, "g", N("½ kalafiora – reszta do dania 6", "½ Blumenkohl – Rest für Gericht 6", "½ cauliflower – the rest goes into meal 6")], ["chickpeas", 300, "g"], ["coconut", 250, "ml"], ["#serve"], ["rice", 200, "g"], ["coriander", null], ["salt", null], ["pepper", null]],
+  steps: {
+    pl: ["Dynię obrać ze skóry i pestek, miąższ pokroić w kostkę. Cebulę pokroić w cienkie półplasterki.",
+      "W większym garnku rozgrzać olej i zeszklić cebulę. Dodać starty czosnek i imbir, smażyć 1 minutę, mieszając.",
+      "Dodać wszystkie przyprawy, wymieszać i chwilę podsmażyć.",
+      "Wlać 250 ml wody i passatę, dodać dynię. Zagotować, doprawić solą i pieprzem, gotować 20 minut bez przykrycia.",
+      "Dodać kalafior (w kostce lub małych różyczkach), mleko kokosowe i ciecierzycę z częścią zalewy. Wymieszać i gotować ok. 10 minut.",
+      "Podawać z ryżem i świeżą kolendrą."],
+    de: ["Kürbis schälen, entkernen und würfeln. Zwiebel in dünne Halbringe schneiden.",
+      "Öl in einem größeren Topf erhitzen und die Zwiebel glasig dünsten. Geriebenen Knoblauch und Ingwer 1 Minute unter Rühren mitbraten.",
+      "Alle Gewürze zugeben, verrühren und kurz anrösten.",
+      "250 ml Wasser und Passata angießen, Kürbis zugeben. Aufkochen, salzen, pfeffern und 20 Minuten offen köcheln.",
+      "Blumenkohl (gewürfelt oder in kleinen Röschen), Kokosmilch und Kichererbsen mit etwas Flüssigkeit zugeben. Ca. 10 Minuten kochen.",
+      "Mit Reis und frischem Koriander servieren."],
+    en: ["Peel and deseed the pumpkin and dice the flesh. Slice the onion into thin half-moons.",
+      "Heat the oil in a large pot and soften the onion. Add the grated garlic and ginger and fry for 1 minute, stirring.",
+      "Add all the spices, stir and toast briefly.",
+      "Add 250 ml water, the passata and the pumpkin. Bring to the boil, season and simmer uncovered for 20 minutes.",
+      "Add the cauliflower (diced or small florets), coconut milk and chickpeas with some of their liquid. Cook for about 10 minutes.",
+      "Serve with rice and fresh coriander."],
+  },
+},
+{
+  id: "curry2", type: "main", serv: 4, src: SRC + "curry-warzywne-z-batatami-kalafiorem-i-orzechami-nerkowca",
+  name: N("Curry z batatami, kalafiorem i nerkowcami", "Curry mit Süßkartoffeln, Blumenkohl und Cashews", "Sweet potato, cauliflower and cashew curry"),
+  time: N("ok. 55 min", "ca. 55 Min.", "about 55 min"),
+  tokens: ["tomato", "cauliflower", "coconut", "ginger", "rice", "cashews"],
+  ing: [["onion", 1, "pcs"], ["oil", 1, "tbsp"], ["garlic", 2, "clove"], ["ginger", 3, "cm"], ["cumin", 2, "tsp"], ["paprika_hot", 1, "tsp"], ["turmeric", 2, "tsp"], ["coriander_gr", 1, "tsp"], ["canned_tom", 1, "can"], ["sweet_potato", 500, "g"], ["cauliflower", 300, "g"], ["coconut", 250, "ml"],
+    ["#serve"], ["cashews", 70, "g"], ["rice", 100, "g"], ["coriander", null], ["salt", null], ["pepper", null]],
+  steps: {
+    pl: ["Cebulę obrać, przekroić na pół i pokroić w cienkie półplasterki. Zeszklić na oleju w woku lub garnku, ok. 5 minut.",
+      "Dodać starty czosnek i imbir (bez włókien), smażyć 1 minutę, mieszając. Dodać przyprawy i chwilę podsmażyć, aż uwolni się aromat.",
+      "Dodać pomidory i szklankę wody, zagotować. Dodać obrane, pokrojone w kostkę bataty, doprawić solą i pieprzem. Gotować 30 minut bez przykrycia.",
+      "Dodać kalafior podzielony na małe różyczki i mleko kokosowe. Przykryć i gotować ok. 10 minut.",
+      "W międzyczasie uprażyć nerkowce na suchej patelni.",
+      "Podawać z ryżem, orzechami i kolendrą."],
+    de: ["Zwiebel schälen, halbieren, in dünne Halbringe schneiden und im Wok oder Topf in Öl ca. 5 Minuten glasig dünsten.",
+      "Geriebenen Knoblauch und Ingwer 1 Minute unter Rühren mitbraten. Gewürze zugeben und kurz rösten, bis sie duften.",
+      "Tomaten und 1 Tasse Wasser zugeben, aufkochen. Geschälte, gewürfelte Süßkartoffeln zugeben, salzen und pfeffern. 30 Minuten offen köcheln.",
+      "Blumenkohl in kleinen Röschen und Kokosmilch zugeben, zudecken und ca. 10 Minuten kochen.",
+      "Inzwischen die Cashews in einer trockenen Pfanne rösten.",
+      "Mit Reis, Cashews und Koriander servieren."],
+    en: ["Halve the onion, slice into thin half-moons and soften in oil in a wok or pot for about 5 minutes.",
+      "Add the grated garlic and ginger and fry for 1 minute, stirring. Add the spices and toast until fragrant.",
+      "Add the tomatoes and 1 cup of water and bring to the boil. Add the peeled, diced sweet potatoes and season. Simmer uncovered for 30 minutes.",
+      "Add the cauliflower in small florets and the coconut milk. Cover and cook for about 10 minutes.",
+      "Meanwhile, toast the cashews in a dry pan.",
+      "Serve with rice, cashews and coriander."],
+  },
+},
+{
+  id: "butter", type: "main", serv: 4, src: SRC + "dyniowy-butter-chicken",
+  name: N("Dyniowy butter chicken", "Kürbis-Butter-Chicken", "Pumpkin butter chicken"),
+  time: N("ok. 50 min + marynowanie min. 2 h", "ca. 50 Min. + mind. 2 Std. Marinieren", "about 50 min + at least 2 h marinating"),
+  tokens: ["tomato", "pumpkin", "cashews", "ginger", "rice", "chicken", "cream"],
+  ing: [["#marinade"], ["chicken", 700, "g"], ["ginger", 3, "cm", N("1 łyżka startego", "1 EL gerieben", "1 tbsp grated")], ["garlic", 2, "clove"], ["garam", 1, "tbsp"], ["lemon_juice", 2, "tbsp"], ["olive_oil", 1, "tbsp"], ["yogurt", 0.5, "cup"], ["salt", null], ["pepper", null],
+    ["#sauce"], ["pumpkin", 400, "g", N("upieczona i zmiksowana na ok. 250 ml musu", "gebacken und zu ca. 250 ml Püree gemixt", "roasted and blended to about 250 ml purée")], ["ghee", 2, "tbsp"], ["onion", 1, "pcs"], ["garam", 1, "tbsp"], ["turmeric", 0.5, "tsp"], ["cumin", 0.5, "tsp"], ["cinnamon", 1, "pinch"],
+    ["cashews", 35, "g", N("¼ szklanki, namoczone na noc", "¼ Tasse, über Nacht eingeweicht", "¼ cup, soaked overnight")], ["canned_tom", 1, "can"], ["stock", 125, "ml"], ["cream", 125, "ml"],
+    ["#serve"], ["rice", 200, "g"],
+    ["#salad"], ["cucumber", 1, "pcs"], ["cherry", 200, "g"], ["red_onion", 1, "pcs"], ["chili", 1, "pcs"], ["coriander", null], ["lemon_juice", 2, "tbsp"], ["garam", 1, "pinch"], ["olive_oil", 1, "tbsp"]],
+  steps: {
+    pl: ["Dzień wcześniej zalać nerkowce wodą i zostawić na noc. Można też wcześniej upiec dynię i zmiksować ją na mus.",
+      "Kurczaka oczyścić z błonek i pokroić na kawałki 2–3 cm. Natrzeć startym imbirem i czosnkiem, doprawić solą, pieprzem i garam masalą.",
+      "Skropić sokiem z cytryny i oliwą, dodać jogurt i dokładnie wymieszać. Przykryć i marynować w lodówce min. 2 godziny, najlepiej całą noc.",
+      "Sos: w garnku rozgrzać 1 łyżkę masła klarowanego i zeszklić cebulę. Dodać przyprawy i odcedzone nerkowce, chwilę podsmażyć. Dodać mus z dyni, pomidory i bulion, zagotować i gotować pod przykryciem ok. 10 minut. Zmiksować na gładko.",
+      "Na dużej, głębokiej patelni rozgrzać drugą łyżkę masła klarowanego i obsmażyć kurczaka. Wlać śmietankę i zagotować.",
+      "Dodać sos, wymieszać i gotować ok. 3 minuty na małym ogniu. Podawać z ryżem i sałatką.",
+      "Sałatka Kachumber: wymieszać ogórka w kostce, przepołowione pomidorki, drobno posiekaną czerwoną cebulę i chili. Posolić, skropić sokiem i oliwą, doprawić pieprzem i garam masalą, posypać kolendrą."],
+    de: ["Am Vortag die Cashews in Wasser einweichen. Den Kürbis kann man auch vorher backen und pürieren.",
+      "Hähnchen säubern und in 2–3 cm große Stücke schneiden. Mit geriebenem Ingwer und Knoblauch einreiben, mit Salz, Pfeffer und Garam Masala würzen.",
+      "Mit Zitronensaft und Olivenöl beträufeln, Joghurt zugeben und gut mischen. Zugedeckt mind. 2 Stunden, am besten über Nacht, im Kühlschrank marinieren.",
+      "Sauce: 1 EL Ghee im Topf erhitzen und die Zwiebel glasig dünsten. Gewürze und abgetropfte Cashews kurz mitrösten. Kürbispüree, Tomaten und Brühe zugeben, aufkochen und zugedeckt ca. 10 Minuten köcheln. Glatt pürieren.",
+      "In einer großen, tiefen Pfanne den zweiten EL Ghee erhitzen und das Hähnchen anbraten. Sahne angießen und aufkochen.",
+      "Sauce zugeben, verrühren und ca. 3 Minuten bei kleiner Hitze köcheln. Mit Reis und Salat servieren.",
+      "Kachumber-Salat: gewürfelte Gurke, halbierte Cherrytomaten, fein gehackte rote Zwiebel und Chili mischen. Salzen, mit Saft und Olivenöl beträufeln, mit Pfeffer und Garam Masala würzen, Koriander darüberstreuen."],
+    en: ["The day before, cover the cashews with water and soak overnight. You can also roast and purée the pumpkin ahead.",
+      "Trim the chicken and cut into 2–3 cm pieces. Rub with grated ginger and garlic and season with salt, pepper and garam masala.",
+      "Drizzle with lemon juice and olive oil, add the yoghurt and mix well. Cover and marinate in the fridge for at least 2 hours, ideally overnight.",
+      "Sauce: heat 1 tbsp ghee in a pot and soften the onion. Add the spices and drained cashews and fry briefly. Add the pumpkin purée, tomatoes and stock, bring to the boil and simmer covered for about 10 minutes. Blend until smooth.",
+      "Heat the second tbsp of ghee in a large, deep pan and brown the chicken. Pour in the cream and bring to the boil.",
+      "Add the sauce, stir and simmer gently for about 3 minutes. Serve with rice and the salad.",
+      "Kachumber salad: mix diced cucumber, halved cherry tomatoes, finely chopped red onion and chilli. Salt, drizzle with juice and olive oil, season with pepper and garam masala and scatter with coriander."],
+  },
+  tips: {
+    pl: ["Dynię do musu upiecz razem z dynią do curry (danie 5) – jedna dynia na oba dania."],
+    de: ["Den Kürbis für das Püree zusammen mit dem Kürbis fürs Curry (Gericht 5) backen – ein Kürbis für beide."],
+    en: ["Roast the pumpkin for the purée together with the pumpkin for the curry (meal 5) – one pumpkin covers both."],
+  },
+},
+{
+  id: "grzyby", type: "main", serv: 4, src: SRC + "kurczak-z-grzybami",
+  name: N("Kurczak w sosie grzybowym", "Hähnchen in Pilzrahmsauce", "Chicken in creamy mushroom sauce"),
+  time: N("ok. 30 min", "ca. 30 Min.", "about 30 min"),
+  tokens: ["chicken", "cream"],
+  ing: [["chicken", 400, "g", N("2 pojedyncze filety", "2 einzelne Filets", "2 single fillets")], ["paprika", 0.5, "tsp"], ["paprika_hot", 1, "pinch"], ["thyme", 1, "pinch"], ["mushrooms", 200, "g"], ["onion", 1, "pcs"], ["stock", 175, "ml"], ["cream", 100, "ml"], ["dill", 1, "tbsp"], ["oil", 1, "tbsp"], ["butter", 1, "tbsp"], ["flour", 1, "tbsp"], ["salt", null], ["pepper", null]],
+  steps: {
+    pl: ["Filety pokroić na mniejsze, cieńsze kawałki i rozbić tłuczkiem na ok. 1 cm. Doprawić solą, pieprzem, papryką słodką i ostrą oraz tymiankiem. Wymieszać z łyżką oleju i obtoczyć w łyżce mąki.",
+      "Grzyby oczyścić, umyć, dokładnie osuszyć i pokroić w plasterki. Cebulę pokroić w kostkę.",
+      "Na rozgrzanej dużej patelni smażyć filety ok. 2 minuty z każdej strony, zdjąć na talerz.",
+      "Na tę samą patelnię włożyć cebulę i delikatnie podsmażyć, dodać masło i grzyby. Smażyć ok. 3 minuty, mieszając, doprawić solą i pieprzem.",
+      "Włożyć filety między grzyby, wlać gorący bulion, zagotować i gotować ok. pół minuty.",
+      "Dodać śmietankę i wymieszać, potrząsając patelnią. Gotować ok. 1 minutę, aż sos zgęstnieje. Na koniec dodać koperek."],
+    de: ["Filets in kleinere, dünnere Stücke schneiden und auf ca. 1 cm plattieren. Mit Salz, Pfeffer, beiden Paprikasorten und Thymian würzen. Mit 1 EL Öl mischen und in 1 EL Mehl wenden.",
+      "Pilze putzen, waschen, gut trocknen und in Scheiben schneiden. Zwiebel würfeln.",
+      "Filets in einer heißen großen Pfanne ca. 2 Minuten pro Seite braten und herausnehmen.",
+      "In derselben Pfanne die Zwiebel leicht anbraten, Butter und Pilze zugeben und ca. 3 Minuten unter Rühren braten. Salzen und pfeffern.",
+      "Filets zwischen die Pilze legen, heiße Brühe angießen, aufkochen und ca. eine halbe Minute kochen.",
+      "Sahne zugeben, Pfanne schwenken und ca. 1 Minute kochen, bis die Sauce eindickt. Zum Schluss Dill zugeben."],
+    en: ["Cut the fillets into smaller, thinner pieces and pound to about 1 cm. Season with salt, pepper, both paprikas and thyme. Toss with 1 tbsp oil and dust with 1 tbsp flour.",
+      "Clean, rinse and thoroughly dry the mushrooms, then slice. Dice the onion.",
+      "Fry the fillets in a hot large pan for about 2 minutes per side, then set aside on a plate.",
+      "In the same pan gently fry the onion, add the butter and mushrooms and fry for about 3 minutes, stirring. Season.",
+      "Tuck the fillets between the mushrooms, pour in the hot stock, bring to the boil and cook for about 30 seconds.",
+      "Add the cream and shake the pan to combine. Cook for about 1 minute until the sauce thickens. Finish with dill."],
+  },
+  serve: {
+    pl: ["Z ziemniakami, kopytkami, makaronem lub kaszą. Pasuje do niego surówka z czerwonej kapusty (danie 10)."],
+    de: ["Mit Kartoffeln, Schupfnudeln, Nudeln oder Getreide. Dazu passt der Rotkohlsalat (Gericht 10)."],
+    en: ["With potatoes, potato dumplings, pasta or grains. The red cabbage slaw (dish 10) goes well with it."],
+  },
+},
+{
+  id: "tajska", type: "soup", serv: 4, src: SRC + "tajska-zupa-curry-z-noodlami",
+  name: N("Tajska zupa curry z noodlami", "Thailändische Currysuppe mit Nudeln", "Thai curry noodle soup"),
+  time: N("ok. 25 min", "ca. 25 Min.", "about 25 min"),
+  tokens: ["chicken", "coconut", "ginger", "bell", "carrot"],
+  ing: [["noodles", 200, "g", N("suchego; gotowego 400 g", "trocken; vorgegart 400 g", "dry; 400 g if ready-cooked")], ["chicken", 200, "g", N("lub tofu", "oder Tofu", "or tofu")], ["coconut_oil", 2, "tbsp"], ["onion", 1, "pcs"], ["carrot", 0.5, "pcs"], ["bell", 0.5, "pcs"], ["ginger", 3, "cm", N("1 łyżka startego", "1 EL gerieben", "1 tbsp grated")], ["garlic", 2, "clove"], ["red_curry", 1, "tbsp"], ["stock", 1500, "ml"], ["coconut", 400, "ml"], ["fish_sauce", 3, "tbsp"],
+    ["#serve"], ["lime", 1, "pcs", N("1 łyżka soku + kawałki do podania", "1 EL Saft + Spalten zum Servieren", "1 tbsp juice + wedges to serve")], ["coriander", null], ["chives", null], ["chili", null]],
+  steps: {
+    pl: ["Tofu lub kurczaka pokroić w niedużą kostkę.",
+      "W większym garnku roztopić olej. Dodać pokrojoną w kostkę cebulę i obraną, drobno pokrojoną marchewkę. Smażyć ok. 3 minuty, mieszając. Pod koniec dodać pokrojoną paprykę.",
+      "Wmieszać starty czosnek, imbir i pastę curry. Smażyć ok. 1 minutę, często mieszając.",
+      "Dodać bulion, mleko kokosowe i sos rybny. Zagotować, zmniejszyć ogień i gotować bez przykrycia ok. 3 minuty.",
+      "Dodać kurczaka lub tofu i gotować ok. 2 minuty.",
+      "Makaron opłukać, włożyć do zupy i gotować na wolnym ogniu do miękkości (2–3 minuty, zależnie od rodzaju).",
+      "Skropić sokiem z limonki. Podawać z kolendrą, szczypiorkiem, limonką i chili."],
+    de: ["Tofu oder Hähnchen in kleine Würfel schneiden.",
+      "Öl in einem größeren Topf schmelzen. Gewürfelte Zwiebel und fein gewürfelte Karotte ca. 3 Minuten unter Rühren braten. Zum Schluss die Paprika zugeben.",
+      "Geriebenen Knoblauch, Ingwer und Currypaste einrühren und ca. 1 Minute unter Rühren braten.",
+      "Brühe, Kokosmilch und Fischsauce zugeben. Aufkochen, Hitze reduzieren und ca. 3 Minuten offen köcheln.",
+      "Hähnchen oder Tofu zugeben und ca. 2 Minuten kochen.",
+      "Nudeln abspülen, in die Suppe geben und bei kleiner Hitze weich kochen (2–3 Minuten, je nach Sorte).",
+      "Mit Limettensaft beträufeln. Mit Koriander, Schnittlauch, Limette und Chili servieren."],
+    en: ["Cut the tofu or chicken into small cubes.",
+      "Melt the oil in a large pot. Fry the diced onion and finely diced carrot for about 3 minutes, stirring. Add the sliced pepper at the end.",
+      "Stir in the grated garlic, ginger and curry paste and fry for about 1 minute, stirring often.",
+      "Add the stock, coconut milk and fish sauce. Bring to the boil, lower the heat and simmer uncovered for about 3 minutes.",
+      "Add the chicken or tofu and cook for about 2 minutes.",
+      "Rinse the noodles, add to the soup and simmer until tender (2–3 minutes, depending on type).",
+      "Squeeze over the lime juice. Serve with coriander, chives, lime and chilli."],
+  },
+},
+{
+  id: "surowka", type: "side", serv: 4, src: SRC + "sur%C3%B3wka-z-czerwonej-kapusty",
+  name: N("Surówka z czerwonej kapusty", "Rotkohlsalat", "Red cabbage slaw"),
+  time: N("ok. 15 min", "ca. 15 Min.", "about 15 min"),
+  tokens: ["carrot", "apple"],
+  ing: [["red_cabbage", 500, "g", N("ok. ½ główki", "ca. ½ Kopf", "about ½ head")], ["salt", 0.33, "tsp"], ["pepper", 0.33, "tsp"], ["onion", 0.5, "pcs"], ["carrot", 1, "pcs"], ["apple", 1, "pcs"], ["lemon_juice", 2, "tbsp"], ["olive_oil", 2, "tbsp"], ["sugar", 1, "tsp", N("lub miód", "oder Honig", "or honey")], ["mayo", 2, "tbsp"], ["parsley", 1, "tbsp"]],
+  steps: {
+    pl: ["Kapustę oczyścić z wierzchnich liści i jak najcieniej poszatkować, bez głąba i łykowatych części (można robotem).",
+      "Przełożyć do miski, dodać sól i pieprz, wymieszać.",
+      "Cebulę drobno posiekać, przelać wrzątkiem na sitku i dodać do kapusty.",
+      "Dodać startą na grubych oczkach marchewkę i obrane, starte jabłko oraz sok z cytryny, oliwę, cukier lub miód, majonez i natkę. Wymieszać."],
+    de: ["Äußere Blätter entfernen und den Kohl so fein wie möglich hobeln, ohne Strunk (geht auch mit der Küchenmaschine).",
+      "In eine Schüssel geben, salzen, pfeffern und mischen.",
+      "Zwiebel fein hacken, im Sieb mit kochendem Wasser übergießen und zum Kohl geben.",
+      "Grob geriebene Karotte und geschälten, geriebenen Apfel sowie Zitronensaft, Olivenöl, Zucker oder Honig, Mayonnaise und Petersilie zugeben. Mischen."],
+    en: ["Remove the outer leaves and shred the cabbage as finely as you can, discarding the core (a food processor works too).",
+      "Put it in a bowl, add salt and pepper and mix.",
+      "Finely chop the onion, pour boiling water over it in a sieve and add to the cabbage.",
+      "Add the coarsely grated carrot and peeled, grated apple, plus the lemon juice, olive oil, sugar or honey, mayonnaise and parsley. Mix."],
+  },
+  serve: {
+    pl: ["Do kurczaka w sosie grzybowym (danie 8), schabowego, pieczonych udek lub placków ziemniaczanych."],
+    de: ["Zum Hähnchen in Pilzsauce (Gericht 8), zu Schnitzel, Hähnchenschenkeln oder Kartoffelpuffern."],
+    en: ["With the chicken in mushroom sauce (meal 8), pork cutlets, roast chicken thighs or potato pancakes."],
+  },
+},
+{
+  id: "racuchy", type: "dessert", serv: 15, unitServ: "pieces", src: SRC + "racuchy-na-kefirze",
+  name: N("Racuchy na kefirze", "Hefe-Apfelküchlein mit Kefir", "Kefir yeast pancakes with apple"),
+  time: N("ok. 50 min (w tym 30 min rośnięcia)", "ca. 50 Min. (davon 30 Min. Gehzeit)", "about 50 min (incl. 30 min rising)"),
+  tokens: ["apple"],
+  ing: [["milk", 125, "ml"], ["sugar", 2, "tbsp"], ["yeast", 1, "sachet"], ["vanilla_sugar", 1, "tbsp"], ["egg", 1, "pcs"], ["kefir", 250, "ml"], ["flour", 240, "g"], ["starch", 40, "g"], ["apple", 1, "pcs", N("lub 1 szklanka borówek", "oder 1 Tasse Heidelbeeren", "or 1 cup blueberries")], ["oil", 125, "ml"], ["icing", null]],
+  steps: {
+    pl: ["Składniki wyjąć wcześniej z lodówki, żeby się ociepliły.",
+      "Mleko lekko podgrzać (ma być letnie). Dodać cukier i drożdże, wymieszać i odstawić na 10 minut.",
+      "Dodać cukier wanilinowy, jajko i kefir, wymieszać rózgą lub mikserem.",
+      "Dodać mąkę pszenną i ziemniaczaną i mieszać ok. 2 minuty na jednolite ciasto.",
+      "Wmieszać łyżką obrane, pokrojone w kawałeczki jabłko lub borówki.",
+      "Przykryć ściereczką i odstawić na min. 30 minut do wyrośnięcia.",
+      "Na dużej patelni rozgrzać ok. 1 cm oleju. Nakładać ciasto łyżką i smażyć na umiarkowanym ogniu ok. 1,5 minuty z każdej strony, na złoto.",
+      "Odsączyć na ręczniku papierowym i posypać cukrem pudrem."],
+    de: ["Zutaten vorher aus dem Kühlschrank nehmen, damit sie Raumtemperatur haben.",
+      "Milch leicht erwärmen (lauwarm). Zucker und Hefe einrühren und 10 Minuten stehen lassen.",
+      "Vanillinzucker, Ei und Kefir zugeben und mit dem Schneebesen oder Mixer verrühren.",
+      "Weizenmehl und Kartoffelstärke zugeben und ca. 2 Minuten zu einem glatten Teig rühren.",
+      "Geschälten, klein geschnittenen Apfel oder Heidelbeeren unterheben.",
+      "Mit einem Tuch abdecken und mind. 30 Minuten gehen lassen.",
+      "In einer großen Pfanne ca. 1 cm Öl erhitzen. Teig löffelweise hineingeben und bei mittlerer Hitze ca. 1,5 Minuten pro Seite goldbraun backen.",
+      "Auf Küchenpapier abtropfen lassen und mit Puderzucker bestäuben."],
+    en: ["Take the ingredients out of the fridge in advance so they warm up.",
+      "Warm the milk slightly (lukewarm). Stir in the sugar and yeast and leave for 10 minutes.",
+      "Add the vanilla sugar, egg and kefir and whisk or beat together.",
+      "Add both flours and mix for about 2 minutes into a smooth batter.",
+      "Fold in the peeled, finely chopped apple or the blueberries.",
+      "Cover with a cloth and leave to rise for at least 30 minutes.",
+      "Heat about 1 cm of oil in a large pan. Drop in spoonfuls of batter and fry over medium heat for about 1½ minutes per side until golden.",
+      "Drain on kitchen paper and dust with icing sugar."],
+  },
+  serve: {
+    pl: ["Zużyje jabłka, które zostaną po surówce."],
+    de: ["Verbraucht die Äpfel, die vom Rotkohlsalat übrig bleiben."],
+    en: ["Uses up the apples left over from the slaw."],
+  },
+},
+];
+R.forEach((r, i) => r.no = i + 1);
+const MAINS = R.filter(r => r.type === "main" || r.type === "soup");
+const EXTRAS = R.filter(r => !MAINS.includes(r));
+
+/* ---------- state ---------- */
+const store = {
+  get(k, d) { try { const v = localStorage.getItem("lancuch:" + k); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
+  set(k, v) { try { localStorage.setItem("lancuch:" + k, JSON.stringify(v)); } catch (e) {} },
+};
+let lang = store.get("lang", "pl");
+if (!UI[lang]) lang = "pl";
+const sel = store.get("sel", {});
+R.forEach(r => { if (!sel[r.id]) sel[r.id] = { on: MAINS.includes(r), p: r.serv }; });
+let done = store.get("done", {});
+
+/* ---------- formatting ---------- */
+const FR = [[0, ""], [0.25, "¼"], [0.33, "⅓"], [0.5, "½"], [0.67, "⅔"], [0.75, "¾"], [1, ""]];
+function nice(x) {
+  if (x >= 20) return String(Math.round(x));
+  let w = Math.floor(x), f = x - w, best = FR[0];
+  for (const c of FR) if (Math.abs(c[0] - f) < Math.abs(best[0] - f)) best = c;
+  if (best[0] === 1) { w += 1; best = FR[0]; }
+  if (!w && !best[1]) return x > 0 ? (lang === "en" ? "0.1" : "0,1") : "0";
+  return (w ? String(w) : "") + best[1];
+}
+function metric(x) {
+  const v = x >= 50 ? Math.round(x / 5) * 5 : Math.round(x);
+  return String(v);
+}
+function plForm(n, forms) {
+  if (forms.length === 1) return forms[0];
+  if (lang === "pl") {
+    if (!Number.isInteger(n)) return forms[1];
+    if (n === 1) return forms[0];
+    const t = n % 10, h = n % 100;
+    return (t >= 2 && t <= 4 && !(h >= 12 && h <= 14)) ? forms[1] : forms[2];
+  }
+  return n === 1 ? forms[0] : forms[1];
+}
+function roundCount(x) { return Math.round(x * 4) / 4; }
+function unitText(q, u) {
+  const forms = UNITS[u][lang];
+  if (u === "g" || u === "ml") {
+    if (u === "g" && q >= 1000) return (Math.round(q / 100) / 10).toString().replace(".", lang === "en" ? "." : ",") + " kg";
+    if (u === "ml" && q >= 1000) return (Math.round(q / 100) / 10).toString().replace(".", lang === "en" ? "." : ",") + " l";
+    return metric(q) + " " + u;
+  }
+  if (u === "cm") return metric(q) + " cm";
+  const r = roundCount(q);
+  const word = plForm(r, forms);
+  return (nice(r) + (word ? " " + word : "")).trim();
+}
+function spoons(ml) {
+  let tb = Math.floor(ml / 15 + 1e-9);
+  let tsp = Math.round(((ml - tb * 15) / 5) * 4) / 4;
+  if (tsp >= 3) { tb += 1; tsp = 0; }
+  const parts = [];
+  if (tb) parts.push(unitText(tb, "tbsp"));
+  if (tsp) parts.push(unitText(tsp, "tsp"));
+  return parts.join(" + ") || unitText(0.25, "tsp");
+}
+
+/* sum a list of {q,u} for one ingredient into a display string */
+function sumQty(list) {
+  const t = UI[lang];
+  const qs = list.filter(x => x.q != null);
+  const hasTaste = list.some(x => x.q == null);
+  const out = [];
+  const units = [...new Set(qs.map(x => x.u))];
+  let vol = 0, mass = 0, volUnits = [];
+  const other = {};
+  for (const x of qs) {
+    const U = UNITS[x.u];
+    if (U.d === "v") { vol += x.q * U.f; volUnits.push(x.u); }
+    else if (U.d === "m") mass += x.q * U.f;
+    else other[x.u] = (other[x.u] || 0) + x.q;
+  }
+  let volMl = vol;
+  if (mass) out.push(unitText(mass, "g"));
+  if (vol) {
+    const vu = [...new Set(volUnits)];
+    if (vu.length === 1 && vu[0] !== "tbsp" && vu[0] !== "tsp") out.push(unitText(vol / UNITS[vu[0]].f, vu[0]));
+    else if (vol >= 100) out.push(unitText(vol, "ml"));
+    else out.push(spoons(vol));
+  }
+  for (const u of Object.keys(other)) out.push(unitText(other[u], u));
+  if (hasTaste) out.push(t.toTaste);
+  return { text: out.join(" + "), volMl, other, mass };
+}
+function hintText(id, s) {
+  const h = HINTS[id];
+  if (!h) return "";
+  let amount = 0;
+  if (id === "coconut" || id === "lemon_juice") amount = s.volMl;
+  if (id === "garlic") amount = s.other.clove || 0;
+  if (!amount) return "";
+  const n = Math.ceil(amount / h.per - 0.05);
+  if (id === "coconut") return `≈ ${n} × ${UNITS.can[lang][0]} ${h.label[lang]}`.replace(UNITS.can[lang][0], plForm(n, UNITS.can[lang]));
+  return `≈ ${n} ${h.label[lang]}`;
+}
+
+/* ---------- rendering ---------- */
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const ingName = id => I[id][{ pl: 0, de: 1, en: 2 }[lang]];
+
+function servLabel(r, p) {
+  const forms = r.unitServ === "pieces" ? UI[lang].pieces : UI[lang].servings;
+  return p + " " + plForm(p, forms);
+}
+
+function renderMatrix() {
+  const tok = Object.keys(TOKENS);
+  let h = "<thead><tr><th></th>";
+  for (const r of R) h += `<th class="${MAINS.includes(r) ? "" : "extra"}" title="${esc(r.name[lang])}">${r.no}</th>`;
+  h += "</tr></thead><tbody>";
+  for (const k of tok) {
+    h += `<tr data-tok="${k}"><th>${esc(TOKENS[k][lang])}</th>`;
+    for (const r of R) {
+      const has = r.tokens.includes(k);
+      h += `<td class="${has ? "" : "off"} ${MAINS.includes(r) ? "" : "dim"}"><span class="dot" ${has ? `aria-label="${esc(r.name[lang])}"` : 'aria-hidden="true"'}></span></td>`;
+    }
+    h += "</tr>";
+  }
+  $("#matrix").innerHTML = h + "</tbody>";
+}
+
+function linkLine(label, other, shared) {
+  if (!other || !shared.length) return "";
+  return `<div>${esc(label)} <b>${other.no}</b>: ${shared.map(k => esc(TOKENS[k][lang])).join(", ")}</div>`;
+}
+
+function renderMeal(r, idx, arr) {
+  const t = UI[lang], s = sel[r.id], m = s.p / r.serv;
+  const prev = arr[idx - 1], next = arr[idx + 1];
+  const isMain = MAINS.includes(r);
+  const sharedWith = k => R.some(o => o !== r && o.tokens.includes(k));
+  const chips = r.tokens.map(k => `<span class="chip ${sharedWith(k) ? "shared" : ""}" data-tok="${k}" tabindex="0">${esc(TOKENS[k][lang])}</span>`).join("");
+  const links = isMain
+    ? linkLine(t.fromPrev, prev, prev ? r.tokens.filter(k => prev.tokens.includes(k)) : []) +
+      linkLine(t.toNext, next, next ? r.tokens.filter(k => next.tokens.includes(k)) : [])
+    : "";
+  let ings = "";
+  for (const [id, q, u, note] of r.ing) {
+    if (id[0] === "#") { ings += `<li class="grp">${esc(t.grp[id.slice(1)])}</li>`; continue; }
+    const qty = q == null ? t.toTaste : sumQty([{ q: q * m, u }]).text;
+    ings += `<li><span>${esc(ingName(id))}${note ? `<span class="n">${esc(note[lang])}</span>` : ""}</span><span class="q">${esc(qty)}</span></li>`;
+  }
+  const steps = r.steps[lang].map(x => `<li>${esc(x)}</li>`).join("");
+  const extra = (title, obj) => obj ? `<div class="extra-notes"><h4>${esc(title)}</h4>${obj[lang].map(x => `<div>${esc(x)}</div>`).join("")}</div>` : "";
+  const minus = r.unitServ === "pieces" ? 5 : 1;
+  return `<article class="meal ${s.on ? "on" : ""} ${isMain ? "" : "extra"}" data-id="${r.id}">
+    <div class="meal-head">
+      <div class="num" aria-hidden="true">${r.no}</div>
+      <div style="min-width:0">
+        <h3>${esc(r.name[lang])}</h3>
+        <div class="meta"><span>${esc(t.type[r.type])}</span><span>${esc(r.time[lang])}</span></div>
+      </div>
+      <div class="pick">
+        <div class="stepper" role="group" aria-label="${esc(servLabel(r, s.p))}">
+          <button type="button" data-act="minus" data-step="${minus}" aria-label="−">−</button>
+          <span>${esc(servLabel(r, s.p))}</span>
+          <button type="button" data-act="plus" data-step="${minus}" aria-label="+">+</button>
+        </div>
+        <label><input type="checkbox" id="pick-${r.id}" data-act="toggle" ${s.on ? "checked" : ""}> ${esc(t.onList)}</label>
+      </div>
+    </div>
+    <div class="chips">${chips}</div>
+    ${links ? `<div class="links">${links}</div>` : ""}
+    <details class="recipe" id="rec-${r.id}">
+      <summary>${esc(t.recipe)}</summary>
+      <div class="recipe-body">
+        <div><h4>${esc(t.ingredients)} · ${esc(servLabel(r, s.p))}</h4><ul>${ings}</ul></div>
+        <div><h4>${esc(t.steps)}</h4><ol>${steps}</ol>${extra(t.tips, r.tips)}${extra(t.serve, r.serve)}
+          <p class="src"><a href="${r.src}" target="_blank" rel="noopener">${esc(t.source)} ↗</a></p></div>
+      </div>
+    </details>
+  </article>`;
+}
+
+function renderMeals() {
+  const openIds = [...document.querySelectorAll("details.recipe[open]")].map(d => d.id);
+  $("#mains").innerHTML = MAINS.map(renderMeal).join("");
+  $("#extras").innerHTML = EXTRAS.map((r, i, a) => renderMeal(r, i, a)).join("");
+  openIds.forEach(id => { const d = document.getElementById(id); if (d) d.open = true; });
+}
+
+function buildList() {
+  const agg = {};
+  let dishes = 0;
+  for (const r of R) {
+    const s = sel[r.id];
+    if (!s.on) continue;
+    dishes++;
+    const m = s.p / r.serv;
+    for (const [id, q, u] of r.ing) {
+      if (id[0] === "#") continue;
+      (agg[id] = agg[id] || { items: [], used: new Set() });
+      agg[id].items.push({ q: q == null ? null : q * m, u });
+      agg[id].used.add(r.no);
+    }
+  }
+  return { agg, dishes };
+}
+
+function renderList() {
+  const t = UI[lang];
+  const { agg, dishes } = buildList();
+  const portions = R.filter(r => sel[r.id].on && r.unitServ !== "pieces").reduce((a, r) => a + sel[r.id].p, 0);
+  $("#summary").textContent = dishes ? t.summary(dishes, portions + " " + plForm(portions, t.servings)) : "";
+  if (!dishes) { $("#listbody").innerHTML = `<div class="empty">${esc(t.empty)}</div>`; return; }
+  let h = "";
+  for (const c of CAT_ORDER) {
+    const ids = Object.keys(agg).filter(id => I[id][3] === c).sort((a, b) => ingName(a).localeCompare(ingName(b), lang));
+    if (!ids.length) continue;
+    h += `<div class="cat"><h3>${esc(t.cats[c])}</h3>`;
+    for (const id of ids) {
+      const s = sumQty(agg[id].items);
+      const hint = hintText(id, s);
+      const used = [...agg[id].used].sort((a, b) => a - b).join(", ");
+      h += `<label class="item ${done[id] ? "done" : ""}" for="buy-${id}">
+        <input type="checkbox" id="buy-${id}" data-buy="${id}" ${done[id] ? "checked" : ""}>
+        <span><span class="nm">${esc(ingName(id))}</span> — <span class="qt">${esc(s.text)}</span>${hint ? ` <span class="sub">(${esc(hint)})</span>` : ""}
+        <span class="sub" style="display:block">${esc(t.usedIn)}: ${used}</span></span>
+      </label>`;
+    }
+    h += "</div>";
+  }
+  $("#listbody").innerHTML = h;
+}
+
+function listAsText() {
+  const t = UI[lang];
+  const { agg } = buildList();
+  const lines = [t.list.toUpperCase(), ""];
+  for (const c of CAT_ORDER) {
+    const ids = Object.keys(agg).filter(id => I[id][3] === c).sort((a, b) => ingName(a).localeCompare(ingName(b), lang));
+    if (!ids.length) continue;
+    lines.push(t.cats[c] + ":");
+    for (const id of ids) {
+      const s = sumQty(agg[id].items), hint = hintText(id, s);
+      lines.push(`${done[id] ? "[x]" : "[ ]"} ${ingName(id)} — ${s.text}${hint ? " (" + hint + ")" : ""}`);
+    }
+    lines.push("");
+  }
+  return lines.join("\n").trim();
+}
+
+function renderStatic() {
+  const t = UI[lang];
+  document.documentElement.lang = lang;
+  $("#t-eyebrow").textContent = t.eyebrow;
+  $("#t-title").textContent = t.title;
+  $("#t-sub").textContent = t.sub;
+  $("#t-matrix").textContent = t.matrix;
+  $("#t-matrix-note").textContent = t.matrixNote;
+  $("#t-mains").textContent = t.mains;
+  $("#t-extras").textContent = t.extras;
+  $("#b-all").textContent = t.all;
+  $("#b-none").textContent = t.none;
+  $("#t-list").textContent = t.list;
+  $("#b-copy").textContent = t.copy;
+  $("#b-reset").textContent = t.reset;
+  $("#jump").textContent = t.jump + " ↓";
+  document.querySelectorAll(".lang button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.lang === lang)));
+}
+
+function renderAll() { renderStatic(); renderMatrix(); renderMeals(); renderList(); $("#status").textContent = ""; }
+function save() { store.set("sel", sel); store.set("done", done); }
+
+/* ---------- events ---------- */
+document.querySelector(".lang").addEventListener("click", e => {
+  const b = e.target.closest("button[data-lang]");
+  if (!b) return;
+  lang = b.dataset.lang; store.set("lang", lang); renderAll();
+});
+document.addEventListener("click", e => {
+  const b = e.target.closest("[data-act]");
+  if (!b) return;
+  const card = b.closest(".meal"), r = R.find(x => x.id === card.dataset.id), s = sel[r.id];
+  const step = Number(b.dataset.step || 1);
+  if (b.dataset.act === "plus") s.p = Math.min(s.p + step, r.unitServ === "pieces" ? 60 : 20);
+  else if (b.dataset.act === "minus") s.p = Math.max(s.p - step, step);
+  else if (b.dataset.act === "toggle") s.on = b.checked;
+  else return;
+  save(); renderMeals(); renderList();
+});
+$("#listbody").addEventListener("change", e => {
+  const id = e.target.dataset.buy;
+  if (!id) return;
+  if (e.target.checked) done[id] = true; else delete done[id];
+  save();
+  e.target.closest(".item").classList.toggle("done", e.target.checked);
+});
+$("#b-all").addEventListener("click", () => { MAINS.forEach(r => sel[r.id].on = true); save(); renderMeals(); renderList(); });
+$("#b-none").addEventListener("click", () => { R.forEach(r => sel[r.id].on = false); save(); renderMeals(); renderList(); });
+$("#b-reset").addEventListener("click", () => { done = {}; save(); renderList(); });
+$("#b-copy").addEventListener("click", () => {
+  const text = listAsText(), st = $("#status");
+  const fallback = () => {
+    st.textContent = UI[lang].copyFail;
+    let ta = document.getElementById("copyfallback");
+    if (!ta) { ta = document.createElement("textarea"); ta.id = "copyfallback"; ta.readOnly = true; st.after(ta); }
+    ta.value = text; ta.focus(); ta.select();
+  };
+  try {
+    navigator.clipboard.writeText(text).then(() => { st.textContent = UI[lang].copied; const ta = document.getElementById("copyfallback"); if (ta) ta.remove(); }, fallback);
+  } catch (err) { fallback(); }
+});
+/* highlight a link ingredient across chips and the matrix */
+function hl(tok) {
+  document.querySelectorAll(".chip").forEach(c => c.classList.toggle("hl", tok && c.dataset.tok === tok));
+  document.querySelectorAll("#matrix tr[data-tok]").forEach(tr => tr.classList.toggle("hl", tok && tr.dataset.tok === tok));
+}
+document.addEventListener("mouseover", e => { const c = e.target.closest(".chip, #matrix tr[data-tok]"); hl(c ? c.dataset.tok : null); });
+document.addEventListener("focusin", e => { const c = e.target.closest(".chip"); hl(c ? c.dataset.tok : null); });
+
+renderAll();
+</script>
