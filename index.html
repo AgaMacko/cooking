@@ -83,6 +83,7 @@ table.matrix tr.hl th, table.matrix tr.hl td { background: var(--accent-soft); }
 .meals { display: grid; gap: 12px; }
 .meal { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; display: grid; gap: 10px; min-width: 0; }
 .meal.on { border-color: var(--accent); }
+.meal .photo { display: block; width: calc(100% + 32px); max-width: none; margin: -14px -16px 0; height: clamp(160px, 28vw, 240px); object-fit: cover; border-radius: 11px 11px 0 0; background: var(--sunk); }
 .meal-head { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 12px; align-items: start; }
 .num { font-family: var(--font-display); font-weight: 700; font-size: 1.1rem; width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; background: var(--sunk); font-variant-numeric: tabular-nums; }
 .meal.on .num { background: var(--accent); color: var(--accent-ink); }
@@ -408,7 +409,7 @@ const TOKENS = {
 const SRC = "https://www.kwestiasmaku.com/przepis/";
 const R = [
 {
-  id: "pesto", type: "main", serv: 2, src: SRC + "makaron-z-pesto-i-burrata",
+  id: "pesto", type: "main", serv: 2, src: SRC + "makaron-z-pesto-i-burrata", img: "img/pesto.webp",
   name: N("Makaron z pesto i burratą", "Pasta mit Pesto und Burrata", "Pasta with pesto and burrata"),
   time: N("ok. 20 min", "ca. 20 Min.", "about 20 min"),
   tokens: ["basil", "parmesan"],
@@ -898,6 +899,7 @@ function renderMeal(r, idx, arr) {
   const extra = (title, obj) => obj ? `<div class="extra-notes"><h4>${esc(title)}</h4>${obj[lang].map(x => `<div>${esc(x)}</div>`).join("")}</div>` : "";
   const minus = r.unitServ === "pieces" ? 5 : 1;
   return `<article class="meal ${s.on ? "on" : ""} ${isMain ? "" : "extra"}" data-id="${r.id}">
+    ${r.img ? `<img class="photo" src="${r.img}" alt="${esc(r.name[lang])}" loading="lazy">` : ""}
     <div class="meal-head">
       <div class="num" aria-hidden="true">${r.no}</div>
       <div style="min-width:0">
