@@ -216,8 +216,8 @@ const N = (pl, de, en) => ({ pl, de, en });
 /* ---------- UI strings ---------- */
 const UI = {
   pl: {
-    eyebrow: "Plan gotowania · 11 przepisów",
-    credit: "Wszystkie przepisy i zdjęcia pochodzą ze strony", foot: "Przepisy i zdjęcia: Kwestia Smaku,", footNote: "Ta strona to prywatny plan posiłków; tłumaczenia na niemiecki i angielski są nieoficjalne.", photo: "Zdjęcie",
+    eyebrow: "Plan gotowania · 12 przepisów",
+    credit: "Przepisy i zdjęcia pochodzą ze stron:", foot: "Przepisy i zdjęcia:", footNote: "Ta strona to prywatny plan posiłków; tłumaczenia przepisów są nieoficjalne.", photo: "Zdjęcie",
     title: "Łańcuch obiadów",
     sub: "Dania ułożone tak, żeby każde kolejne zużywało składniki poprzedniego: danie 1 ma x i y, danie 2 y i z, danie 3 z i x… Zaznacz, co chcesz ugotować, a lista zakupów policzy się sama.",
     matrix: "Jak dania łączą się składnikami",
@@ -226,7 +226,7 @@ const UI = {
     all: "Zaznacz wszystkie", none: "Odznacz wszystkie",
     onList: "Na listę", servings: ["porcja", "porcje", "porcji"], pieces: ["sztuka", "sztuki", "sztuk"],
     recipe: "Przepis", ingredients: "Składniki", steps: "Przygotowanie", tips: "Wskazówki", serve: "Podanie",
-    source: "Oryginał na kwestiasmaku.com",
+    source: "Oryginał na",
     fromPrev: "Z dania", toNext: "Na danie",
     list: "Lista zakupów", copy: "Kopiuj", reset: "Wyczyść odhaczone",
     copied: "Skopiowano listę do schowka.", copyFail: "Nie udało się skopiować automatycznie. Zaznacz tekst poniżej i skopiuj go ręcznie.",
@@ -238,8 +238,8 @@ const UI = {
     cats: { produce: "Warzywa i owoce", herbs: "Świeże zioła", meat: "Mięso", dairy: "Nabiał i jajka", dry: "Makarony, kasze, orzechy", cans: "Puszki, słoiki, sosy", spice: "Przyprawy", pantry: "Spiżarnia (zwykle w domu)" },
   },
   de: {
-    eyebrow: "Kochplan · 11 Rezepte",
-    credit: "Alle Rezepte und Fotos stammen von der Website", foot: "Rezepte und Fotos: Kwestia Smaku,", footNote: "Diese Seite ist ein privater Essensplan; die deutschen und englischen Übersetzungen sind inoffiziell.", photo: "Foto",
+    eyebrow: "Kochplan · 12 Rezepte",
+    credit: "Rezepte und Fotos stammen von:", foot: "Rezepte und Fotos:", footNote: "Diese Seite ist ein privater Essensplan; die Übersetzungen der Rezepte sind inoffiziell.", photo: "Foto",
     title: "Gerichte-Kette",
     sub: "Die Gerichte sind so angeordnet, dass jedes die Zutaten des vorherigen aufbraucht: Gericht 1 hat x und y, Gericht 2 y und z, Gericht 3 z und x … Wähle aus, was du kochen willst – die Einkaufsliste rechnet sich selbst.",
     matrix: "Wie die Gerichte über Zutaten zusammenhängen",
@@ -248,7 +248,7 @@ const UI = {
     all: "Alle auswählen", none: "Alle abwählen",
     onList: "Auf die Liste", servings: ["Portion", "Portionen"], pieces: ["Stück", "Stück"],
     recipe: "Rezept", ingredients: "Zutaten", steps: "Zubereitung", tips: "Tipps", serve: "Servieren",
-    source: "Original auf kwestiasmaku.com (Polnisch)",
+    source: "Original auf",
     fromPrev: "Aus Gericht", toNext: "Für Gericht",
     list: "Einkaufsliste", copy: "Kopieren", reset: "Abgehakte zurücksetzen",
     copied: "Liste in die Zwischenablage kopiert.", copyFail: "Automatisches Kopieren ging nicht. Markiere den Text unten und kopiere ihn von Hand.",
@@ -260,8 +260,8 @@ const UI = {
     cats: { produce: "Obst & Gemüse", herbs: "Frische Kräuter", meat: "Fleisch", dairy: "Milchprodukte & Eier", dry: "Nudeln, Getreide, Nüsse", cans: "Konserven, Gläser, Saucen", spice: "Gewürze", pantry: "Vorrat (meist zu Hause)" },
   },
   en: {
-    eyebrow: "Cooking plan · 11 recipes",
-    credit: "All recipes and photos come from", foot: "Recipes and photos: Kwestia Smaku,", footNote: "This page is a private meal plan; the German and English translations are unofficial.", photo: "Photo",
+    eyebrow: "Cooking plan · 12 recipes",
+    credit: "Recipes and photos come from:", foot: "Recipes and photos:", footNote: "This page is a private meal plan; the recipe translations are unofficial.", photo: "Photo",
     title: "Meal Chain",
     sub: "The dishes are ordered so each one uses up ingredients from the one before: meal 1 has x and y, meal 2 y and z, meal 3 z and x… Tick what you want to cook and the shopping list adds itself up.",
     matrix: "How the meals share ingredients",
@@ -270,7 +270,7 @@ const UI = {
     all: "Select all", none: "Clear all",
     onList: "Add to list", servings: ["serving", "servings"], pieces: ["piece", "pieces"],
     recipe: "Recipe", ingredients: "Ingredients", steps: "Method", tips: "Tips", serve: "To serve",
-    source: "Original on kwestiasmaku.com (Polish)",
+    source: "Original on",
     fromPrev: "From meal", toNext: "Into meal",
     list: "Shopping list", copy: "Copy", reset: "Clear ticks",
     copied: "List copied to the clipboard.", copyFail: "Couldn't copy automatically. Select the text below and copy it by hand.",
@@ -388,6 +388,11 @@ const I = {
   sugar: ["cukier", "Zucker", "sugar", "pantry"],
   vanilla_sugar: ["cukier wanilinowy", "Vanillinzucker", "vanilla sugar", "pantry"],
   icing: ["cukier puder", "Puderzucker", "icing sugar", "pantry"],
+  sesame_oil: ["olej sezamowy", "Sesamöl", "sesame oil", "pantry"],
+  stirfry: ["mieszanka warzyw do stir-fry (opak. 320 g)", "Wok-Gemüsemischung (320-g-Packung)", "mixed stir-fry veg (320 g pack)", "produce"],
+  soy: ["sos sojowy (o obniżonej zawartości soli)", "Sojasauce (salzreduziert)", "low-salt soy sauce", "cans"],
+  rice_cooked: ["ryż brązowy, ugotowany (opak. 250 g)", "brauner Reis, vorgegart (250-g-Packung)", "cooked brown rice (250 g pack)", "dry"],
+  chili_oil: ["olej chili syczuański", "Sichuan-Chiliöl", "Sichuan chilli oil", "cans"],
 };
 
 /* buy-size hints shown next to the shopping-list total */
@@ -414,11 +419,17 @@ const TOKENS = {
   chicken: N("kurczak", "Hähnchen", "chicken"),
   cream: N("śmietanka 30%", "Sahne", "cream"),
   carrot: N("marchewka", "Karotte", "carrot"),
+  noodles: N("makaron azjatycki", "asiatische Nudeln", "noodles"),
+  lime: N("limonka", "Limette", "lime"),
   apple: N("jabłko", "Apfel", "apple"),
 };
 
 /* ---------- recipes ---------- */
 const SRC = "https://www.kwestiasmaku.com/przepis/";
+const SITES = {
+  ks: { name: "Kwestia Smaku", url: "https://www.kwestiasmaku.com/", host: "kwestiasmaku.com" },
+  jo: { name: "Jamie Oliver", url: "https://www.jamieoliver.com/", host: "jamieoliver.com" },
+};
 const R = [
 {
   id: "pesto", type: "main", serv: 2, src: SRC + "makaron-z-pesto-i-burrata", img: "img/pesto.webp",
@@ -658,16 +669,16 @@ const R = [
       "Add the cream and shake the pan to combine. Cook for about 1 minute until the sauce thickens. Finish with dill."],
   },
   serve: {
-    pl: ["Z ziemniakami, kopytkami, makaronem lub kaszą. Pasuje do niego surówka z czerwonej kapusty (danie 10)."],
-    de: ["Mit Kartoffeln, Schupfnudeln, Nudeln oder Getreide. Dazu passt der Rotkohlsalat (Gericht 10)."],
-    en: ["With potatoes, potato dumplings, pasta or grains. The red cabbage slaw (dish 10) goes well with it."],
+    pl: ["Z ziemniakami, kopytkami, makaronem lub kaszą. Pasuje do niego surówka z czerwonej kapusty (danie 11)."],
+    de: ["Mit Kartoffeln, Schupfnudeln, Nudeln oder Getreide. Dazu passt der Rotkohlsalat (Gericht 11)."],
+    en: ["With potatoes, potato dumplings, pasta or grains. The red cabbage slaw (dish 11) goes well with it."],
   },
 },
 {
   id: "tajska", type: "soup", serv: 4, src: SRC + "tajska-zupa-curry-z-noodlami", img: "img/tajska.webp",
   name: N("Tajska zupa curry z noodlami", "Thailändische Currysuppe mit Nudeln", "Thai curry noodle soup"),
   time: N("ok. 25 min", "ca. 25 Min.", "about 25 min"),
-  tokens: ["chicken", "coconut", "ginger", "bell", "carrot"],
+  tokens: ["chicken", "coconut", "ginger", "bell", "carrot", "noodles", "lime"],
   ing: [["noodles", 200, "g", N("suchego; gotowego 400 g", "trocken; vorgegart 400 g", "dry; 400 g if ready-cooked")], ["chicken", 200, "g", N("lub tofu", "oder Tofu", "or tofu")], ["coconut_oil", 2, "tbsp"], ["onion", 1, "pcs"], ["carrot", 0.5, "pcs"], ["bell", 0.5, "pcs"], ["ginger", 3, "cm", N("1 łyżka startego", "1 EL gerieben", "1 tbsp grated")], ["garlic", 2, "clove"], ["red_curry", 1, "tbsp"], ["stock", 1500, "ml"], ["coconut", 400, "ml"], ["fish_sauce", 3, "tbsp"],
     ["#serve"], ["lime", 1, "pcs", N("1 łyżka soku + kawałki do podania", "1 EL Saft + Spalten zum Servieren", "1 tbsp juice + wedges to serve")], ["coriander", null], ["chives", null], ["chili", null]],
   steps: {
@@ -692,6 +703,32 @@ const R = [
       "Add the chicken or tofu and cook for about 2 minutes.",
       "Rinse the noodles, add to the soup and simmer until tender (2–3 minutes, depending on type).",
       "Squeeze over the lime juice. Serve with coriander, chives, lime and chilli."],
+  },
+},
+{
+  id: "bowl", type: "main", serv: 2, site: "jo", src: "https://www.jamieoliver.com/recipes/rice/upside-down-noodle-rice-bowl", img: "img/bowl.webp",
+  name: N("Odwrócona miska z makaronem i ryżem", "Umgedrehte Nudel-Reis-Bowl", "Upside-down noodle rice bowl"),
+  time: N("ok. 18 min", "ca. 18 Min.", "about 18 min"),
+  tokens: ["noodles", "lime", "cashews", "rice"],
+  ing: [["noodles", 50, "g", N("1 gniazdo makaronu ryżowego vermicelli", "1 Nest Reis-Vermicelli", "1 nest of vermicelli rice noodles")], ["sesame_oil", null], ["stirfry", 320, "g"],
+    ["olive_oil", 2, "tbsp", N("+ odrobina do smażenia warzyw", "+ etwas zum Braten des Gemüses", "+ a little for frying the veg")], ["cashews", 30, "g", N("niesolone", "ungesalzen", "unsalted")], ["soy", 2, "tbsp"], ["rice_cooked", 250, "g"], ["lime", 2, "pcs"], ["egg", 2, "pcs"], ["curry", null], ["chili_oil", null],
+    ["coriander", 15, "g", N("½ pęczka", "½ Bund", "½ bunch")], ["salt", null], ["pepper", null]],
+  steps: {
+    pl: ["Makaron namoczyć zgodnie z instrukcją na opakowaniu w głębokiej misce o średnicy ok. 16 cm, w której potem podasz danie. Odcedzić, włożyć z powrotem do miski i wymieszać z odrobiną oleju sezamowego.",
+      "Warzywa wrzucić na bardzo mocno rozgrzaną dużą patelnię z nieprzywierającą powłoką, z odrobiną oliwy i nerkowcami. Smażyć ok. 4 minuty, aż lekko zmiękną, często podrzucając. Doprawić sosem sojowym i wyłożyć do miski na makaron.",
+      "Na tę samą patelnię pokruszyć ryż i wycisnąć na niego sok z 1 limonki. Gdy się rozgrzeje, wyłożyć go na warzywa i mocno docisnąć łopatką.",
+      "Szybko przetrzeć patelnię i postawić na średnim ogniu. Wlać 2 łyżki oliwy, wbić jajka, doprawić szczyptą soli i pieprzu i oprószyć przyprawą curry. Smażyć do ulubionego stopnia ścięcia, polewając jajka gorącym tłuszczem.",
+      "Odwrócić miskę na talerz (jak babkę z piasku!), na wierzchu położyć jajka, polać olejem chili do smaku i posypać listkami kolendry. Skropić sokiem z drugiej limonki i podawać."],
+    de: ["Die Nudeln nach Packungsangabe in einer tiefen Servierschüssel (ca. 16 cm) einweichen. Abgießen, zurück in die Schüssel geben und mit etwas Sesamöl vermischen.",
+      "Das Gemüse mit etwas Olivenöl und den Cashews in eine sehr heiße, große beschichtete Pfanne geben und ca. 4 Minuten unter häufigem Schwenken bissfest braten. Mit Sojasauce abschmecken und in der Schüssel auf die Nudeln häufen.",
+      "Den Reis in dieselbe Pfanne bröseln und den Saft von 1 Limette darüberpressen. Sobald er heiß ist, auf das Gemüse schichten und mit dem Pfannenwender festdrücken.",
+      "Die Pfanne kurz auswischen und bei mittlerer Hitze zurück auf den Herd stellen. 2 EL Olivenöl hineingeben, die Eier aufschlagen, mit einer Prise Salz und Pfeffer würzen und mit Currypulver bestäuben. Nach Belieben braten und dabei mit dem heißen Öl begießen.",
+      "Die Schüssel auf einen Teller stürzen (wie eine Sandburg!), die Spiegeleier darauflegen, nach Geschmack Sichuan-Chiliöl darübergeben und Korianderblätter darüberzupfen. Mit dem restlichen Limettensaft beträufeln und servieren."],
+    en: ["Rehydrate the noodles in a deep 16 cm serving bowl according to the packet. Drain, return to the bowl and toss with a little sesame oil.",
+      "Tip the veg into a very hot large non-stick frying pan with a little olive oil and the cashews and fry for about 4 minutes, until just tender, tossing regularly. Season with the soy sauce, then pile the veg into the bowl on top of the noodles.",
+      "Crumble the rice into the same pan and squeeze over the juice of 1 lime. Once hot, layer it on top of the veg and press down firmly with a fish slice.",
+      "Quickly wipe out the pan and put it back on a medium heat. Add 2 tbsp olive oil, crack in the eggs, season with a pinch of salt and pepper and dust with curry powder. Cook to your liking, spooning the hot oil over them.",
+      "Turn the bowl out onto a plate (like a sandcastle!), top with the fried eggs, spoon over Sichuan chilli oil to taste and scatter with coriander leaves. Squeeze over the remaining lime juice and serve."],
   },
 },
 {
@@ -911,7 +948,7 @@ function renderMeal(r, idx, arr) {
   const extra = (title, obj) => obj ? `<div class="extra-notes"><h4>${esc(title)}</h4>${obj[lang].map(x => `<div>${esc(x)}</div>`).join("")}</div>` : "";
   const minus = r.unitServ === "pieces" ? 5 : 1;
   return `<article class="meal ${s.on ? "on" : ""} ${isMain ? "" : "extra"}" data-id="${r.id}">
-    ${r.img ? `<figure class="photo-wrap"><img class="photo" src="${r.img}" alt="${esc(r.name[lang])}" loading="lazy"><figcaption>${esc(t.photo)}: kwestiasmaku.com</figcaption></figure>` : ""}
+    ${r.img ? `<figure class="photo-wrap"><img class="photo" src="${r.img}" alt="${esc(r.name[lang])}" loading="lazy"><figcaption>${esc(t.photo)}: ${SITES[r.site || "ks"].host}</figcaption></figure>` : ""}
     <div class="meal-head">
       <div class="num" aria-hidden="true">${r.no}</div>
       <div style="min-width:0">
@@ -934,7 +971,7 @@ function renderMeal(r, idx, arr) {
       <div class="recipe-body">
         <div><h4>${esc(t.ingredients)} · ${esc(servLabel(r, s.p))}</h4><ul>${ings}</ul></div>
         <div><h4>${esc(t.steps)}</h4><ol>${steps}</ol>${extra(t.tips, r.tips)}${extra(t.serve, r.serve)}
-          <p class="src"><a href="${r.src}" target="_blank" rel="noopener">${esc(t.source)} ↗</a></p></div>
+          <p class="src"><a href="${r.src}" target="_blank" rel="noopener">${esc(t.source)} ${SITES[r.site || "ks"].host} ↗</a></p></div>
       </div>
     </details>
   </article>`;
@@ -1014,9 +1051,10 @@ function renderStatic() {
   $("#t-eyebrow").textContent = t.eyebrow;
   $("#t-title").textContent = t.title;
   $("#t-sub").textContent = t.sub;
-  const KS = '<a href="https://www.kwestiasmaku.com/" target="_blank" rel="noopener">www.kwestiasmaku.com</a>';
-  $("#t-credit").innerHTML = `${esc(t.credit)} ${KS}.`;
-  $("#t-foot").innerHTML = `${esc(t.foot)} ${KS}. ${esc(t.footNote)}`;
+  const used = [...new Set(R.map(r => r.site || "ks"))].map(k => SITES[k]);
+  const links = used.map(s => `${esc(s.name)} (<a href="${s.url}" target="_blank" rel="noopener">${s.host}</a>)`).join(", ");
+  $("#t-credit").innerHTML = `${esc(t.credit)} ${links}.`;
+  $("#t-foot").innerHTML = `${esc(t.foot)} ${links}. ${esc(t.footNote)}`;
   $("#t-matrix").textContent = t.matrix;
   $("#t-matrix-note").textContent = t.matrixNote;
   $("#t-mains").textContent = t.mains;
