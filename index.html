@@ -81,6 +81,16 @@ table.matrix tr.hl th, table.matrix tr.hl td { background: var(--accent-soft); }
 .btn:hover { border-color: var(--accent); }
 .btn.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
 .meals { display: grid; gap: 12px; }
+.filters { display: grid; gap: 8px; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; }
+.frow { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.frow .flabel { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); font-weight: 600; min-width: 64px; }
+.fchip { border: 1px solid var(--line); background: var(--bg); border-radius: 999px; padding: 4px 12px; cursor: pointer; font-size: 0.85rem; font-weight: 500; display: inline-flex; gap: 6px; align-items: center; }
+.fchip .c { font-size: 0.75rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+.fchip[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.fchip[aria-pressed="true"] .c { color: var(--accent-ink); }
+.fchip:disabled { opacity: 0.45; cursor: not-allowed; }
+.fmeta { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; justify-content: space-between; font-size: 0.85rem; color: var(--muted); }
+.tag { font-size: 0.75rem; padding: 1px 8px; border-radius: 6px; border: 1px solid var(--line); }
 .meal { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; display: grid; gap: 10px; min-width: 0; }
 .meal.on { border-color: var(--accent); }
 .meal .photo { display: block; width: calc(100% + 32px); max-width: none; margin: -14px -16px 0; height: clamp(160px, 28vw, 240px); object-fit: cover; border-radius: 11px 11px 0 0; background: var(--sunk); }
@@ -183,6 +193,8 @@ textarea#copyfallback { width: 100%; min-height: 160px; font: 0.85rem/1.4 var(--
             <button type="button" class="btn" id="b-none"></button>
           </div>
         </div>
+        <div class="filters" id="filters"></div>
+        <div class="empty" id="nomatch" hidden></div>
         <div class="meals" id="mains"></div>
       </section>
 
@@ -216,6 +228,7 @@ const N = (pl, de, en) => ({ pl, de, en });
 /* ---------- UI strings ---------- */
 const UI = {
   pl: {
+    f: { base: "Baza", prot: "Białko", pasta: "makaron", rice: "ryż", kasza: "kasza", beans: "fasola i strączki", fish: "ryba", chicken: "kurczak", beef: "wołowina", veg: "wege", clear: "Wyczyść filtry", none: "Żadne danie główne nie pasuje do wybranych filtrów.", shown: (a, b) => `Widoczne dania: ${a} z ${b}` },
     eyebrow: "Plan gotowania · 13 przepisów",
     credit: "Przepisy i zdjęcia pochodzą ze stron:", foot: "Przepisy i zdjęcia:", footNote: "Ta strona to prywatny plan posiłków; tłumaczenia przepisów są nieoficjalne.", photo: "Zdjęcie",
     title: "Łańcuch obiadów",
@@ -238,6 +251,7 @@ const UI = {
     cats: { produce: "Warzywa i owoce", herbs: "Świeże zioła", meat: "Mięso", dairy: "Nabiał i jajka", dry: "Makarony, kasze, orzechy", cans: "Puszki, słoiki, sosy", spice: "Przyprawy", pantry: "Spiżarnia (zwykle w domu)" },
   },
   de: {
+    f: { base: "Basis", prot: "Protein", pasta: "Nudeln", rice: "Reis", kasza: "Getreide (Hirse)", beans: "Bohnen & Hülsenfrüchte", fish: "Fisch", chicken: "Hähnchen", beef: "Rind", veg: "vegetarisch", clear: "Filter zurücksetzen", none: "Kein Hauptgericht passt zu den gewählten Filtern.", shown: (a, b) => `Sichtbare Gerichte: ${a} von ${b}` },
     eyebrow: "Kochplan · 13 Rezepte",
     credit: "Rezepte und Fotos stammen von:", foot: "Rezepte und Fotos:", footNote: "Diese Seite ist ein privater Essensplan; die Übersetzungen der Rezepte sind inoffiziell.", photo: "Foto",
     title: "Gerichte-Kette",
@@ -260,6 +274,7 @@ const UI = {
     cats: { produce: "Obst & Gemüse", herbs: "Frische Kräuter", meat: "Fleisch", dairy: "Milchprodukte & Eier", dry: "Nudeln, Getreide, Nüsse", cans: "Konserven, Gläser, Saucen", spice: "Gewürze", pantry: "Vorrat (meist zu Hause)" },
   },
   en: {
+    f: { base: "Base", prot: "Protein", pasta: "pasta & noodles", rice: "rice", kasza: "grains (millet)", beans: "beans & pulses", fish: "fish", chicken: "chicken", beef: "beef", veg: "veggie", clear: "Clear filters", none: "No main course matches the selected filters.", shown: (a, b) => `Showing ${a} of ${b} dishes` },
     eyebrow: "Cooking plan · 13 recipes",
     credit: "Recipes and photos come from:", foot: "Recipes and photos:", footNote: "This page is a private meal plan; the recipe translations are unofficial.", photo: "Photo",
     title: "Meal Chain",
@@ -825,6 +840,21 @@ const R = [
 },
 ];
 R.forEach((r, i) => r.no = i + 1);
+/* slicer tags: b = base, p = protein */
+const TAGS = {
+  pesto: { b: ["pasta"], p: ["veg"] },
+  zupa: { b: ["beans"], p: ["veg"] },
+  fasolka: { b: ["beans"], p: ["veg"] },
+  harissa: { b: ["beans"], p: ["veg"] },
+  kasza: { b: ["kasza"], p: ["veg"] },
+  curry1: { b: ["rice", "beans"], p: ["veg"] },
+  curry2: { b: ["rice"], p: ["veg"] },
+  butter: { b: ["rice"], p: ["chicken"] },
+  grzyby: { b: [], p: ["chicken"] },
+  tajska: { b: ["pasta"], p: ["chicken", "veg"] },
+  bowl: { b: ["pasta", "rice"], p: ["veg"] },
+};
+const FGROUPS = { b: ["pasta", "rice", "kasza", "beans"], p: ["fish", "chicken", "beef", "veg"] };
 const MAINS = R.filter(r => r.type === "main" || r.type === "soup");
 const EXTRAS = R.filter(r => !MAINS.includes(r));
 
@@ -838,6 +868,10 @@ if (!UI[lang]) lang = "pl";
 const sel = store.get("sel", {});
 R.forEach(r => { if (!sel[r.id]) sel[r.id] = { on: MAINS.includes(r), p: r.serv }; });
 let done = store.get("done", {});
+let filt = store.get("filt", { b: [], p: [] });
+if (!filt || !Array.isArray(filt.b) || !Array.isArray(filt.p)) filt = { b: [], p: [] };
+const tagsOf = r => TAGS[r.id] || { b: [], p: [] };
+const matches = r => ["b", "p"].every(g => !filt[g].length || filt[g].some(v => tagsOf(r)[g].includes(v)));
 
 /* ---------- formatting ---------- */
 const FR = [[0, ""], [0.25, "¼"], [0.33, "⅓"], [0.5, "½"], [0.67, "⅔"], [0.75, "¾"], [1, ""]];
@@ -982,7 +1016,7 @@ function renderMeal(r, idx, arr) {
       <div class="num" aria-hidden="true">${r.no}</div>
       <div style="min-width:0">
         <h3>${esc(r.name[lang])}</h3>
-        <div class="meta"><span>${esc(t.type[r.type])}</span><span>${esc(r.time[lang])}</span></div>
+        <div class="meta"><span>${esc(t.type[r.type])}</span><span>${esc(r.time[lang])}</span>${[...tagsOf(r).b, ...tagsOf(r).p].map(k => `<span class="tag">${esc(t.f[k])}</span>`).join("")}</div>
       </div>
       <div class="pick">
         <div class="stepper" role="group" aria-label="${esc(servLabel(r, s.p))}">
@@ -1006,9 +1040,25 @@ function renderMeal(r, idx, arr) {
   </article>`;
 }
 
+function renderFilters(shown) {
+  const t = UI[lang].f;
+  const row = g => `<div class="frow" role="group" aria-label="${esc(t[g === "b" ? "base" : "prot"])}"><span class="flabel">${esc(t[g === "b" ? "base" : "prot"])}</span>` +
+    FGROUPS[g].map(k => {
+      const n = MAINS.filter(r => tagsOf(r)[g].includes(k)).length;
+      return `<button type="button" class="fchip" data-fg="${g}" data-fk="${k}" aria-pressed="${filt[g].includes(k)}" ${n ? "" : "disabled"}>${esc(t[k])} <span class="c">${n}</span></button>`;
+    }).join("") + "</div>";
+  const any = filt.b.length || filt.p.length;
+  $("#filters").innerHTML = row("b") + row("p") +
+    `<div class="fmeta"><span>${esc(t.shown(shown, MAINS.length))}</span>${any ? `<button type="button" class="btn" id="b-fclear">${esc(t.clear)}</button>` : ""}</div>`;
+}
+
 function renderMeals() {
   const openIds = [...document.querySelectorAll("details.recipe[open]")].map(d => d.id);
   $("#mains").innerHTML = MAINS.map(renderMeal).join("");
+  let shown = 0;
+  MAINS.forEach(r => { const ok = matches(r); if (ok) shown++; const el = document.querySelector(`#mains [data-id="${r.id}"]`); if (el) el.hidden = !ok; });
+  const nm = $("#nomatch"); nm.hidden = shown > 0; nm.textContent = UI[lang].f.none;
+  renderFilters(shown);
   $("#extras").innerHTML = EXTRAS.map((r, i, a) => renderMeal(r, i, a)).join("");
   openIds.forEach(id => { const d = document.getElementById(id); if (d) d.open = true; });
 }
@@ -1124,8 +1174,18 @@ $("#listbody").addEventListener("change", e => {
   save();
   e.target.closest(".item").classList.toggle("done", e.target.checked);
 });
-$("#b-all").addEventListener("click", () => { MAINS.forEach(r => sel[r.id].on = true); save(); renderMeals(); renderList(); });
+$("#b-all").addEventListener("click", () => { MAINS.filter(matches).forEach(r => sel[r.id].on = true); save(); renderMeals(); renderList(); });
 $("#b-none").addEventListener("click", () => { R.forEach(r => sel[r.id].on = false); save(); renderMeals(); renderList(); });
+$("#filters").addEventListener("click", e => {
+  if (e.target.closest("#b-fclear")) { filt = { b: [], p: [] }; }
+  else {
+    const c = e.target.closest(".fchip");
+    if (!c || c.disabled) return;
+    const g = c.dataset.fg, k = c.dataset.fk, arr = filt[g];
+    filt[g] = arr.includes(k) ? arr.filter(x => x !== k) : [...arr, k];
+  }
+  store.set("filt", filt); renderMeals();
+});
 $("#b-reset").addEventListener("click", () => { done = {}; save(); renderList(); });
 $("#b-copy").addEventListener("click", () => {
   const text = listAsText(), st = $("#status");
