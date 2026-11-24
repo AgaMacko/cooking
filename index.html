@@ -229,7 +229,7 @@ const N = (pl, de, en) => ({ pl, de, en });
 const UI = {
   pl: {
     f: { base: "Baza", prot: "Białko", pasta: "makaron", rice: "ryż", kasza: "kasza", beans: "fasola i strączki", fish: "ryba", chicken: "kurczak", beef: "wołowina", veg: "wege", clear: "Wyczyść filtry", none: "Żadne danie główne nie pasuje do wybranych filtrów.", shown: (a, b) => `Widoczne dania: ${a} z ${b}` },
-    eyebrow: "Plan gotowania · 13 przepisów",
+    eyebrow: "Plan gotowania · {n} przepisów",
     credit: "Przepisy i zdjęcia pochodzą ze stron:", foot: "Przepisy i zdjęcia:", footNote: "Ta strona to prywatny plan posiłków; tłumaczenia przepisów są nieoficjalne.", photo: "Zdjęcie",
     title: "Łańcuch obiadów",
     sub: "Dania ułożone tak, żeby każde kolejne zużywało składniki poprzedniego: danie 1 ma x i y, danie 2 y i z, danie 3 z i x… Zaznacz, co chcesz ugotować, a lista zakupów policzy się sama.",
@@ -248,11 +248,11 @@ const UI = {
     toTaste: "do smaku", usedIn: "do dań", jump: "Lista zakupów",
     type: { main: "danie główne", soup: "zupa", side: "dodatek", dessert: "deser / podwieczorek" },
     grp: { marinade: "Marynata", sauce: "Sos", serve: "Do podania", salad: "Sałatka Kachumber" },
-    cats: { produce: "Warzywa i owoce", herbs: "Świeże zioła", meat: "Mięso", dairy: "Nabiał i jajka", dry: "Makarony, kasze, orzechy", cans: "Puszki, słoiki, sosy", spice: "Przyprawy", pantry: "Spiżarnia (zwykle w domu)" },
+    cats: { frozen: "Mrożonki", bakery: "Pieczywo", produce: "Warzywa i owoce", herbs: "Świeże zioła", meat: "Mięso", dairy: "Nabiał i jajka", dry: "Makarony, kasze, orzechy", cans: "Puszki, słoiki, sosy", spice: "Przyprawy", pantry: "Spiżarnia (zwykle w domu)" },
   },
   de: {
     f: { base: "Basis", prot: "Protein", pasta: "Nudeln", rice: "Reis", kasza: "Getreide (Hirse)", beans: "Bohnen & Hülsenfrüchte", fish: "Fisch", chicken: "Hähnchen", beef: "Rind", veg: "vegetarisch", clear: "Filter zurücksetzen", none: "Kein Hauptgericht passt zu den gewählten Filtern.", shown: (a, b) => `Sichtbare Gerichte: ${a} von ${b}` },
-    eyebrow: "Kochplan · 13 Rezepte",
+    eyebrow: "Kochplan · {n} Rezepte",
     credit: "Rezepte und Fotos stammen von:", foot: "Rezepte und Fotos:", footNote: "Diese Seite ist ein privater Essensplan; die Übersetzungen der Rezepte sind inoffiziell.", photo: "Foto",
     title: "Gerichte-Kette",
     sub: "Die Gerichte sind so angeordnet, dass jedes die Zutaten des vorherigen aufbraucht: Gericht 1 hat x und y, Gericht 2 y und z, Gericht 3 z und x … Wähle aus, was du kochen willst – die Einkaufsliste rechnet sich selbst.",
@@ -271,11 +271,11 @@ const UI = {
     toTaste: "nach Geschmack", usedIn: "für", jump: "Einkaufsliste",
     type: { main: "Hauptgericht", soup: "Suppe", side: "Beilage", dessert: "Dessert / Nachmittag" },
     grp: { marinade: "Marinade", sauce: "Sauce", serve: "Zum Servieren", salad: "Kachumber-Salat" },
-    cats: { produce: "Obst & Gemüse", herbs: "Frische Kräuter", meat: "Fleisch", dairy: "Milchprodukte & Eier", dry: "Nudeln, Getreide, Nüsse", cans: "Konserven, Gläser, Saucen", spice: "Gewürze", pantry: "Vorrat (meist zu Hause)" },
+    cats: { frozen: "Tiefkühlware", bakery: "Brot", produce: "Obst & Gemüse", herbs: "Frische Kräuter", meat: "Fleisch", dairy: "Milchprodukte & Eier", dry: "Nudeln, Getreide, Nüsse", cans: "Konserven, Gläser, Saucen", spice: "Gewürze", pantry: "Vorrat (meist zu Hause)" },
   },
   en: {
     f: { base: "Base", prot: "Protein", pasta: "pasta & noodles", rice: "rice", kasza: "grains (millet)", beans: "beans & pulses", fish: "fish", chicken: "chicken", beef: "beef", veg: "veggie", clear: "Clear filters", none: "No main course matches the selected filters.", shown: (a, b) => `Showing ${a} of ${b} dishes` },
-    eyebrow: "Cooking plan · 13 recipes",
+    eyebrow: "Cooking plan · {n} recipes",
     credit: "Recipes and photos come from:", foot: "Recipes and photos:", footNote: "This page is a private meal plan; the recipe translations are unofficial.", photo: "Photo",
     title: "Meal Chain",
     sub: "The dishes are ordered so each one uses up ingredients from the one before: meal 1 has x and y, meal 2 y and z, meal 3 z and x… Tick what you want to cook and the shopping list adds itself up.",
@@ -294,10 +294,10 @@ const UI = {
     toTaste: "to taste", usedIn: "for", jump: "Shopping list",
     type: { main: "main course", soup: "soup", side: "side dish", dessert: "dessert / snack" },
     grp: { marinade: "Marinade", sauce: "Sauce", serve: "To serve", salad: "Kachumber salad" },
-    cats: { produce: "Fruit & veg", herbs: "Fresh herbs", meat: "Meat", dairy: "Dairy & eggs", dry: "Pasta, grains & nuts", cans: "Cans, jars & sauces", spice: "Spices", pantry: "Pantry basics (usually at home)" },
+    cats: { frozen: "Frozen", bakery: "Bread", produce: "Fruit & veg", herbs: "Fresh herbs", meat: "Meat", dairy: "Dairy & eggs", dry: "Pasta, grains & nuts", cans: "Cans, jars & sauces", spice: "Spices", pantry: "Pantry basics (usually at home)" },
   },
 };
-const CAT_ORDER = ["produce", "herbs", "meat", "dairy", "dry", "cans", "spice", "pantry"];
+const CAT_ORDER = ["produce", "herbs", "meat", "dairy", "frozen", "bakery", "dry", "cans", "spice", "pantry"];
 
 /* ---------- units ---------- */
 const UNITS = {
@@ -405,6 +405,29 @@ const I = {
   icing: ["cukier puder", "Puderzucker", "icing sugar", "pantry"],
   butter_beans: ["fasola Jaś / maślana (puszka 400 g)", "Butterbohnen (Dose 400 g)", "butter beans (400 g tin)", "cans"],
   harissa: ["pasta harissa", "Harissa-Paste", "harissa paste", "cans"],
+  gnocchi: ["gnocchi (gotowe)", "Gnocchi (fertig)", "gnocchi (ready-made)", "dry"],
+  mozzarella: ["mozzarella (kulka 125 g)", "Mozzarella (Kugel 125 g)", "mozzarella (125 g ball)", "dairy"],
+  giant_beans: ["fasola gigant (słoik 540 g)", "Riesenbohnen (Glas 540 g)", "giant beans (540 g jar)", "cans"],
+  gochujang: ["pasta gochujang", "Gochujang-Paste", "gochujang paste", "cans"],
+  bread: ["chleb", "Brot", "bread", "bakery"],
+  button_mush: ["pieczarki brunatne", "braune Champignons", "chestnut mushrooms", "produce"],
+  miso: ["pasta miso (jasna)", "helle Misopaste", "white miso paste", "cans"],
+  cottage: ["serek wiejski", "Hüttenkäse", "cottage cheese", "dairy"],
+  spinach_frozen: ["szpinak mrożony", "Tiefkühlspinat", "frozen spinach", "frozen"],
+  lemon: ["cytryna", "Zitrone", "lemon", "produce"],
+  halloumi: ["halloumi", "Halloumi", "halloumi", "dairy"],
+  greek_yogurt: ["jogurt grecki", "griechischer Joghurt", "Greek yoghurt", "dairy"],
+  honey: ["miód", "Honig", "honey", "pantry"],
+  radish: ["rzodkiewki", "Radieschen", "radishes", "produce"],
+  panko: ["panko (bułka tarta)", "Panko", "panko breadcrumbs", "dry"],
+  sesame: ["sezam", "Sesam", "sesame seeds", "dry"],
+  vinegar: ["ocet jabłkowy", "Apfelessig", "cider vinegar", "pantry"],
+  dumplings: ["pierożki azjatyckie (gyoza / wonton)", "asiatische Teigtaschen (Gyoza / Wonton)", "Asian dumplings (gyoza / wonton)", "frozen"],
+  pak_choy: ["pak choy", "Pak Choi", "pak choi", "produce"],
+  spring_onion: ["zielona cebulka", "Frühlingszwiebeln", "spring onions", "herbs"],
+  fried_onion: ["prażona cebulka", "Röstzwiebeln", "crispy fried onions", "cans"],
+  grilled_pepper: ["grillowana papryka (słoik 290 g)", "gegrillte Paprika (Glas 290 g)", "roasted peppers (290 g jar)", "cans"],
+  smoked_paprika: ["papryka wędzona", "geräuchertes Paprikapulver", "smoked paprika", "spice"],
   sesame_oil: ["olej sezamowy", "Sesamöl", "sesame oil", "pantry"],
   stirfry: ["mieszanka warzyw do stir-fry (opak. 320 g)", "Wok-Gemüsemischung (320-g-Packung)", "mixed stir-fry veg (320 g pack)", "produce"],
   soy: ["sos sojowy (o obniżonej zawartości soli)", "Sojasauce (salzreduziert)", "low-salt soy sauce", "cans"],
@@ -439,6 +462,16 @@ const TOKENS = {
   parsley: N("natka pietruszki", "Petersilie", "parsley"),
   noodles: N("makaron azjatycki", "asiatische Nudeln", "noodles"),
   lime: N("limonka", "Limette", "lime"),
+  burrata: N("burrata", "Burrata", "burrata"),
+  cherry: N("pomidorki koktajlowe", "Cherrytomaten", "cherry tomatoes"),
+  spinach: N("szpinak", "Spinat", "spinach"),
+  harissa: N("harissa", "Harissa", "harissa"),
+  eggplant: N("bakłażan", "Aubergine", "aubergine"),
+  mushrooms: N("grzyby / pieczarki", "Pilze", "mushrooms"),
+  miso: N("pasta miso", "Misopaste", "miso"),
+  egg: N("jajka", "Eier", "eggs"),
+  lemon: N("cytryna", "Zitrone", "lemon"),
+  curry_paste: N("czerwona pasta curry", "rote Currypaste", "red curry paste"),
   apple: N("jabłko", "Apfel", "apple"),
 };
 
@@ -446,6 +479,7 @@ const TOKENS = {
 const SRC = "https://www.kwestiasmaku.com/przepis/";
 const SITES = {
   ks: { name: "Kwestia Smaku", url: "https://www.kwestiasmaku.com/", host: "kwestiasmaku.com" },
+  rz: { name: "Rozkoszny", url: "https://www.rozkoszny.pl/", host: "rozkoszny.pl" },
   jo: { name: "Jamie Oliver", url: "https://www.jamieoliver.com/", host: "jamieoliver.com" },
 };
 const R = [
@@ -453,7 +487,7 @@ const R = [
   id: "pesto", type: "main", serv: 2, src: SRC + "makaron-z-pesto-i-burrata", img: "img/pesto.webp",
   name: N("Makaron z pesto i burratą", "Pasta mit Pesto und Burrata", "Pasta with pesto and burrata"),
   time: N("ok. 20 min", "ca. 20 Min.", "about 20 min"),
-  tokens: ["basil", "parmesan"],
+  tokens: ["basil", "parmesan", "burrata"],
   ing: [["pasta", 150, "g"], ["pine", 4, "tbsp"], ["parmesan", 20, "g"], ["basil", 1, "cup"], ["olive_oil", 4, "tbsp"], ["garlic", 2, "clove"], ["burrata", 2, "ball"], ["rocket", null], ["salt", null], ["pepper", null]],
   steps: {
     pl: ["Zagotować osoloną wodę i ugotować makaron zgodnie z czasem na opakowaniu.",
@@ -477,7 +511,7 @@ const R = [
   id: "zupa", type: "soup", serv: 2, src: SRC + "toskanska-zupa-z-fasola-i-cukinia", img: "img/zupa.webp",
   name: N("Toskańska zupa z fasolą i cukinią", "Toskanische Suppe mit Bohnen und Zucchini", "Tuscan bean and courgette soup"),
   time: N("ok. 35 min", "ca. 35 Min.", "about 35 min"),
-  tokens: ["basil", "parmesan", "beans", "tomato", "zucchini", "carrot"],
+  tokens: ["basil", "parmesan", "beans", "tomato", "zucchini", "carrot", "spinach"],
   ing: [["olive_oil", 2, "tbsp"], ["onion", 0.5, "pcs"], ["carrot", 1, "pcs"], ["garlic", 2, "clove"], ["stock", 1000, "ml"], ["white_beans", 1, "can"], ["canned_tom", 1, "can"], ["tomato_paste", 1, "tbsp"], ["oregano", 0.5, "tsp"], ["marjoram", 0.5, "tsp"],
     ["zucchini", 150, "g", N("ok. ½ cukinii – druga połówka idzie do dania {kasza}", "ca. ½ Zucchini – die andere Hälfte kommt in Gericht {kasza}", "about ½ courgette – the other half goes into meal {kasza}")],
     ["spinach", 1, "handful"], ["basil", null], ["parmesan", null], ["salt", null], ["pepper", null]],
@@ -539,7 +573,7 @@ const R = [
   id: "harissa", type: "main", serv: 2, site: "jo", src: "https://www.jamieoliver.com/recipes/beans/harissa-butter-beans", img: "img/harissa.png",
   name: N("Fasola maślana z harissą", "Butterbohnen mit Harissa", "Harissa butter beans"),
   time: N("ok. 12 min", "ca. 12 Min.", "about 12 min"),
-  tokens: ["beans", "parsley"],
+  tokens: ["beans", "parsley", "harissa", "lemon"],
   ing: [["garlic", 2, "clove"], ["parsley", 4, "sprig", N("płaska; łodyżki do smażenia, listki do posypania", "glatt; Stiele zum Braten, Blätter zum Bestreuen", "flat-leaf; stalks for frying, leaves to finish")], ["olive_oil", 1, "tbsp"],
     ["butter_beans", 1, "can", N("razem z zalewą", "mitsamt Flüssigkeit", "juice and all")], ["harissa", 1, "tbsp"],
     ["lemon_juice", 1.5, "tbsp", N("½ cytryny – sok + ćwiartki do podania", "½ Zitrone – Saft + Spalten zum Servieren", "½ lemon – juice + wedges to serve")], ["salt", null], ["pepper", null]],
@@ -564,7 +598,7 @@ const R = [
   id: "kasza", type: "main", serv: 4, src: SRC + "kasza-jaglana-zapiekana-z-warzywami", img: "img/kasza.webp",
   name: N("Kasza jaglana zapiekana z warzywami", "Überbackene Hirse mit Gemüse", "Baked millet with vegetables"),
   time: N("ok. 55 min", "ca. 55 Min.", "about 55 min"),
-  tokens: ["tomato", "zucchini", "bell", "parsley"],
+  tokens: ["tomato", "zucchini", "bell", "parsley", "eggplant"],
   ing: [["olive_oil", 2, "tbsp"], ["onion", 1, "pcs"], ["garlic", 2, "clove"], ["eggplant", 300, "g"], ["zucchini", 300, "g"], ["bell", 1, "pcs"], ["millet", 100, "g"], ["tomato", 2, "pcs"], ["passata", 200, "ml"], ["stock", 250, "ml"], ["parsley", 2, "tbsp"], ["cheese", 75, "g"],
     ["herbes", 1, "tbsp"], ["paprika", 1, "tsp"], ["paprika_hot", 0.5, "tsp"], ["turmeric", 0.5, "tsp"], ["salt", null], ["pepper", null]],
   steps: {
@@ -650,7 +684,7 @@ const R = [
   id: "butter", type: "main", serv: 4, src: SRC + "dyniowy-butter-chicken", img: "img/butter.webp",
   name: N("Dyniowy butter chicken", "Kürbis-Butter-Chicken", "Pumpkin butter chicken"),
   time: N("ok. 50 min + marynowanie min. 2 h", "ca. 50 Min. + mind. 2 Std. Marinieren", "about 50 min + at least 2 h marinating"),
-  tokens: ["tomato", "pumpkin", "cashews", "ginger", "rice", "chicken", "cream"],
+  tokens: ["tomato", "pumpkin", "cashews", "ginger", "rice", "chicken", "cream", "cherry", "lemon"],
   ing: [["#marinade"], ["chicken", 700, "g"], ["ginger", 3, "cm", N("1 łyżka startego", "1 EL gerieben", "1 tbsp grated")], ["garlic", 2, "clove"], ["garam", 1, "tbsp"], ["lemon_juice", 2, "tbsp"], ["olive_oil", 1, "tbsp"], ["yogurt", 0.5, "cup"], ["salt", null], ["pepper", null],
     ["#sauce"], ["pumpkin", 400, "g", N("upieczona i zmiksowana na ok. 250 ml musu", "gebacken und zu ca. 250 ml Püree gemixt", "roasted and blended to about 250 ml purée")], ["ghee", 2, "tbsp"], ["onion", 1, "pcs"], ["garam", 1, "tbsp"], ["turmeric", 0.5, "tsp"], ["cumin", 0.5, "tsp"], ["cinnamon", 1, "pinch"],
     ["cashews", 35, "g", N("¼ szklanki, namoczone na noc", "¼ Tasse, über Nacht eingeweicht", "¼ cup, soaked overnight")], ["canned_tom", 1, "can"], ["stock", 125, "ml"], ["cream", 125, "ml"],
@@ -689,7 +723,7 @@ const R = [
   id: "grzyby", type: "main", serv: 4, src: SRC + "kurczak-z-grzybami", img: "img/grzyby.webp",
   name: N("Kurczak w sosie grzybowym", "Hähnchen in Pilzrahmsauce", "Chicken in creamy mushroom sauce"),
   time: N("ok. 30 min", "ca. 30 Min.", "about 30 min"),
-  tokens: ["chicken", "cream"],
+  tokens: ["chicken", "cream", "mushrooms"],
   ing: [["chicken", 400, "g", N("2 pojedyncze filety", "2 einzelne Filets", "2 single fillets")], ["paprika", 0.5, "tsp"], ["paprika_hot", 1, "pinch"], ["thyme", 1, "pinch"], ["mushrooms", 200, "g"], ["onion", 1, "pcs"], ["stock", 175, "ml"], ["cream", 100, "ml"], ["dill", 1, "tbsp"], ["oil", 1, "tbsp"], ["butter", 1, "tbsp"], ["flour", 1, "tbsp"], ["salt", null], ["pepper", null]],
   steps: {
     pl: ["Filety pokroić na mniejsze, cieńsze kawałki i rozbić tłuczkiem na ok. 1 cm. Doprawić solą, pieprzem, papryką słodką i ostrą oraz tymiankiem. Wymieszać z łyżką oleju i obtoczyć w łyżce mąki.",
@@ -721,7 +755,7 @@ const R = [
   id: "tajska", type: "soup", serv: 4, src: SRC + "tajska-zupa-curry-z-noodlami", img: "img/tajska.webp",
   name: N("Tajska zupa curry z noodlami", "Thailändische Currysuppe mit Nudeln", "Thai curry noodle soup"),
   time: N("ok. 25 min", "ca. 25 Min.", "about 25 min"),
-  tokens: ["chicken", "coconut", "ginger", "bell", "carrot", "noodles", "lime"],
+  tokens: ["chicken", "coconut", "ginger", "bell", "carrot", "noodles", "lime", "curry_paste"],
   ing: [["noodles", 200, "g", N("suchego; gotowego 400 g", "trocken; vorgegart 400 g", "dry; 400 g if ready-cooked")], ["chicken", 200, "g", N("lub tofu", "oder Tofu", "or tofu")], ["coconut_oil", 2, "tbsp"], ["onion", 1, "pcs"], ["carrot", 0.5, "pcs"], ["bell", 0.5, "pcs"], ["ginger", 3, "cm", N("1 łyżka startego", "1 EL gerieben", "1 tbsp grated")], ["garlic", 2, "clove"], ["red_curry", 1, "tbsp"], ["stock", 1500, "ml"], ["coconut", 400, "ml"], ["fish_sauce", 3, "tbsp"],
     ["#serve"], ["lime", 1, "pcs", N("1 łyżka soku + kawałki do podania", "1 EL Saft + Spalten zum Servieren", "1 tbsp juice + wedges to serve")], ["coriander", null], ["chives", null], ["chili", null]],
   steps: {
@@ -752,7 +786,7 @@ const R = [
   id: "bowl", type: "main", serv: 2, site: "jo", src: "https://www.jamieoliver.com/recipes/rice/upside-down-noodle-rice-bowl", img: "img/bowl.webp",
   name: N("Odwrócona miska z makaronem i ryżem", "Umgedrehte Nudel-Reis-Bowl", "Upside-down noodle rice bowl"),
   time: N("ok. 18 min", "ca. 18 Min.", "about 18 min"),
-  tokens: ["noodles", "lime", "cashews", "rice"],
+  tokens: ["noodles", "lime", "cashews", "rice", "egg"],
   ing: [["noodles", 50, "g", N("1 gniazdo makaronu ryżowego vermicelli", "1 Nest Reis-Vermicelli", "1 nest of vermicelli rice noodles")], ["sesame_oil", null], ["stirfry", 320, "g"],
     ["olive_oil", 2, "tbsp", N("+ odrobina do smażenia warzyw", "+ etwas zum Braten des Gemüses", "+ a little for frying the veg")], ["cashews", 30, "g", N("niesolone", "ungesalzen", "unsalted")], ["soy", 2, "tbsp"], ["rice_cooked", 250, "g"], ["lime", 2, "pcs"], ["egg", 2, "pcs"], ["curry", null], ["chili_oil", null],
     ["coriander", 15, "g", N("½ pęczka", "½ Bund", "½ bunch")], ["salt", null], ["pepper", null]],
@@ -838,7 +872,213 @@ const R = [
     en: ["Uses up the apples left over from the slaw."],
   },
 },
+{
+  id: "papryka", type: "main", serv: 2, site: "rz", src: "https://www.rozkoszny.pl/makaron-w-sosie-z-pomidorow-i-grillowanej-papryki/", img: "img/papryka.jpg",
+  name: N("Makaron w sosie z pomidorów i grillowanej papryki", "Pasta in Tomaten-Grillpaprika-Sauce", "Pasta in tomato and roasted pepper sauce"),
+  time: N("ok. 25 min", "ca. 25 Min.", "about 25 min"),
+  tokens: ["burrata", "parmesan", "tomato", "bell"],
+  ing: [["grilled_pepper", 1, "pcs"], ["canned_tom", 1, "can"], ["olive_oil", 2, "tbsp", N("+ do podania", "+ zum Servieren", "+ to serve")], ["garlic", 4, "clove"], ["smoked_paprika", 1, "tsp"], ["honey", 2, "tsp"],
+    ["pasta", 250, "g", N("świeże pappardelle (lub inny makaron)", "frische Pappardelle (oder andere Nudeln)", "fresh pappardelle (or any pasta)")], ["parmesan", 25, "g", N("lub pecorino romano, + do podania", "oder Pecorino Romano, + zum Servieren", "or pecorino romano, + to serve")], ["burrata", 1, "ball"], ["salt", null]],
+  steps: {
+    pl: ["Paprykę odsączyć z zalewy i zmiksować w blenderze razem z pomidorami z puszki. Sos nie musi być całkiem gładki.",
+      "Na dużej patelni rozgrzać oliwę na średnim ogniu. Dodać przeciśnięty czosnek i wędzoną paprykę, a gdy tylko zapachną, od razu wlać sos (inaczej przyprawy się przypalą). Dodać miód i ok. ¼ łyżeczki soli. Gotować bez przykrycia 10–15 minut, aż sos zredukuje się mniej więcej o połowę. Doprawić solą i miodem.",
+      "W międzyczasie ugotować makaron w osolonej wodzie o minutę krócej, niż podaje opakowanie.",
+      "Przełożyć makaron do sosu razem z ¼ szklanki (60 ml) wody z gotowania. Mieszać, dodając ser łyżka po łyżce, aż połączy się z sosem.",
+      "Nałożyć na talerze, na wierzch położyć rozerwaną burratę, posypać serem i skropić oliwą."],
+    de: ["Die Paprika abtropfen lassen und mit den Dosentomaten im Mixer pürieren. Die Sauce muss nicht ganz glatt sein.",
+      "Olivenöl in einer großen Pfanne bei mittlerer Hitze erhitzen. Gepressten Knoblauch und Räucherpaprika kurz anbraten und sofort die Sauce zugießen, damit die Gewürze nicht verbrennen. Honig und ca. ¼ TL Salz zugeben. 10–15 Minuten offen köcheln, bis die Sauce etwa um die Hälfte reduziert ist. Mit Salz und Honig abschmecken.",
+      "Inzwischen die Nudeln in Salzwasser eine Minute kürzer als angegeben kochen.",
+      "Nudeln mit ¼ Tasse (60 ml) Kochwasser in die Sauce geben. Rühren und den Käse esslöffelweise einarbeiten, bis er mit der Sauce verschmilzt.",
+      "Auf Teller geben, die zerzupfte Burrata darauflegen, mit Käse bestreuen und mit Olivenöl beträufeln."],
+    en: ["Drain the peppers and blend them with the canned tomatoes. The sauce doesn't need to be completely smooth.",
+      "Heat the olive oil in a large pan over a medium heat. Add the crushed garlic and smoked paprika and, as soon as they smell fragrant, pour in the sauce so the spices don't burn. Add the honey and about ¼ tsp salt. Simmer uncovered for 10–15 minutes until reduced by about half. Season with salt and honey.",
+      "Meanwhile, cook the pasta in salted water for a minute less than the packet says.",
+      "Add the pasta to the sauce with ¼ cup (60 ml) of the cooking water. Stir, adding the cheese a spoonful at a time until it melts into the sauce.",
+      "Serve topped with torn burrata, more cheese and a drizzle of olive oil."],
+  },
+  tips: {
+    pl: ["Bez papryki ze słoika: upiecz 2 czerwone papryki w całości w 220°C, aż zmiękną i miejscami się zwęglą, przykryj na chwilę, obierz i użyj zamiast słoika."],
+    de: ["Ohne Glaspaprika: 2 rote Paprika im Ganzen bei 220 °C weich und stellenweise schwarz rösten, kurz abgedeckt ruhen lassen, häuten und verwenden."],
+    en: ["No jarred peppers? Roast 2 whole red peppers at 220°C until soft and charred in places, cover briefly, peel and use instead."],
+  },
+},
+{
+  id: "gnocchi", type: "main", serv: 2, site: "rz", src: "https://www.rozkoszny.pl/pieczone-gnocchi-z-pomidorkami-mozzarella-i-bazylia/", img: "img/gnocchi.jpg",
+  name: N("Pieczone gnocchi z pomidorkami, mozzarellą i bazylią", "Ofen-Gnocchi mit Cherrytomaten, Mozzarella und Basilikum", "Baked gnocchi with cherry tomatoes, mozzarella and basil"),
+  time: N("ok. 40 min (głównie pieczenie)", "ca. 40 Min. (meist Backzeit)", "about 40 min (mostly baking)"),
+  tokens: ["cherry", "basil", "parmesan"],
+  ing: [["cherry", 500, "g", N("najlepiej słodkie", "möglichst süße", "the sweeter the better")], ["garlic", 3, "clove"], ["olive_oil", 60, "ml"], ["salt", 0.5, "tsp"], ["gnocchi", 400, "g"], ["parmesan", 45, "g"], ["mozzarella", 1, "ball"], ["basil", 1, "handful"], ["pepper", null]],
+  steps: {
+    pl: ["Nagrzać piekarnik do 200°C (góra-dół).",
+      "Pomidorki, obrany czosnek, oliwę i sól wymieszać w dużej brytfance, doprawić pieprzem. Piec 15–20 minut, aż pomidorki zmiękną.",
+      "Dodać gnocchi i obtoczyć je w sokach z brytfanki. Piec kolejne 15–20 minut, aż się przypieką na chrupko. Dodać parmezan, porwaną mozzarellę i bazylię, wymieszać i podawać."],
+    de: ["Backofen auf 200 °C (Ober-/Unterhitze) vorheizen.",
+      "Cherrytomaten, geschälten Knoblauch, Olivenöl und Salz in einer großen Form mischen und pfeffern. 15–20 Minuten backen, bis die Tomaten weich sind.",
+      "Gnocchi zugeben und in den Säften wenden. Weitere 15–20 Minuten knusprig backen. Parmesan, zerzupfte Mozzarella und Basilikum unterheben und servieren."],
+    en: ["Heat the oven to 200°C (conventional).",
+      "Toss the cherry tomatoes, peeled garlic, olive oil and salt in a large roasting tin and season with pepper. Roast for 15–20 minutes until the tomatoes soften.",
+      "Add the gnocchi and coat them in the juices. Roast for another 15–20 minutes until crisp. Stir through the Parmesan, torn mozzarella and basil and serve."],
+  },
+},
+{
+  id: "gochujang", type: "main", serv: 2, site: "rz", src: "https://www.rozkoszny.pl/express-kremowa-fasola-gochujang/", img: "img/gochujang.jpg",
+  name: N("Ekspresowa kremowa fasola gochujang", "Schnelle cremige Gochujang-Bohnen", "Quick creamy gochujang beans"),
+  time: N("ok. 15 min", "ca. 15 Min.", "about 15 min"),
+  tokens: ["cherry", "beans", "cream"],
+  ing: [["cherry", 250, "g"], ["olive_oil", 2, "tbsp"], ["garlic", 2, "clove"], ["tomato_paste", 1, "tbsp"], ["gochujang", 1.5, "tbsp", N("lub harissa / sambal", "oder Harissa / Sambal", "or harissa / sambal")], ["giant_beans", 1, "pcs", N("razem z zalewą", "mitsamt Flüssigkeit", "with its liquid")], ["cream", 60, "ml", N("lub roślinna", "oder pflanzlich", "or plant-based")],
+    ["#serve"], ["bread", null, null, N("lub ryż jaśminowy", "oder Jasminreis", "or jasmine rice")], ["chili_flakes", null], ["coriander", null]],
+  steps: {
+    pl: ["Na dużej patelni rozgrzać oliwę na umiarkowanym ogniu. Smażyć pomidorki 3–4 minuty, aż lekko zmiękną i zarumienią się na brzegach.",
+      "Dodać przeciśnięty czosnek, koncentrat i pastę gochujang, smażyć 1–2 minuty. Dodać fasolę razem z zalewą i śmietankę. Zagotować i gotować ok. 5 minut, aż lekko zgęstnieje. Doprawić solą.",
+      "Posypać płatkami chili i kolendrą. Podawać z chlebem lub ryżem jaśminowym."],
+    de: ["Olivenöl in einer großen Pfanne bei mittlerer Hitze erhitzen. Cherrytomaten 3–4 Minuten braten, bis sie leicht weich und an den Rändern gebräunt sind.",
+      "Gepressten Knoblauch, Tomatenmark und Gochujang zugeben und 1–2 Minuten anbraten. Bohnen mitsamt Flüssigkeit und Sahne zugeben. Aufkochen und ca. 5 Minuten köcheln, bis es leicht eindickt. Salzen.",
+      "Mit Chiliflocken und Koriander bestreuen. Mit Brot oder Jasminreis servieren."],
+    en: ["Heat the olive oil in a large pan over a medium heat. Fry the cherry tomatoes for 3–4 minutes until slightly soft and browned at the edges.",
+      "Add the crushed garlic, tomato purée and gochujang and fry for 1–2 minutes. Add the beans with their liquid and the cream. Bring to the boil and simmer for about 5 minutes until slightly thickened. Season with salt.",
+      "Sprinkle with chilli flakes and coriander. Serve with bread or jasmine rice."],
+  },
+  tips: {
+    pl: ["Z własnej, ugotowanej fasoli: 400 g fasoli i ½ szklanki (120 ml) wody z gotowania."],
+    de: ["Mit selbst gekochten Bohnen: 400 g Bohnen und ½ Tasse (120 ml) Kochwasser."],
+    en: ["With home-cooked beans: 400 g beans plus ½ cup (120 ml) of their cooking water."],
+  },
+},
+{
+  id: "szaszlyki", type: "main", serv: 2, site: "rz", src: "https://www.rozkoszny.pl/szaszlyki-z-halloumi-i-cukinia/", img: "img/szaszlyki.jpg",
+  name: N("Szaszłyki z halloumi i cukinią", "Halloumi-Zucchini-Spieße", "Halloumi and courgette skewers"),
+  time: N("ok. 40 min (w tym 15 min marynowania)", "ca. 40 Min. (inkl. 15 Min. Marinieren)", "about 40 min (incl. 15 min marinating)"),
+  tokens: ["harissa", "zucchini", "lime"],
+  ing: [["#marinade"], ["halloumi", 220, "g"], ["greek_yogurt", 4, "tbsp"], ["harissa", 1, "tbsp"], ["honey", 1, "tsp"], ["zucchini", 300, "g", N("1 średnia", "1 mittelgroße", "1 medium")], ["olive_oil", 1, "tbsp"], ["salt", null], ["pepper", null],
+    ["#salad"], ["radish", 4, "pcs"], ["cucumber", 0.5, "pcs"], ["dill", 3, "tbsp"], ["lime", 1, "pcs"]],
+  steps: {
+    pl: ["Halloumi pokroić w kostkę 2–3 cm. W misce wymieszać jogurt, harissę i miód, dodać ser, delikatnie wymieszać i odstawić na min. 15 minut.",
+      "Cukinię pokroić w grube plastry (ok. 2 cm), skropić oliwą, posolić i popieprzyć.",
+      "Drewniane patyczki namoczyć 15 minut w wodzie (metalowych nie trzeba). Nadziewać na przemian halloumi i cukinię.",
+      "Grillować 6–8 minut, obracając, aż ser się zarumieni, a cukinia zmięknie – albo piec ok. 15 minut w 220°C (góra-dół).",
+      "Sałatka: rzodkiewki i ogórka pokroić w cienkie plasterki, wymieszać z koperkiem, skropić sokiem z limonki i odrobiną oliwy, doprawić.",
+      "Marynatę, która została w misce, posolić – to gotowy sos. Podawać z ryżem lub pitą, sosem i sałatką."],
+    de: ["Halloumi in 2–3 cm große Würfel schneiden. Joghurt, Harissa und Honig verrühren, den Käse vorsichtig untermischen und mind. 15 Minuten marinieren.",
+      "Zucchini in dicke Scheiben (ca. 2 cm) schneiden, mit Olivenöl beträufeln, salzen und pfeffern.",
+      "Holzspieße 15 Minuten wässern (Metallspieße nicht nötig). Halloumi und Zucchini abwechselnd aufspießen.",
+      "6–8 Minuten unter Wenden grillen, bis der Käse gebräunt und die Zucchini weich ist – oder ca. 15 Minuten bei 220 °C (Ober-/Unterhitze) backen.",
+      "Salat: Radieschen und Gurke in dünne Scheiben schneiden, mit Dill mischen, mit Limettensaft und etwas Olivenöl beträufeln, würzen.",
+      "Die übrige Marinade salzen – das ist die Sauce. Mit Reis oder Pita, Sauce und Salat servieren."],
+    en: ["Cut the halloumi into 2–3 cm cubes. Mix the yoghurt, harissa and honey in a bowl, gently stir in the cheese and leave for at least 15 minutes.",
+      "Cut the courgette into thick (about 2 cm) slices, drizzle with olive oil and season.",
+      "Soak wooden skewers in water for 15 minutes (no need for metal ones). Thread on the halloumi and courgette alternately.",
+      "Grill for 6–8 minutes, turning, until the cheese is golden and the courgette soft – or roast at 220°C (conventional) for about 15 minutes.",
+      "Salad: thinly slice the radishes and cucumber, toss with the dill, dress with lime juice and a little olive oil and season.",
+      "Season the leftover marinade with salt – that's your sauce. Serve with rice or pitta, the sauce and the salad."],
+  },
+  tips: {
+    pl: ["Zamiast halloumi może być feta albo tofu (wtedy dobrze posolić)."],
+    de: ["Statt Halloumi gehen auch Feta oder Tofu (dann gut salzen)."],
+    en: ["Feta or tofu work instead of halloumi (season tofu well)."],
+  },
+},
+{
+  id: "sznycel", type: "main", serv: 2, site: "rz", src: "https://www.rozkoszny.pl/sznycelek-z-baklazana/", img: "img/sznycel.jpg",
+  name: N("Sznycelek z bakłażana", "Auberginen-Schnitzel", "Aubergine schnitzel"),
+  time: N("ok. 50 min (w tym pieczenie)", "ca. 50 Min. (inkl. Backzeit)", "about 50 min (incl. roasting)"),
+  tokens: ["eggplant", "parmesan", "egg", "tomato"],
+  ing: [["eggplant", 600, "g", N("2 średnie", "2 mittelgroße", "2 medium")], ["olive_oil", 2, "tbsp"], ["flour", 3, "tbsp"], ["salt", 0.5, "tsp"], ["egg", 1, "pcs"], ["vinegar", 1, "tsp"], ["panko", 60, "g"], ["parmesan", 85, "g"], ["sesame", 70, "g"], ["oil", 150, "ml", N("do smażenia", "zum Braten", "for frying")],
+    ["#serve"], ["canned_tom", 1, "can", N("jako prosty sos: + oliwa i sól", "als schnelle Sauce: + Olivenöl und Salz", "as a quick sauce: + olive oil and salt")]],
+  steps: {
+    pl: ["Nagrzać piekarnik do 220°C (góra-dół). Bakłażany ponakłuwać widelcem, posmarować oliwą i piec na blasze z papierem 25–30 minut, aż zmiękną, a skórka ściemnieje.",
+      "Odstawić na ok. 10 minut. Obrać ze skórki, zostawiając ogonek, i widelcem rozpłaszczyć na placki grubości ok. 1,5 cm.",
+      "Przygotować trzy miski: mąka z solą; jajko roztrzepane z octem; panko wymieszane z serem i sezamem.",
+      "Na patelni mocno rozgrzać sporo oleju (bakłażan ma się smażyć szybko, żeby nie nasiąkł tłuszczem).",
+      "Obtoczyć bakłażana w mące, jajku i panko, mocno dociskając. Smażyć 1–2 minuty z każdej strony na złoto, odsączyć na ręczniku. Powtórzyć z drugim.",
+      "Podawać z sosem pomidorowym (np. pomidory z puszki z oliwą i solą) i dużą ilością parmezanu."],
+    de: ["Backofen auf 220 °C (Ober-/Unterhitze) vorheizen. Auberginen mehrmals mit der Gabel einstechen, mit Olivenöl einreiben und auf einem Blech mit Backpapier 25–30 Minuten backen, bis sie weich sind und die Schale dunkel ist.",
+      "Ca. 10 Minuten abkühlen lassen. Schälen (Stielansatz dranlassen) und mit der Gabel zu ca. 1,5 cm dicken Fladen drücken.",
+      "Drei Schüsseln vorbereiten: Mehl mit Salz; Ei mit Essig verquirlt; Panko mit Käse und Sesam.",
+      "Reichlich Öl in einer Pfanne stark erhitzen (die Aubergine soll schnell braten, damit sie wenig Fett aufnimmt).",
+      "Aubergine in Mehl, Ei und Panko wenden und gut andrücken. 1–2 Minuten pro Seite goldbraun braten, auf Küchenpapier abtropfen lassen. Mit der zweiten wiederholen.",
+      "Mit Tomatensauce (z. B. Dosentomaten mit Olivenöl und Salz) und reichlich Parmesan servieren."],
+    en: ["Heat the oven to 220°C (conventional). Prick the aubergines all over with a fork, rub with olive oil and roast on a lined tray for 25–30 minutes until soft and the skin is dark.",
+      "Leave to cool for about 10 minutes. Peel, keeping the stalk on, and flatten with a fork into 1.5 cm-thick patties.",
+      "Set up three bowls: flour with salt; egg beaten with the vinegar; panko mixed with the cheese and sesame.",
+      "Heat plenty of oil in a frying pan until very hot (the aubergine should fry fast so it doesn't soak up oil).",
+      "Coat an aubergine in flour, egg and then panko, pressing it on well. Fry for 1–2 minutes per side until golden and drain on kitchen paper. Repeat with the second.",
+      "Serve with tomato sauce (e.g. canned tomatoes with olive oil and salt) and lots of Parmesan."],
+  },
+},
+{
+  id: "miso", type: "main", serv: 2, site: "rz", src: "https://www.rozkoszny.pl/jednogarnkowy-makaron-w-sosie-miso-z-grzybami/", img: "img/miso.jpg",
+  name: N("Jednogarnkowy makaron w sosie miso z grzybami", "One-Pot-Pasta in Miso-Pilz-Sauce", "One-pot miso mushroom pasta"),
+  time: N("ok. 25 min", "ca. 25 Min.", "about 25 min"),
+  tokens: ["mushrooms", "cream", "miso"],
+  ing: [["button_mush", 150, "g"], ["olive_oil", 2, "tbsp"], ["garlic", 1, "clove"], ["miso", 4, "tbsp", N("płaskie łyżki", "gestrichene EL", "level tbsp")], ["pasta", 200, "g", N("np. bucatini", "z. B. Bucatini", "e.g. bucatini")], ["cream", 120, "ml", N("lub sojowa", "oder Sojasahne", "or soy cream")], ["salt", null], ["pepper", null]],
+  steps: {
+    pl: ["Na dużej patelni mocno rozgrzać oliwę. Smażyć pokrojone w plastry pieczarki 3–4 minuty z każdej strony, aż się zarumienią. Zmniejszyć ogień, dodać zmiażdżony czosnek, posolić i popieprzyć. Przełożyć pieczarki do miski.",
+      "Na tę samą patelnię wlać 3 szklanki (750 ml) wody i rozpuścić w niej miso. Zagotować, dodać makaron (jeśli wystaje, przykryć na 3–4 minuty, aż zmięknie i się zanurzy). Gotować bez przykrycia, często mieszając, aż makaron będzie al dente, a płynu zostanie ok. 1 szklanki.",
+      "Dodać śmietankę i pieczarki. Gotować, mieszając, aż sos zgęstnieje i będzie kremowy. Doprawić pieprzem i podawać."],
+    de: ["Olivenöl in einer großen Pfanne stark erhitzen. Champignonscheiben 3–4 Minuten pro Seite braun braten. Hitze reduzieren, zerdrückten Knoblauch zugeben, salzen und pfeffern. Pilze in eine Schüssel geben.",
+      "3 Tassen (750 ml) Wasser in dieselbe Pfanne gießen und das Miso darin auflösen. Aufkochen, Nudeln zugeben (falls sie herausragen, 3–4 Minuten zudecken, bis sie weich sind und eintauchen). Offen unter häufigem Rühren kochen, bis die Nudeln al dente sind und noch ca. 1 Tasse Flüssigkeit übrig ist.",
+      "Sahne und Pilze zugeben und rühren, bis die Sauce cremig eindickt. Pfeffern und servieren."],
+    en: ["Heat the olive oil in a large pan until very hot. Fry the sliced mushrooms for 3–4 minutes per side until browned. Lower the heat, add the crushed garlic and season. Tip the mushrooms into a bowl.",
+      "Pour 3 cups (750 ml) of water into the same pan and dissolve the miso in it. Bring to the boil and add the pasta (if it sticks out, cover for 3–4 minutes until it softens and sinks). Cook uncovered, stirring often, until al dente and about 1 cup of liquid remains.",
+      "Add the cream and mushrooms and stir until the sauce is thick and creamy. Season with pepper and serve."],
+  },
+  tips: {
+    pl: ["Pasują tu prawie wszystkie grzyby: pieczarki, boczniaki, leśne albo suszone (wcześniej namoczone)."],
+    de: ["Fast alle Pilze passen: Champignons, Austernpilze, Waldpilze oder getrocknete (vorher einweichen)."],
+    en: ["Almost any mushrooms work: button, oyster, wild or dried (soak them first)."],
+  },
+},
+{
+  id: "zielony", type: "main", serv: 4, defP: 2, site: "rz", src: "https://www.rozkoszny.pl/proteinowy-zielony-makaron/", img: "img/zielony.jpg",
+  name: N("Proteinowy zielony makaron", "Grüne Protein-Pasta", "Green protein pasta"),
+  time: N("ok. 30 min", "ca. 30 Min.", "about 30 min"),
+  tokens: ["spinach", "miso", "lemon", "egg"],
+  ing: [["spinach_frozen", 450, "g"], ["garlic", 2, "clove"], ["cottage", 400, "g"], ["miso", 2, "tbsp"], ["soy", 2, "tbsp"], ["chili_flakes", 0.5, "tsp"], ["lemon", 1, "pcs", N("sok i skórka", "Saft und Schale", "juice and zest")], ["pasta", 400, "g", N("np. bucatini", "z. B. Bucatini", "e.g. bucatini")], ["egg", 4, "pcs", N("ugotowane na półtwardo", "wachsweich gekocht", "soft-boiled")], ["olive_oil", null]],
+  steps: {
+    pl: ["W dużym garnku zagotować wodę i gotować mrożony szpinak ok. 15 minut, aż się rozmrozi.",
+      "Odcedzić na drobnym sitku, przelać zimną wodą i łyżką mocno odcisnąć.",
+      "Zmiksować szpinak z czosnkiem, serkiem wiejskim, miso, sosem sojowym, chili, sokiem z ½ cytryny i ½ szklanki (120 ml) wody na gładki sos (2–3 minuty).",
+      "W międzyczasie ugotować makaron al dente w osolonej wodzie. Odcedzić, zachowując trochę wody z gotowania.",
+      "Wymieszać makaron z sosem (w razie potrzeby rozrzedzić wodą z makaronu). Podawać z jajkami, skórką z cytryny i odrobiną oliwy."],
+    de: ["Wasser in einem großen Topf aufkochen und den Tiefkühlspinat ca. 15 Minuten darin auftauen lassen.",
+      "In einem feinen Sieb abgießen, kalt abschrecken und mit einem Löffel kräftig ausdrücken.",
+      "Spinat mit Knoblauch, Hüttenkäse, Miso, Sojasauce, Chili, dem Saft einer halben Zitrone und ½ Tasse (120 ml) Wasser 2–3 Minuten glatt mixen.",
+      "Inzwischen die Nudeln in Salzwasser al dente kochen. Abgießen, etwas Kochwasser aufheben.",
+      "Nudeln mit der Sauce mischen (bei Bedarf mit Kochwasser verdünnen). Mit Eiern, Zitronenschale und etwas Olivenöl servieren."],
+    en: ["Bring a large pot of water to the boil and cook the frozen spinach for about 15 minutes until thawed.",
+      "Drain in a fine sieve, rinse with cold water and press out as much liquid as you can with a spoon.",
+      "Blend the spinach with the garlic, cottage cheese, miso, soy sauce, chilli, the juice of ½ lemon and ½ cup (120 ml) water until smooth (2–3 minutes).",
+      "Meanwhile, cook the pasta al dente in salted water. Drain, keeping some of the cooking water.",
+      "Toss the pasta with the sauce (loosen with pasta water if needed). Serve with the eggs, lemon zest and a drizzle of olive oil."],
+  },
+  tips: {
+    pl: ["Przepis jest na 4 porcje – strona domyślnie liczy 2. Można dodać podsmażone szparagi, pieczone pomidorki albo halloumi."],
+    de: ["Das Rezept ist für 4 Portionen – die Seite rechnet standardmäßig mit 2. Dazu passen gebratener Spargel, Ofentomaten oder Halloumi."],
+    en: ["The original serves 4 – the page defaults to 2. Fried asparagus, roasted cherry tomatoes or halloumi are nice extras."],
+  },
+},
+{
+  id: "pierozki", type: "soup", serv: 2, site: "rz", src: "https://www.rozkoszny.pl/zupa-curry-z-pierozkami/", img: "img/pierozki.jpg",
+  name: N("Zupa curry z pierożkami", "Currysuppe mit Teigtaschen", "Curry soup with dumplings"),
+  time: N("ok. 20 min", "ca. 20 Min.", "about 20 min"),
+  tokens: ["curry_paste", "coconut", "ginger"],
+  ing: [["oil", 1, "tbsp"], ["onion", 1, "pcs"], ["garlic", 3, "clove"], ["salt", 0.5, "tsp"], ["ginger", 6, "cm", N("2 łyżki startego", "2 EL gerieben", "2 tbsp grated")], ["red_curry", 1, "tbsp", N("łagodniej: żółta", "milder: gelbe", "milder: yellow")], ["coconut", 400, "ml"], ["honey", 1, "tbsp"],
+    ["dumplings", 250, "g", N("ok. 10 szt., z ulubionym nadzieniem", "ca. 10 Stk., Füllung nach Wahl", "about 10, any filling")], ["pak_choy", 1, "pcs"], ["spring_onion", 1, "tbsp"], ["fried_onion", 2, "tbsp"]],
+  steps: {
+    pl: ["W dużym garnku rozgrzać olej na średnim ogniu. Dodać poszatkowaną cebulę, czosnek i sól, smażyć ok. 5 minut, aż cebula się zeszkli. Dodać imbir i pastę curry, smażyć 30–45 sekund. Wlać mleko kokosowe i puszkę (400 ml) wody, zagotować. Zdjąć z ognia, dodać miód i zmiksować na gładko.",
+      "W międzyczasie w osolonej wodzie ugotować pierożki; 30 sekund przed końcem dorzucić liście pak choy.",
+      "Pierożki i pak choy przełożyć do głębokich talerzy, zalać zupą, posypać zieloną cebulką i prażoną cebulką."],
+    de: ["Öl in einem großen Topf bei mittlerer Hitze erhitzen. Gehackte Zwiebel, Knoblauch und Salz ca. 5 Minuten glasig braten. Ingwer und Currypaste 30–45 Sekunden mitbraten. Kokosmilch und eine Dose (400 ml) Wasser angießen und aufkochen. Vom Herd nehmen, Honig zugeben und glatt pürieren.",
+      "Inzwischen die Teigtaschen in Salzwasser garen; 30 Sekunden vor Ende die Pak-Choi-Blätter zugeben.",
+      "Teigtaschen und Pak Choi in tiefe Teller geben, mit der Suppe übergießen und mit Frühlingszwiebeln und Röstzwiebeln bestreuen."],
+    en: ["Heat the oil in a large pot over a medium heat. Fry the chopped onion, garlic and salt for about 5 minutes until soft. Add the ginger and curry paste and fry for 30–45 seconds. Pour in the coconut milk and a can (400 ml) of water and bring to the boil. Take off the heat, add the honey and blend until smooth.",
+      "Meanwhile, cook the dumplings in salted water, adding the pak choi leaves 30 seconds before the end.",
+      "Divide the dumplings and pak choi between deep bowls, pour over the soup and sprinkle with spring onions and crispy onions."],
+  },
+},
 ];
+const ORDER = ["pesto", "papryka", "gnocchi", "gochujang", "zupa", "fasolka", "harissa", "szaszlyki", "kasza", "sznycel", "curry1", "curry2", "butter", "grzyby", "miso", "zielony", "bowl", "tajska", "pierozki", "surowka", "racuchy"];
+R.sort((a, b) => ORDER.indexOf(a.id) - ORDER.indexOf(b.id));
 R.forEach((r, i) => r.no = i + 1);
 /* slicer tags: b = base, p = protein */
 const TAGS = {
@@ -853,6 +1093,14 @@ const TAGS = {
   grzyby: { b: [], p: ["chicken"] },
   tajska: { b: ["pasta"], p: ["chicken", "veg"] },
   bowl: { b: ["pasta", "rice"], p: ["veg"] },
+  papryka: { b: ["pasta"], p: ["veg"] },
+  gnocchi: { b: ["pasta"], p: ["veg"] },
+  gochujang: { b: ["beans"], p: ["veg"] },
+  szaszlyki: { b: [], p: ["veg"] },
+  sznycel: { b: [], p: ["veg"] },
+  miso: { b: ["pasta"], p: ["veg"] },
+  zielony: { b: ["pasta"], p: ["veg"] },
+  pierozki: { b: [], p: ["veg"] },
 };
 const FGROUPS = { b: ["pasta", "rice", "kasza", "beans"], p: ["fish", "chicken", "beef", "veg"] };
 const MAINS = R.filter(r => r.type === "main" || r.type === "soup");
@@ -866,7 +1114,7 @@ const store = {
 let lang = store.get("lang", "pl");
 if (!UI[lang]) lang = "pl";
 const sel = store.get("sel", {});
-R.forEach(r => { if (!sel[r.id]) sel[r.id] = { on: MAINS.includes(r), p: r.serv }; });
+R.forEach(r => { if (!sel[r.id]) sel[r.id] = { on: MAINS.includes(r), p: r.defP || r.serv }; });
 let done = store.get("done", {});
 let filt = store.get("filt", { b: [], p: [] });
 if (!filt || !Array.isArray(filt.b) || !Array.isArray(filt.p)) filt = { b: [], p: [] };
@@ -1127,7 +1375,7 @@ function listAsText() {
 function renderStatic() {
   const t = UI[lang];
   document.documentElement.lang = lang;
-  $("#t-eyebrow").textContent = t.eyebrow;
+  $("#t-eyebrow").textContent = t.eyebrow.replace("{n}", R.length);
   $("#t-title").textContent = t.title;
   $("#t-sub").textContent = t.sub;
   const used = [...new Set(R.map(r => r.site || "ks"))].map(k => SITES[k]);
